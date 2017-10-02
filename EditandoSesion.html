@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nueva Sesion</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<style type="text/css">
+		body{
+			background: #fff;
+		}
+		h1,  p{
+			color: #004;
+		}
+
+		p.texto {
+			font-size:25px;
+		}
+		.white{
+			color: #fff;
+		}
+		.orangeback{
+			background: #ee7700;;
+		}
+		.whiteback{
+			background: #fff;
+		}
+		.blueback{
+			background: #00266C;
+		}
+		.lightblueback{
+			background: #245db7;
+		}
+		.vacio{
+			height: 100px;
+			width: 100%;
+			background: #00266C;
+			color: rgba(255,255,0,0.4);
+		}
+		form.buttoner{
+		
+			padding: 30px;
+			border:8px dashed #ee7700;
+			background: rgba(255,255,0,0.85);
+		}
+	</style>
+	<script type="text/javascript">
+		function masObjetivo(){
+			
+			document.getElementById("moreobjetive").style.display = "none";
+			document.getElementById("temporal").innerHTML+='<form class="buttoner"><div class="row"><label class="col-md-3 control-label" for="objetive">Titulo del Objetivo:</label><div class="col-md-4"><input class="form-control" type="text" id="objetive" placeholder="Nombre del Objetivo"></div><label class="col-md-1 control-label" for="timer">Tiempo:</label><div class="col-md-2"><input class="form-control" type="number" id="timer" placeholder="x minutos"></div></div><div class="row"> &nbsp;</div><div class="row"><label class="col-md-3 control-label" for="objetiveDescription">Descripcion del Objetivo:</label><div class="col-md-8"><textarea class="form-control" id="objetiveDescription" rows="4" placeholder="Informacion relevante sobre el objetivo a lograr..."></textarea></div><div class="row"> &nbsp;</div><div class="row">&nbsp;</div><div class="row"><div class="col-md-6"><center><button type="button" class="btn btn-success btn-lg glyphicon glyphicon-ok" onclick="confirmar();"><b> <ins>Confirmar</ins></b></button></center></div><div class="col-md-6"> <center> <button type="button" class="btn btn-danger btn-lg glyphicon glyphicon-remove" onclick="cancelar();"><b> <ins>Cancelar</ins></b></button></center></div></div></form>';
+		}
+
+		function confirmar(){
+			
+			document.getElementById("moreobjetive").style.display = "block";
+			var objetive = document.getElementById("objetive");
+			var timer = document.getElementById("timer");
+			var desc = document.getElementById("objetiveDescription");
+
+			var div1 = document.createElement("div");
+			div1.className = "row lightblueback";
+			var title = document.createElement("h3");
+			title.className += "col-md-7 white"
+			title.innerText += "Objetivo: ";
+			title.innerText += objetive.innerText;
+			
+			var number = document.createElement("h3");
+			number.className += "col-md-4 white"
+			number.innerText += "Tiempo de Respuesta: ";
+			number.innerText += timer.innerText;
+			div1.appendChild(title);
+			div1.appendChild(number);
+
+			var div2 = document.createElement("div");
+			div2.className = "row lightblueback";
+			var para = document.createElement("h4");
+			para.className += "col-md-12 white"
+			para.innerText += "Descripcion del Objetivo: ";
+			para.innerText += desc.innerText;
+			div2.appendChild(para);
+
+			document.getElementById("objetivos").appendChild(div1);
+			document.getElementById("objetivos").appendChild(div2);
+			document.getElementById("objetivos").innerHTML += '<div class="row whiteback"> &nbsp;</div>';
+			document.getElementById("temporal").innerHTML = "";
+		}
+
+		function cancelar(){
+			document.getElementById("moreobjetive").style.display = "block";
+			document.getElementById("temporal").innerHTML = "";
+		}
+
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<form class="vacio">
+				<div align="right">
+					<p>Developed by Pyramid Works</p>
+				</div>
+			</form>
+		</div>
+		<div class="row whiteback "> &nbsp;</div>
+		<div class="row">
+			<div class="col-md-8">
+				<div class="row">
+					<label class="col-md-4 control-label" for="SesionNameinput"><h4><b>Titulo de la Sesion:</b></h4></label>
+					<div class="col-md-8">
+						<input class="form-control" type="text" id="SesionNameinput" placeholder="Nombre de la Sesion...">
+					</div>	
+				</div>
+
+				<div class="row whiteback"> &nbsp;</div>
+
+				<div class="row">
+					<label class="col-md-4 control-label" for="SesionInfoinput"><h4><b>Escenario:</b></h4></label>
+					<div class="col-md-8">
+						<textarea class="form-control" id="SesionInfoinput" max-lenght=250 rows="5" placeholder="Informacion sobre la Sesion..."></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="row">
+					<button type="button" class="btn btn-success btn-block btn-lg glyphicon glyphicon-ok">
+						<b> CREAR SESION</b>
+					</button>
+				</div>
+				<div class="row">&nbsp;</div>
+				<div class="row">
+					<button type="button" class="btn btn-danger btn-block btn-lg glyphicon glyphicon-remove" >
+						<b> CANCELAR</b>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="row whiteback"> &nbsp;</div>
+
+		<div class="row" id="objetivos"></div>
+
+		<div class="row whiteback"> &nbsp;</div>
+
+		<div class="row" id="temporal"></div>
+
+		<div class="row">
+			<center>
+				<button type="button" id="moreobjetive" class="btn btn-primary btn-lg active" onclick="masObjetivo();">
+					+ Añadir Objetivo
+				</button>
+			</center>
+		</div>
+
+
+
+	</div>
+</body>
+</html>

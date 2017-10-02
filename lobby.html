@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
 	<style type="text/css">
-		body,{
+		body{
 			background: #fff;
 		}
 		h1, p,{
@@ -19,12 +19,15 @@
 			color: #fff;
 		}
 		.vacio{
-			height: 100px;
+			height:100px;
+			width: 100%;
 			background: #00266C;
 			color: rgba(255,255,0,0.4);
 		}
-		form{
-			padding: 30px;
+		form.buttoner{
+			width: 336px;
+			height: 320px;
+			padding: 48px;
 			border:8px dashed #ee7700;
 			background: rgba(255,255,0,0.85);
 		}
@@ -34,16 +37,17 @@
 
 <body>
 	<div class="container-fluid">
-		<div class="row vacio">
-			<p class="white">
-				Developed by Pyramid Works
-
-			</p>
+		<div class="row ">
+			<form class="vacio">
+				<div align="right">
+					<p>Developed by Pyramid Works</p>
+				</div>
+			</form>
 		</div>
 		<div class="row"> &nbsp;</div>
 		<div class="row-fluid">
 			<div class="col-md-8">
-				<div class="row-fluidw">
+				<div class="row-fluid">
 					<div class="col-md-8">
 						<h1>Bienvenido a DesicionsGame</h1>
 					</div>
@@ -53,13 +57,13 @@
 				<div class="row"> &nbsp;</div>
 				<div class="row-fluid">
 					<div class="col-md-12">
-						<p class="texto"> Aqui podrás con tus colegas hacer decisiones de manera remota y ludicamente </p>
+						<p class="texto"> Aqui podrás con tus colegas tomar decisiones de manera remota y ludicamente.</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div>
-					<form class="form-horizontal">
+					<form class="form-horizontal buttoner">
 						<div class="control-group">
 							<label class="control-label" for="inputEmail">ID de Cuenta</label>
 							<div class="controls">
@@ -77,8 +81,8 @@
 								<label class="checkbox">
 										<input type="checkbox"> Recordar mi cuenta 
 								</label>
-								<button class="btn btn-primary" type="button">Sing In</button>
-								<button class="btn" type="button"><a>Anonimus Sesion</a></button>
+								<button class="btn btn-primary" id="Enviar" type="button">Sing In</button>
+								<button class="btn" id="Anonimo" type="button"><a>Anonimus Sesion</a></button>
 								<p>Tambien puedes <a href="#"> Crear una Cuenta</a></p>
 							</div>
 						</div>
