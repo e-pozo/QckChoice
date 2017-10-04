@@ -1,0 +1,38 @@
+<div class="jumbotron">
+  <h1>{{title}}</h1>
+  <p>Here we display yours sessions</p>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Add Session</button>
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+         <h5 class="modal-title">Form</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <form  action="sessionCreate" method="POST">
+           <div class="modal-body">
+             <div class="form-group">
+            <label for="title" class="form-control-label">Title:</label>
+            <input type="text" class="form-control" name ="title" id="title">
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-control-label">Description:</label>
+            <textarea class="form-control" name= "description" id="description"></textarea>
+          </div>
+       </div>
+       <div class="modal-footer">
+         <button type="submit" class="btn btn-primary">Save changes</button>
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       </div>
+        </form>
+    </div>
+  </div>
+</div>
+</div>
+  <form action="/sessionCreate" method="post">
+      <button type="submit" name="button">Add Session</button>
+  </form>
+</div>
