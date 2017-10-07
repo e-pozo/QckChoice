@@ -1,7 +1,9 @@
 const person = require('./personController');
-const registered = require('./registeredController');
+const local = require('./localPersonController');
+const session = require('./sessionController');
 
 module.exports = {
     person,
-    registered
+    local,
+    session
 };

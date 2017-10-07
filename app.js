@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('connect-flash');
 var hbs = require('express-handlebars');
 
 //Authentication Packages
@@ -22,7 +23,7 @@ var sessionStore = new MySQLStore(options);
 var index = require('./routes/index');
 var users = require('./routes/users');
 var db = require('./models/index');
-
+require ('./config/passport')(passport);
 var app = express();
 
 // view engine setup
@@ -47,6 +48,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use('/', index);
 app.use('/users', users);
 

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Person.associate = (models) => {
-        Person.belongsTo(models.Registered, {onDelete: 'CASCADE'});
+        //Person.belongsTo(models.Registered, {onDelete: 'CASCADE'});
         Person.belongsToMany(models.Session, {through: 'PersonSession', timestamps: false});
         Person.belongsToMany(models.EventChoice, {through: 'Vote'});
     }
