@@ -15,8 +15,8 @@ var options = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'pass1234',
-    database: 'ADSW PyramidWorks DB'
+    password: 'root',
+    database: "pyramidworks"
 };
 var sessionStore = new MySQLStore(options);
 
