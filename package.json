@@ -6,6 +6,9 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular": "^1.6.6",
+    "angular-resource": "^1.6.6",
+    "angular-route": "^1.6.6",
     "bcrypt": "^1.0.3",
     "body-parser": "~1.17.1",
     "connect-flash": "^0.1.1",

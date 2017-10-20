@@ -3,8 +3,8 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(module.filename);
 const db = {};
-
-let sequelize = new Sequelize('ADSW PyramidWorks DB', 'root', 'pass1234',{dialect: 'mysql'});
+let config = require('../config/dbConfig.json');
+let sequelize = new Sequelize(config.database, config.user, config.password,{dialect: 'mysql'});
 
 fs
   .readdirSync(__dirname)

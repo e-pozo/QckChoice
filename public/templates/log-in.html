@@ -1,0 +1,29 @@
+<div class="well container">
+    <form class="form-horizontal" ng-submit="logIn()">
+        <fieldset>
+            <legend>Signin User</legend>
+            <div class="alert alert-dismissible alert-danger" ng-show="error">
+                <button type="button" class="close" ng-click="closeError()" >&times;</button>
+                <strong>{{errorMessage}}</strong>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="inputEmail" placeholder="Email" name="email" type="email" ng-model="person.email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="inputPassword" name= "password" placeholder="Password" type="password" ng-model="person.password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="disabled">Submit</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

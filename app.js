@@ -11,13 +11,7 @@ var hbs = require('express-handlebars');
 var session = require('express-session');
 var passport = require('passport');
 var MySQLStore = require('express-mysql-session')(session);
-var options = {
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: 'pass1234',
-    database: 'ADSW PyramidWorks DB'
-};
+var options = require('./config/dbConfig.json');
 var sessionStore = new MySQLStore(options);
 
 var index = require('./routes/index');
@@ -37,6 +31,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/scripts', express.static(__dirname + '/node_modules/'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({

@@ -2,7 +2,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 
-var models = require('../models')
+var models = require('../models');
 var Person = models.Person;
 var Local = models.Local;
 var LocalCreate = models.Local;
@@ -18,7 +18,7 @@ module.exports = (passport) => {
         done(null,obj);
     });
 
-    passport.use('local-signup', new LocalStrategy({
+    passport.use('local-sign-up', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
         passReqToCallback: true
@@ -33,7 +33,7 @@ module.exports = (passport) => {
             .then(Local => {
                 console.log(Local);
                 if (Local){
-                    done(null, false, req.flash('signUpMessage', 'That email already exits'));
+                    done(null, false, {message: 'That email already exist, sign up with a new email'});
                 }
                 else {
                     return sequelize.transaction(t => {
@@ -57,7 +57,7 @@ module.exports = (passport) => {
         });
     }));
 
-    passport.use('local-sigin', new LocalStrategy({
+    passport.use('local-sign-in', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true
@@ -79,12 +79,12 @@ module.exports = (passport) => {
                                 done(null, Local);
                             }
                             else{
-                                done(null, false, req.flash('signInMessage','Wrong Password'));
+                                done(null, false, {message:'Wrong password'});
                             }
                         });
                     }
                     else{
-                        done(null, false, req.flash('signInMessage', 'User doesn\'t exits'));
+                        done(null, false, {message: 'User doesn\'t exist'});
                     }
                 })
                 .catch(err => done(err));
