@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Session.associate = (models) => {
         Session.hasMany(models.Event);
-        Session.belongsToMany(models.Person, {through: 'PersonSession'});
+        Session.belongsToMany(models.Person, {through: models.PersonSession});
     };
     return Session;
 };

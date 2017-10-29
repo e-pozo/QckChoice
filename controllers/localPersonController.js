@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 const models = require('../models');
 const Person = models.Person;
 const Local = models.Local;
 const sequelize = models.sequelize;
-
+const passport = require('passport');
 
 module.exports = {
     create(req, res){
@@ -26,35 +26,48 @@ module.exports = {
             });
         })
     },
-    /*check(req,res){
-        return Local.
-            findOne({
-                where:{
-                    email: req.body.email
-                }
-            }).then(Local => {
-                if(Local){
-                    console.log(Local);
-                    bcrypt.compare(req.password, Local.password, (err, response) => {
-                        if(err){
-                            res.redirect('/logIn');
-                        }
-                        if(response){
-                            req.login(Register.id, error => {
-                                res.render('sessionUser');
-                            });
-                        }
-                        else {
-                            res.redirect('/logIn');
-                        }
+    localSignIn(req, res, next){
+        passport.authenticate('local-sign-in', function(err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.status(401).json({
+                    err: info
+                });
+            }
+            req.logIn(user, function(err) {
+                if (err) {
+                    return res.status(500).json({
+                        err: 'Could not log in user'
                     });
                 }
-                else{
-                    console.log("User No Exits");
-                    res.redirect('/logIn');
+                res.status(200).json({
+                    status: 'Login successful!'
+                });
+            });
+        })(req, res, next);
+    },
+    localSignUp(req, res, next){
+        passport.authenticate('local-sign-up', function(err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.status(401).json({
+                    err: info
+                });
+            }
+            req.logIn(user, function(err) {
+                if (err) {
+                    return res.status(500).json({
+                        err: 'Could not sign up user'
+                    });
                 }
-                console.log(Local);
-            })
-            .catch(error => res.status(400).send(error));
-    },*/
+                res.status(200).json({
+                    status: ' successful sign up!'
+                });
+            });
+        })(req, res, next);
+    }
 };

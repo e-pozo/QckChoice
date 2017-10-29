@@ -22,7 +22,7 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-sequelize.sync().then(() => {
+sequelize.sync(/*{force: true}*/).then(() => {
     //All Ok. Query is displayed.
 }).catch(error => {
     console.log(error);

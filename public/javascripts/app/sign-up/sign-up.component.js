@@ -31,6 +31,5 @@ angular.module('signUp')
                 $scope.error = false;
             }
 
-
         }
     });

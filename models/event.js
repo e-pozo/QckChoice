@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Event = sequelize.define('Event', {
-        timeTaked: {
+        timeTaken: {
             type: DataTypes.TIME,
             allowNull: false
         },
@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Event.associate = (models) => {
-        Event.belongsToMany(models.Choice, {through: 'EventChoice', timestamps: false});
-        Event.belongsToMany(models.EventChoice, {through: 'Vote'});
+        Event.belongsToMany(models.Choice, {through: 'Vote'});
+        Event.Chats = Event.hasMany(models.Chat);
     };
     return Event;
 };

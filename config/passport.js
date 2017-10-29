@@ -49,7 +49,7 @@ module.exports = (passport) => {
                             },{transaction: t})
                         })
                         .then(LocalCreate => done(null,LocalCreate))
-                        .catch(err => {throw err;});
+                        .catch(err => done(err));
                     });
                 }
             })

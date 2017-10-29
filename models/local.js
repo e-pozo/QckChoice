@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Local.associate = (models) => {
         Local.belongsTo(models.Person);
-    }
+    };
 
     return Local;
-}
+};
