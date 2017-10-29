@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const Event = sequelize.define('Event', {
         timeTaken: {
             type: DataTypes.TIME,
-            allowNull: false
+            allowNull: true
         },
         objective: {
             type: DataTypes.TEXT,

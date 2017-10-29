@@ -53,7 +53,39 @@ router
 
 router
     //Join at particular session.
-    .post('/api/session/:id/join', authenticationMiddleware(), personController.addSession);
+    .post('/api/session/:id/join', 
+        authenticationMiddleware(), 
+        personController.addSession);
+
+router
+    //Create a new event for a particular session
+    .post('/api/sessionUser/:id', 
+        authenticationMiddleware(), 
+        sessionController.isModeratorOfThisSession,
+        sessionController.makeEvent)
+
+    //Show all events form a particular session
+    .get('/api/session/:id',
+        authenticationMiddleware(), 
+        sessionController.isInThisSession,
+        sessionController.listEvent)
+
+    //Modify a particular event from a particular session
+    .put('/api/sessionUser/:id/event/:idEvent',
+        authenticationMiddleware(), 
+        sessionController.isModeratorOfThisSession,
+        sessionController.updateEvent)
+
+    //Delete a particular event from a particular session
+    .delete('/api/sessionUser/:id/event/:idEvent',
+        authenticationMiddleware(), 
+        sessionController.isModeratorOfThisSession,
+        sessionController.deleteEvent);
+
+router.get('/api/sessionParticipating',
+        authenticationMiddleware(),
+        personController.listSessions);
+
 
 //Pass all remains GET request to Angular router.
 router.get('*', (req,res) => {
@@ -69,4 +101,5 @@ function authenticationMiddleware() {
         res.status(401).send("Unauthorized Access!.")
     }
 }
+
 module.exports = router;

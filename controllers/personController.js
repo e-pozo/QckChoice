@@ -116,5 +116,20 @@ module.exports = {
             .catch(err => {
                 res.status(500).json(err);
             })
+    },
+
+    listSessions(req,res){
+        sequelize.transaction( t => {
+            return Person.findById(req.user.id, {transaction: t})
+                .then( Person => {
+                    return Person.getSessions({transaction: t})
+                })
+        })
+            .then(result => {
+                res.status(200).json(result);
+            })
+            .catch(err => {
+                res.status(500).json(err);
+            })
     }
 };
