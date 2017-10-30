@@ -1,6 +1,14 @@
 <div class="jumbotron">
-    <h1>User sessions</h1>
-    <p>Here we display yours sessions</p>
+    <h1>User sessions:</h1>
+    <ul class="list-group">
+        <li ng-repeat=" sessionData in sessions" class="list-group-item">
+            <div class="md-col-6"></div>
+            <h2 ><a href="%"> {{sessionData.title}} </a></h2>
+            <span ng-if="sessionData.PersonSession.isModerator">
+                <button type="button" class="btn btn-warning">Edit Session</button>
+            </span>
+        </li>
+    </ul>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Add Session</button>
 
     <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -31,8 +39,4 @@
             </div>
         </div>
     </div>
-</div>
-<form action="/sessionCreate" method="post">
-    <button type="submit" name="button">Add Session</button>
-</form>
 </div>
