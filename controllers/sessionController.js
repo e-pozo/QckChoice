@@ -23,8 +23,6 @@ module.exports = {
         })
             .then(data => {res.status(201).json(data)})
             .catch(err => {res.status(500).json(err)})
-        ;
-        console.log(req.user);
     },
 
     makeEvent(req, res) {
