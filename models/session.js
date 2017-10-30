@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         description: {
             type: DataTypes.TEXT
+        },
+        keyPass:{
+            type: DataTypes.TEXT
         }
     });
 

@@ -5,6 +5,7 @@ var controllers = require('../controllers');
 const personController = controllers.person;
 const localPersonController = controllers.local;
 const sessionController = controllers.session;
+const eventController = controllers.event;
 const voteController = controllers.vote;
 
 //Return if a person is logged or not.
@@ -54,7 +55,7 @@ router
 
 router
     //Join at particular session.
-    .post('/api/session/:id/join', 
+    .post('/api/session/:id/join/:keyPass',
         authenticationMiddleware(), 
         personController.addSession);
 
@@ -92,7 +93,12 @@ router.get('/api/sessionParticipating',
 router.post('/api/session/:id/event/:idEvent/choice/:idChoice',
         authenticationMiddleware(),
         sessionController.isInThisSession,
-        voteController.addVote);
+        eventController.createVote);
+//List all votes of an event
+router.get('/api/session/:id/event/:idEvent',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        eventController.getVotes);
 
 //Pass all remains GET request to Angular router.
 router.get('*', (req,res) => {

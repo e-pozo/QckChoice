@@ -2,7 +2,9 @@
 const models = require('../models');
 const Person = models.Person;
 const Session = models.Session;
+const PersonSession = models.PersonSession;
 const sequelize = models.sequelize;
+const uuidv4 = require('uuid/v4');
 
 module.exports = {
     create(req, res){
@@ -18,7 +20,8 @@ module.exports = {
         sequelize.transaction(t => {
             return Session.create({
                 title: req.body.title,
-                description: req.body.description
+                description: req.body.description,
+                keyPass: uuidv4()
             }, {transaction: t})
                 .then(Session => {
                     return Person.findById(req.user.id, {transaction: t})
@@ -36,7 +39,11 @@ module.exports = {
     },
     addSession: function (req, res) {
         sequelize.transaction(t => {
-            return Session.findById(req.params.id, {transaction: t})
+            return Session.findOne(
+                {
+                    where: {id: req.params.id, keyPass: req.params.keyPass}
+                },
+                {transaction: t})
                 .then(Session => {
                     return Person.findById(req.user.id, {transaction: t})
                         .then(Person => {
@@ -81,9 +88,7 @@ module.exports = {
                 .then(Person => {
                     return Person.getSessions({
                         through: {
-                            where: {
-                                isModerator: true
-                            }
+                            PersonSession
                         },
                         transaction : t
                     })

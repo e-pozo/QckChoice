@@ -108,6 +108,7 @@ module.exports = {
         })
             .then(personSession => {
                 if(personSession) {
+                    console.log("si participa en esta session");
                     return next();
                 }
                 else {
