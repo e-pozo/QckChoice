@@ -4,11 +4,11 @@ angular.module('sessionUser')
     .component('sessionUser', {
        templateUrl: 'templates/session-user.html',
        controller: function ($scope, $http) {
-           console.log("hello");
+           ///jsonexample/package.json
            var getSessions = function () {
                $http.get('/api/sessionUser')
                    .then(function (result, status) {
-                       console.log(result.data);
+                       $scope.sessions= result.data;
                    })
                    .catch(function (err, status) {
                        console.log(err);

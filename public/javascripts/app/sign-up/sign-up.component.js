@@ -5,18 +5,26 @@ angular.module('signUp')
         templateUrl: 'templates/sign-up.html',
         controller: function($scope, $location, Auth, $q){
             var validation = function () {
-                return $q(function (resolve, reject) {
-                    if($scope.person.password == $scope.person.passwordRepeat){
-                        resolve();
 
+                var deferred = $q.defer();
+
+                if($scope.person != null ){
+                    if($scope.person.email = null || $scope.person.userName!= null || $scope.person.password!= null) {
+                        if ($scope.person.password == $scope.person.passwordRepeat) {
+
+                            deferred.resolve();
+                        } else {
+
+                            deferred.reject("Sorry dude, but your passwords do not match");
+                        }
                     }
-                    else{
-                        reject("Sorry dude, but your passwords do not match");
-                    }
+                }
+                else{
 
-                })
+                    deferred.reject("Please fill all fields.");
+                }
 
-
+                return deferred.promise;
             };
 
             $scope.signUp = function () {
@@ -30,29 +38,33 @@ angular.module('signUp')
                         Auth.register($scope.person.userName, $scope.person.email, $scope.person.password)
                         // handle success
                             .then(function () {
+
                                 $location.path('/sessionUser');
                                 $scope.disabled = false;
                                 $scope.person = {};
                             })
                             // handle error
                             .catch(function (inf) {
+
                                 $scope.error = true;
                                 $scope.errorMessage = inf.data.err.message;
                                 $scope.disabled = false;
                                 $scope.person = {};
                             });
-
-                })
+                    })
                     .catch(function(errorMs){
+
                         $scope.errorMessage = errorMs;
                         $scope.error = true;
                         $scope.disabled = false;
-                        $scope.person = {};
+                        $scope.person = null;
                     });
+
 
             };
 
             $scope.closeError = function () {
+                console.log("close")
                 $scope.error = false;
             }
 

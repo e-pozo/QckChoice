@@ -1,5 +1,5 @@
 <div class="well container">
-    <form class="form-horizontal" ng-submit="signUp()">
+    <form class="form-horizontal" ng-submit="signUp()" >
         <fieldset>
             <legend>Sign up User</legend>
             <div class="alert alert-dismissible alert-danger" ng-show="error">
@@ -32,7 +32,7 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <button type="reset" class="btn btn-default">Cancel</button>
+                    <a type="reset" class="btn btn-default" href="/welcome" >Cancel</a>
                     <button type="submit" class="btn btn-primary" ng-disabled="disabled">Submit</button>
                 </div>
             </div>
