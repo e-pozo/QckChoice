@@ -3,9 +3,9 @@
 angular.module('sessionUser')
     .component('sessionUser', {
        templateUrl: 'templates/session-user.html',
-       controller: function ($scope, $q ,$http, Session) {
+       controller: function ($scope, $q ,$http, Auth, SessionCore) {
            ///jsonexample/package.json
-           var getSessions = function () {
+           /*var getSessions = function () {
                console.log("esto")
                $http.get('/api/sessionUser')
                    .then(function (result, status) {
@@ -15,6 +15,15 @@ angular.module('sessionUser')
                    .catch(function (err, status) {
                        console.log(err);
                    })
+           };*/
+           var getSessions = function () {
+               SessionCore.getSessions()
+                   .then(function (sessions) {
+                       $scope.sessions = sessions;
+                   })
+                   .catch(function (err) {
+                       console.log(err);
+                   });
            };
 
            getSessions();
@@ -23,23 +32,25 @@ angular.module('sessionUser')
 
            var sessionvalidation = function () {
                var deferred = $q.defer();
-               if($scope.thisSession.title!= null){
-                   deferred.resolve()
+               if($scope.session.title != null){
+                   deferred.resolve();
                }else{
-                   deferred.reject("Sessions need a Title")
+                   deferred.reject("Sessions need a Title");
                }
                return deferred.promise;
            };
 
            $scope.newSession = function() {
+               console.log("hello");
                sessionvalidation()
                    .then(function () {
-                       Session.createSession($scope.session.title, $scope.session.description)
-                           .then(function () {
+                       SessionCore.createSession($scope.session.title, $scope.session.description)
+                           .then(function (successMsg) {
+                               console.log(successMsg);
                                getSessions();
                            })
-                           .catch(function (inf) {
-                               $scope.errorMessage = inf.data.err.message;
+                           .catch(function (err) {
+                               $scope.errorMessage = err;
                                $scope.error = true;
                                $scope.session = null;
                            })

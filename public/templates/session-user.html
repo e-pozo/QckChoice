@@ -20,7 +20,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form ng-submit="newSession()">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="title" class="form-control-label">Title:</label>
@@ -32,8 +32,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" ng-click='newSession()'>Create</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"'>Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>
