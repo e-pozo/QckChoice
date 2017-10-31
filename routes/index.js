@@ -28,6 +28,14 @@ router.get('/api/logOut', (req, res) => {
     console.log(req.session);
     res.status(200).json({status: 'Bye!'});
 });
+
+router
+    //Get info of this local person.
+    .get('/api/localPerson',
+        authenticationMiddleware(),
+        localPersonController.getPerson)
+    //Update info of local person.
+
 //Create an anonymous person.
 router.post('/api/createAnonymousPerson', personController.create);
 //Sign up a person trough Local Strategy
