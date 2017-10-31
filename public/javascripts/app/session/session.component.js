@@ -4,6 +4,5 @@ angular.module('session')
     .component('session', {
         templateUrl: 'templates/session.html',
         controller: function ($scope) {
-            console.log('hola');
         }
     });

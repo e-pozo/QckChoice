@@ -3,7 +3,7 @@
 angular.module('logIn')
     .component('logIn', {
        templateUrl: 'templates/log-in.html',
-       controller: function($scope, $q,$location, Auth){
+           controller: function($scope, $q,$location, Auth){
            var validation = function () {
                var deferred = $q.defer();
                if($scope.person != null ){

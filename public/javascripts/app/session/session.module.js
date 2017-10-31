@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('session', ["auth"]);
+angular.module('session', ["auth","session"]);

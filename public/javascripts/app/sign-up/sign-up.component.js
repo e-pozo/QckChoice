@@ -53,8 +53,6 @@ angular.module('signUp')
                         $scope.disabled = false;
                         $scope.person = null;
                     });
-
-
             };
 
             $scope.closeError = function () {
