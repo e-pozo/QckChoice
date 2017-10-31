@@ -9,7 +9,7 @@ const passport = require('passport');
 
 module.exports = {
     create(req, res, next){
-        passport.authenticate('anonymous-person', function(err, user, info) {
+        passport.authenticate('anonymous-personCore', function(err, user, info) {
             console.log(user);
             if (err) {
                 return next(err);
@@ -90,7 +90,7 @@ module.exports = {
             );
         })
             .then(result => {
-                res.status(200).json(result);
+                res.status(201).json(result);
             })
             .catch(err => {
                 res.status(500).json(err);

@@ -1,32 +1,13 @@
 angular.module('sessionCore').factory('SessionCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
-            function updateSession() {
+            function localSignUp() {
                 var deferred = $q.defer();
-                $http.put('/api/sessionUser/:id')
-                    .then(function (result) {
-                        console.log(result);
-                        if(result.status == 201){
-                            deferred.resolve(result.data)
-                        }
-                        else{
-                            deferred.reject(result.data)
-                        }
-                    })
-                    .catch(function (err){
-                        console.log(err);
-                        deferred.reject(err)
-                    });
-                return deferred.promise;
-            }
-    
-            function deleteSession() {
-                var deferred = $q.defer();
-                $http.delete('/api/sessionUser/:id')
+                $http.post('/api/signUp')
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
-                            deferred.resolve("Session deleted successfully.")
+                            deferred.resolve("Successful sign up!")
                         }
                         else{
                             deferred.reject(result.data)
@@ -38,10 +19,29 @@ angular.module('sessionCore').factory('SessionCore',
                     });
                 return deferred.promise;
             }
-            
-            function getSessions() {
+
+            function localSignIn() {
                 var deferred = $q.defer();
-                $http.get('/api/sessionUser')
+                $http.delete('/api/logIn')
+                    .then(function (result) {
+                        console.log(result);
+                        if(result.status == 200){
+                            deferred.resolve("Login successful.")
+                        }
+                        else{
+                            deferred.reject(result.data)
+                        }
+                    })
+                    .catch(function (err){
+                        console.log(err);
+                        deferred.reject(err)
+                    });
+                return deferred.promise;
+            }
+
+            function getPerson() {
+                var deferred = $q.defer();
+                $http.get('/api/localPerson')
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
@@ -58,31 +58,12 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
-            function listSessions() {
+            function create() {
                 var deferred = $q.defer();
-                $http.get('/api/sessionParticipating')
-                    .then(function (result) {
-                        console.log(result);
-                        if(result.status == 200){
-                            deferred.resolve(result.data);
-                        }
-                        else{
-                            deferred.reject(result);
-                        }
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                        deferred.reject(err)
-                    });
-                return deferred.promise;
-            }
-
-            function createSession(title, description) {
-                var deferred = $q.defer();
-                $http.post('/api/sessionUser', {title: title, description: description})
+                $http.post('/api/createAnonymousPerson')
                 // handle success
                     .then(function (data) {
-                        if(data.status === 201){
+                        if(data.status === 200){
                             deferred.resolve("Session created successfully!");
                         }
                         else {
@@ -97,11 +78,10 @@ angular.module('sessionCore').factory('SessionCore',
             }
 
             return ({
-                createSession: createSession,
-                getSessions: getSessions,
-                deleteSession: deleteSession,
-                updateSession: updateSession,
-                listSessions: listSessions
+                create: create,
+                getPerson: getPerson,
+                localSignIn: localSignIn,
+                localSignUp: localSignUp
             });
 
         }]);

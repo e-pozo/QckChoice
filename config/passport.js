@@ -56,7 +56,7 @@ module.exports = (passport) => {
         });
     }));
 
-    passport.use('anonymous-person', new LocalStrategy(
+    passport.use('anonymous-personCore', new LocalStrategy(
         {
             usernameField: 'userName',
             passwordField: 'userName',

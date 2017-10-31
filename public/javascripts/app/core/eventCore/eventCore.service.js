@@ -1,9 +1,10 @@
-angular.module('sessionCore').factory('SessionCore',
+angular.module('eventCore').factory('EventCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
-            function updateSession() {
+
+            function updateEvent() {
                 var deferred = $q.defer();
-                $http.put('/api/sessionUser/:id')
+                $http.put('/api/sessionUser/:id/event/:idEvent')
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 201){
@@ -19,14 +20,14 @@ angular.module('sessionCore').factory('SessionCore',
                     });
                 return deferred.promise;
             }
-    
-            function deleteSession() {
+
+            function deleteEvent() {
                 var deferred = $q.defer();
-                $http.delete('/api/sessionUser/:id')
+                $http.delete('/api/sessionUser/:id/event/:idEvent')
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
-                            deferred.resolve("Session deleted successfully.")
+                            deferred.resolve("Event deleted successfully.")
                         }
                         else{
                             deferred.reject(result.data)
@@ -38,10 +39,10 @@ angular.module('sessionCore').factory('SessionCore',
                     });
                 return deferred.promise;
             }
-            
-            function getSessions() {
+
+            function listEvent() {
                 var deferred = $q.defer();
-                $http.get('/api/sessionUser')
+                $http.get('/api/sessionUser/:id')
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
@@ -58,32 +59,13 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
-            function listSessions() {
+            function makeEvent(objective) {
                 var deferred = $q.defer();
-                $http.get('/api/sessionParticipating')
-                    .then(function (result) {
-                        console.log(result);
-                        if(result.status == 200){
-                            deferred.resolve(result.data);
-                        }
-                        else{
-                            deferred.reject(result);
-                        }
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                        deferred.reject(err)
-                    });
-                return deferred.promise;
-            }
-
-            function createSession(title, description) {
-                var deferred = $q.defer();
-                $http.post('/api/sessionUser', {title: title, description: description})
+                $http.post('/api/sessionUser/:id', {objective: objective})
                 // handle success
                     .then(function (data) {
                         if(data.status === 201){
-                            deferred.resolve("Session created successfully!");
+                            deferred.resolve("Event created successfully!");
                         }
                         else {
                             deferred.reject(data);
@@ -97,11 +79,10 @@ angular.module('sessionCore').factory('SessionCore',
             }
 
             return ({
-                createSession: createSession,
-                getSessions: getSessions,
-                deleteSession: deleteSession,
-                updateSession: updateSession,
-                listSessions: listSessions
+                makeEvent: makeEvent,
+                listEvent: listEvent,
+                deleteEvent: deleteEvent,
+                updateEvent: updateEvent
             });
 
         }]);

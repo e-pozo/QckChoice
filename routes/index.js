@@ -7,7 +7,7 @@ const localPersonController = controllers.local;
 const sessionController = controllers.session;
 const eventController = controllers.event;
 
-//Return if a person is logged or not.
+//Return if a personCore is logged or not.
 router.get('/api/logStatus', (req, res) => {
     if(!req.isAuthenticated()) {
         return res.status(200).json({
@@ -19,7 +19,7 @@ router.get('/api/logStatus', (req, res) => {
     });
 });
 
-//Log out a person
+//Log out a personCore
 router.get('/api/logOut', (req, res) => {
     req.logout();
     console.log(req.session);
@@ -30,24 +30,24 @@ router.get('/api/logOut', (req, res) => {
 });
 
 router
-    //Get info of this local person.
+    //Get info of this local personCore.
     .get('/api/localPerson',
         authenticationMiddleware(),
-        localPersonController.getPerson)
-    //Update info of local person.
+        localPersonController.getPerson);
+    //Update info of local personCore.
 
-//Create an anonymous person.
+//Create an anonymous personCore.
 router.post('/api/createAnonymousPerson', personController.create);
-//Sign up a person trough Local Strategy
+//Sign up a personCore trough Local Strategy
 router.post('/api/signUp', localPersonController.localSignUp);
-//Log in a person trough Local Strategy
+//Log in a personCore trough Local Strategy
 router.post('/api/logIn', localPersonController.localSignIn);
 
 
 router
-    //Create a new session to the logged person.
+    //Create a new session to the logged personCore.
     .post('/api/sessionUser', authenticationMiddleware(), personController.createSession)
-    //Read all sessions which a person create.
+    //Read all sessions which a personCore create.
     .get('/api/sessionUser', authenticationMiddleware(), personController.getSessions)
     //Update a particular session.
     .put('/api/sessionUser/:id',
