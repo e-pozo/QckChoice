@@ -22,12 +22,13 @@ angular.module('signUp')
                 return deferred.promise;
             };
 
+            $scope.person = {'email': null,'userName':null, 'password':null, 'passwordRepeat':null}
             $scope.signUp = function () {
 
                 // initial values
                 $scope.error = false;
                 $scope.disabled = true;
-                $scope.person = {'email': null,'userName':null, 'password':null, 'passwordRepeat':null}
+
                 validation()
                     .then(function () {
                         // call register from service

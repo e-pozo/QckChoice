@@ -21,13 +21,12 @@ angular.module('logIn')
                return deferred.promise;
            };
 
+           $scope.person = {'email': null, 'password':null}
            $scope.logIn = function () {
 
                // initial values
                $scope.error = false;
                $scope.disabled = true;
-
-               $scope.person = {'email': null, 'password':null}
                validation()
                    .then(function () {
                            // call login from service
