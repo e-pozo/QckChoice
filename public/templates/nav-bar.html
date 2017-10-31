@@ -7,13 +7,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">QckChoice</a>
+            <a class="navbar-brand" href="/welcome">QckChoice</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
+                <li class="active"><a href=" sessionUser">Your Sessions <span class="sr-only">(current)</span></a></li>
+                <li><a href="#"></a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -31,10 +31,16 @@
                 <div class="form-group">
                     <input class="form-control" placeholder="Search" type="text">
                 </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-info">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <button ng-click="logOut()" class="btn btn-warning">Log Out</button>
+                <div class="form-group">
+                    <button ng-if='logged' ng-click="logOut()" class="btn btn-warning">Log Out</button>
+                    <div ng-if='!logged' class="btn-group">
+                        <a href="logIn" class="btn btn-md btn-warning">Log In</a>
+                        <a href="signUp" class="btn btn-md btn-info">Sign In</a>
+                    </div>
+                </div>
             </ul>
         </div>
     </div>

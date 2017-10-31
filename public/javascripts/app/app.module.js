@@ -8,5 +8,7 @@ angular.module('QckChoice', [
     'logIn',
     'signUp',
     'sessionUser',
-    'navBar'
+    'navBar',
+    'welcome',
+    'session'
 ]);

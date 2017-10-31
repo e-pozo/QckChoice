@@ -3,28 +3,56 @@
 angular.module('logIn')
     .component('logIn', {
        templateUrl: 'templates/log-in.html',
-       controller: function($scope, $location, Auth){
+       controller: function($scope, $q,$location, Auth){
+           var validation = function () {
+               var deferred = $q.defer();
+               if($scope.person != null ){
+                   console.log($scope.person)
+                   if($scope.person.email != null && $scope.person.password!= null) {
+                       deferred.resolve();
+                   }
+                   else{
+                       deferred.reject("Please fill all fields.");
+                   }
+               }
+               else{
+                   deferred.reject("Please fill all fields.");
+               }
+               return deferred.promise;
+           };
+
            $scope.logIn = function () {
 
                // initial values
                $scope.error = false;
                $scope.disabled = true;
 
-               // call login from service
-               Auth.login($scope.person.email, $scope.person.password)
-               // handle success
+               $scope.person = {'email': null, 'password':null}
+               validation()
                    .then(function () {
-                       $location.path('/sessionUser');
-                       $scope.disabled = false;
-                       $scope.person = {};
+                           // call login from service
+                           Auth.login($scope.person.email, $scope.person.password)
+                           // handle success
+                               .then(function () {
+                                   $location.path('/sessionUser');
+                                   $scope.disabled = false;
+                                   $scope.person = null;
+                               })
+                               // handle error
+                               .catch(function (inf) {
+                                   $scope.error = true;
+                                   $scope.errorMessage = inf.data.err.message;
+                                   $scope.disabled = false;
+                                   $scope.person = null;
+                               })
+
                    })
-                   // handle error
-                   .catch(function (inf) {
+                   .catch(function (errorMs) {
                        $scope.error = true;
-                       $scope.errorMessage = inf.data.err.message;
+                       $scope.errorMessage = errorMs;
                        $scope.disabled = false;
-                       $scope.person = {};
-                   });
+                       $scope.person = null;
+                   })
 
            };
 
