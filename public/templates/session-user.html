@@ -3,7 +3,7 @@
     <ul class="list-group">
         <li ng-repeat=" sessionData in sessions" class="list-group-item">
             <div class="md-col-6"></div>
-            <h2 ><a href="%"> {{sessionData.title}} </a></h2>
+            <h2 ><a href={{'session/'+sessionData.id}}> {{sessionData.title}} </a></h2>
             <span ng-if="sessionData.PersonSession.isModerator">
                 <button type="button" class="btn btn-warning">Edit Session</button>
             </span>

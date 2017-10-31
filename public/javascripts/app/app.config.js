@@ -32,6 +32,9 @@ angular.module('QckChoice')
                 template: "<header><nav-bar></nav-bar></header> <session-user></session-user>",
                 resolve: {loggedIn: onlyLoggedIn}
             })
+            .when('/session/:id',{
+                template: "<header><nav-bar></nav-bar></header> <session></session>"
+            })
             .otherwise({
                 template: "<h1>404 Error, Not Found</h1>",
                 //access: {restricted: false}
