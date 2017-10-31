@@ -31,7 +31,6 @@ module.exports = (passport) => {
                 }
             })
             .then(Local => {
-                console.log(Local);
                 if (Local){
                     done(null, false, {message: 'That email already exist, sign up with a new email'});
                 }
@@ -39,7 +38,7 @@ module.exports = (passport) => {
                     return sequelize.transaction(t => {
                         return Person.create({
                             userName: req.body.userName,
-                            imgURL: null
+                            imgURL: req.body.imgUrl || null
                         }, {transaction: t})
                         .then(Person => {
                             return LocalCreate.create({
@@ -56,6 +55,30 @@ module.exports = (passport) => {
             .catch(err => done(err));
         });
     }));
+
+    passport.use('anonymous-person', new LocalStrategy(
+        {
+            usernameField: 'userName',
+            passwordField: 'userName',
+            passReqToCallback: true
+        },
+        (req, userName, pass, done) => {
+            sequelize.transaction(t => {
+                return Person.create(
+                    {
+                        userName: userName
+                    },
+                    {transaction: t}
+                )
+            })
+                .then(result => {
+                    done(null,result);
+                })
+                .catch(err => {
+                    done(err);
+                })
+        }
+    ));
 
     passport.use('local-sign-in', new LocalStrategy({
             usernameField: 'email',

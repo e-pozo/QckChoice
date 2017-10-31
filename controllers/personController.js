@@ -5,16 +5,31 @@ const Session = models.Session;
 const PersonSession = models.PersonSession;
 const sequelize = models.sequelize;
 const uuidv4 = require('uuid/v4');
+const passport = require('passport');
 
 module.exports = {
-    create(req, res){
-        return Person
-            .create({
-                userName: req.body.userName,
-                imgURL : req.body.imgUrl
-            })
-            .then(Person => res.status(201).send(Person))
-            .catch(error => res.status(400).send(error));
+    create(req, res, next){
+        passport.authenticate('anonymous-person', function(err, user, info) {
+            console.log(user);
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.status(401).json({
+                    err: info
+                });
+            }
+            req.logIn(user, function(err) {
+                if (err) {
+                    return res.status(500).json({
+                        err: 'Could not sign up user'
+                    });
+                }
+                res.status(200).json({
+                    status: ' successful sign up!'
+                });
+            });
+        })(req, res, next);
     },
     createSession: function (req, res) {
         sequelize.transaction(t => {

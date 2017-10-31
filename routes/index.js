@@ -6,7 +6,6 @@ const personController = controllers.person;
 const localPersonController = controllers.local;
 const sessionController = controllers.session;
 const eventController = controllers.event;
-const voteController = controllers.vote;
 
 //Return if a person is logged or not.
 router.get('/api/logStatus', (req, res) => {
