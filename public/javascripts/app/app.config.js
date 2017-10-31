@@ -41,13 +41,11 @@ angular.module('QckChoice')
             })
             .when('/logIn', {
                 template: "<log-in></log-in>",
-                resolve: {loggedIn: inverseLoggedIn}
-                //access: {restricted: false}
+                    resolve: {loggedIn: inverseLoggedIn}
             })
             .when('/signUp', {
                 template: "<sign-up></sign-up>",
                 resolve: {loggedIn: inverseLoggedIn}
-                //access: {restricted: false}
             })
             .when('/sessionUser', {
                 template: "<header><nav-bar></nav-bar></header> <session-user></session-user>",
@@ -60,20 +58,6 @@ angular.module('QckChoice')
             })
             .otherwise({
                 template: "<h1>404 Error, Not Found</h1>",
-                //access: {restricted: false}
             })
 
     }]);
-    /*.run(function ($rootScope, $location, $route, Auth) {
-        $rootScope.$on('$routeChangeStart',
-            function (event, next, current) {
-                console.log(next);
-                Auth.getUserStatus()
-                    .then(function () {
-                        if (next.access.restricted && !Auth.isLoggedIn()){
-                            $location.path('/logIn');
-                            $route.reload();
-                        }
-                    })
-            });
-    })*/
