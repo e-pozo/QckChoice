@@ -1,12 +1,6 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="/welcome">QckChoice</a>
         </div>
 
@@ -37,8 +31,8 @@
                 <div class="form-group">
                     <button ng-if='logged' ng-click="logOut()" class="btn btn-warning">Log Out</button>
                     <div ng-if='!logged' class="btn-group">
-                        <a href="logIn" class="btn btn-md btn-warning">Log In</a>
-                        <a href="signUp" class="btn btn-md btn-info">Sign In</a>
+                        <a href="logIn" class="btn btn-md btn-primary">Log In</a>
+                        <a href="signUp" class="btn btn-md btn-warning">Sign In</a>
                     </div>
                 </div>
             </ul>

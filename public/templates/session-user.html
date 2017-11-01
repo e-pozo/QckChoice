@@ -1,26 +1,31 @@
 <div class="jumbotron">
-    <h1>This are your Sessions:</h1>
+    <h2>This are your Sessions:</h2>
     <ul class="list-group">
         <li ng-repeat=" sessionData in sessions" class="list-group-item">
             <div class="md-col-6"></div>
-            <h2 ><a href={{'session/'+sessionData.id}}> {{sessionData.title}} </a></h2>
+            <h3><a href={{'session/'+sessionData.id}}> {{sessionData.title}} </a></h3>
+            <h5> Created on: {{sessionData.createdAt}}</h5>
             <span ng-if="sessionData.PersonSession.isModerator">
                 <button type="button" class="btn btn-warning">Edit Session</button>
             </span>
         </li>
     </ul>
-    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Add Session</button>
 
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <button type="button" class="btn btn-lg btn-primary col-md-2 col-offset-2" data-toggle="modal" data-target=".bd-modal-sm">Add Session</button>
+
+    <div class="modal fade bd-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
+
+
                 <div class="modal-header">
                     <h4 class="modal-title">Creating a empty Session:</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form ng-submit="newSession()">
+
+                <form>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="title" class="form-control-label">Title:</label>
@@ -32,10 +37,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary" ng-click="newSession()" data-dismiss="modal">Create</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

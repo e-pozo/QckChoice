@@ -28,7 +28,7 @@ angular.module('sessionUser')
 
            getSessions();
 
-           $scope.thisSession = {'title': null, 'description': null};
+           $scope.session = {'title': null, 'description': null};
 
            var sessionvalidation = function () {
                var deferred = $q.defer();
@@ -41,13 +41,13 @@ angular.module('sessionUser')
            };
 
            $scope.newSession = function() {
-               console.log("hello");
                sessionvalidation()
                    .then(function () {
                        SessionCore.createSession($scope.session.title, $scope.session.description)
                            .then(function (successMsg) {
                                console.log(successMsg);
                                getSessions();
+
                            })
                            .catch(function (err) {
                                $scope.errorMessage = err;

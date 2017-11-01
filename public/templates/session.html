@@ -1,3 +1,32 @@
-<div>
-    <h3>Bienvenido a la session {{title}}</h3>
+<div class="jumbotron">
+    <h3>Welcome to {{title}}</h3>
+
+    <button type="button" class="btn btn-lg btn-info col-md-2 col-offset-2" data-toggle="modal" data-target=".bd-modal-sm">Add an Event</button>
+
+    <div class="modal bd-modal-sm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Creating a new Event</h4>
+                </div>
+                <div class="modal-body">
+                    <p>An event it's where the players will make the decisions based in the objective and voting with cards that represent those decisions.</p>
+                    <div class="form-group">
+                        <label for="objective" class="form-control-label">Event's Objective:</label>
+                        <textarea class="form-control" name= "objective" id="objective" ng-model="event.objective"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="timer" class="form-control-label">Decision's Alarm Timer (hh:mm)</label>
+                        <input type="time" class="form-control" name ="timer" id="timer" ng-model="event.timer">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
