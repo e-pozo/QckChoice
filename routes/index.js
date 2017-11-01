@@ -96,6 +96,12 @@ router.get('/api/sessionParticipating',
         authenticationMiddleware(),
         personController.listSessions);
 
+//Gets a particular session with the id.
+router.get('/api/thisSession/:id',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        personController.validateSession);
+
 //Allow to vote
 router.post('/api/session/:id/event/:idEvent/choice/:idChoice',
         authenticationMiddleware(),
