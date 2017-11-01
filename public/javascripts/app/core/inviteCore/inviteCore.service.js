@@ -2,9 +2,9 @@ angular.module('inviteCore').factory('inviteCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
 
-            function addSession() {
+            function addSession(id,keypass) {
                 var deferred = $q.defer();
-                $http.post('/api/session/:id/join/:keyPass')
+                $http.post('/api/session/'+id+'/join/'+keypass)
                 // handle success
                     .then(function (data) {
                         if(data.status === 201){

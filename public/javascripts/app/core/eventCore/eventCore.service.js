@@ -2,9 +2,9 @@ angular.module('eventCore').factory('EventCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
 
-            function updateEvent() {
+            function updateEvent(id, idEvent) {
                 var deferred = $q.defer();
-                $http.put('/api/sessionUser/:id/event/:idEvent')
+                $http.put('/api/sessionUser/'+id+'/event/'+idEvent)
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 201){
@@ -21,9 +21,9 @@ angular.module('eventCore').factory('EventCore',
                 return deferred.promise;
             }
 
-            function deleteEvent() {
+            function deleteEvent(id, idEvent) {
                 var deferred = $q.defer();
-                $http.delete('/api/sessionUser/:id/event/:idEvent')
+                $http.delete('/api/sessionUser/'+id+'/event/'+idEvent)
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
@@ -40,13 +40,13 @@ angular.module('eventCore').factory('EventCore',
                 return deferred.promise;
             }
 
-            function listEvent() {
+            function listEvent(id) {
                 var deferred = $q.defer();
-                $http.get('/api/sessionUser/:id')
+                $http.get('/api/session/'+id)
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
-                            deferred.resolve(result.data);
+                            deferred.resolve(result.data.result);
                         }
                         else{
                             deferred.reject(result);
@@ -59,9 +59,9 @@ angular.module('eventCore').factory('EventCore',
                 return deferred.promise;
             }
 
-            function makeEvent(objective) {
+            function makeEvent(id, objective) {
                 var deferred = $q.defer();
-                $http.post('/api/sessionUser/:id', {objective: objective})
+                $http.post('/api/sessionUser/'+id, {objective: objective})
                 // handle success
                     .then(function (data) {
                         if(data.status === 201){

@@ -36,6 +36,24 @@ angular.module('QckChoice')
             return deferred.promise;
         };
 
+        var addInSession = function ($location, $q, Auth, $routeParams, InviteCore) {
+            var deferred = $q.defer();
+            Auth.getUserStatus()
+                .then(function () {
+                    if (Auth.isLoggedIn()){
+                        InviteCore.add($routeParams.id, $routeParams.keypass)
+                        Auth.urltemp = null;
+                        $location.path('/session/'+$routeParams.id)
+                        deferred.resolve();
+                    }
+                    else{
+                        deferred.reject();
+                        Auth.urltemp = $location.url();
+                        $location.path('/logIn');
+                    }
+                });
+            return deferred.promise;
+        };
         var inverseLoggedIn = function ($location, $q, Auth) {
             var deferred = $q.defer();
             Auth.getUserStatus()
@@ -65,6 +83,10 @@ angular.module('QckChoice')
                 template: "<sign-up></sign-up>",
                 resolve: {loggedIn: inverseLoggedIn}
             })
+            .when('session/:id*\/join/:keypass',{
+                template: "<header><nav-bar></nav-bar></header>",
+                resolve: {loggedIn: addInSession}
+            })
             .when('/sessionUser', {
                 template: "<header><nav-bar></nav-bar></header> <session-user></session-user>",
                 resolve: {loggedIn: onlyLoggedIn}
@@ -74,6 +96,7 @@ angular.module('QckChoice')
                 template: "<header><nav-bar></nav-bar></header> <session><h1></h1></session>",
                 resolve: {loggedIn: onlyLoggedInSession}
             })
+
             .otherwise({
                 template: "<h1>404 Error, Not Found</h1>",
             })

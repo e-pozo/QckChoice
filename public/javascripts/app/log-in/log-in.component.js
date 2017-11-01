@@ -34,7 +34,11 @@ angular.module('logIn')
                            Auth.login($scope.person.email, $scope.person.password)
                            // handle success
                                .then(function () {
-                                   $location.path(Auth.urltemp);
+                                   if(Auth.urltemp){
+                                       $location.path(Auth.urltemp);
+                                   }else{
+                                       $location.path('/welcome');
+                                   }
                                    $scope.disabled = false;
                                    $scope.person = null;
                                })

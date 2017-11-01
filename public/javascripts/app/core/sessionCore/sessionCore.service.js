@@ -58,9 +58,9 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
-            function validateSession() {
+            function validateSession(id) {
                 var deferred = $q.defer();
-                $http.get('/api/thisSession/:id')
+                $http.get('/api/thisSession/'+id)
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
