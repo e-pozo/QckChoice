@@ -32,7 +32,7 @@ function getVotes(req, res) {
     sequelize.transaction(t => {
         return Event.findById(req.params.idEvent, {transaction: t})
             .then(Event => {
-                return Event.getChoices({transaction: t})
+                return Event.getVotes({transaction: t})
             })
     })
         .then((result) => {

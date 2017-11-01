@@ -6,6 +6,8 @@ const personController = controllers.person;
 const localPersonController = controllers.local;
 const sessionController = controllers.session;
 const eventController = controllers.event;
+const voteController = controllers.vote;
+const choiceController = controllers.choice;
 
 //Return if a personCore is logged or not.
 router.get('/api/logStatus', (req, res) => {
@@ -106,12 +108,15 @@ router.get('/api/thisSession/:id',
 router.post('/api/session/:id/event/:idEvent/choice/:idChoice',
         authenticationMiddleware(),
         sessionController.isInThisSession,
-        eventController.createVote);
+        voteController.addVote);
 //List all votes of an event
 router.get('/api/session/:id/event/:idEvent',
         authenticationMiddleware(),
         sessionController.isInThisSession,
         eventController.getVotes);
+
+//List all Choices
+router.get('/api/choices', choiceController.getChoices);
 
 //Pass all remains GET request to Angular router.
 router.get('*', (req,res) => {

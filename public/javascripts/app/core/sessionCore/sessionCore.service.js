@@ -115,13 +115,33 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
+            function inviteToSession(id,keypass) {
+                var deferred = $q.defer();
+                $http.post('/api/session/'+id+'/join/'+keypass)
+                // handle success
+                    .then(function (data) {
+                        if(data.status === 201){
+                            deferred.resolve("Session added successfully!");
+                        }
+                        else {
+                            deferred.reject(data);
+                        }
+                    })
+                    // handle error
+                    .catch(function (data) {
+                        deferred.reject(data);
+                    });
+                return deferred.promise;
+            }
+
             return ({
                 createSession: createSession,
                 getSessions: getSessions,
                 deleteSession: deleteSession,
                 updateSession: updateSession,
                 listSessions: listSessions,
-                validateSession: validateSession
+                validateSession: validateSession,
+                inviteToSession: inviteToSession
             });
 
         }]);

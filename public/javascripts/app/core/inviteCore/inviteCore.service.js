@@ -1,10 +1,10 @@
-angular.module('inviteCore').factory('inviteCore',
+angular.module('inviteCore').factory('InviteCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
 
-            function addSession(id,keypass) {
+            function inviteToSession(id,keypass) {
                 var deferred = $q.defer();
-                $http.post('/api/session/'+id+'/join/'+keypass)
+                /*$http.post('/api/session/'+id+'/join/'+keypass)
                 // handle success
                     .then(function (data) {
                         if(data.status === 201){
@@ -17,12 +17,12 @@ angular.module('inviteCore').factory('inviteCore',
                     // handle error
                     .catch(function (data) {
                         deferred.reject(data);
-                    });
+                    });*/
+                deferred.resolve();
                 return deferred.promise;
             }
 
             return ({
-                addSession: addSession
+                inviteToSession: inviteToSession
             });
-
-        }]);
+}]);
