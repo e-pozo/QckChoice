@@ -58,6 +58,25 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
+            function validateSession() {
+                var deferred = $q.defer();
+                $http.get('/api/thisSession/:id')
+                    .then(function (result) {
+                        console.log(result);
+                        if(result.status == 200){
+                            deferred.resolve(result.data);
+                        }
+                        else{
+                            deferred.reject(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        deferred.reject(err)
+                    });
+                return deferred.promise;
+            }
+
             function listSessions() {
                 var deferred = $q.defer();
                 $http.get('/api/sessionParticipating')
@@ -101,7 +120,8 @@ angular.module('sessionCore').factory('SessionCore',
                 getSessions: getSessions,
                 deleteSession: deleteSession,
                 updateSession: updateSession,
-                listSessions: listSessions
+                listSessions: listSessions,
+                validateSession: validateSession
             });
 
         }]);
