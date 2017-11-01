@@ -3,7 +3,7 @@
 angular.module('logIn')
     .component('logIn', {
        templateUrl: 'templates/log-in.html',
-           controller: function($scope, $q,$location, Auth){
+           controller: function($scope, $q, $location, Auth){
            var validation = function () {
                var deferred = $q.defer();
                if($scope.person != null ){
@@ -20,20 +20,21 @@ angular.module('logIn')
                }
                return deferred.promise;
            };
-
+           console.log(Auth.urltemp)
            $scope.person = {'email': null, 'password':null}
            $scope.logIn = function () {
 
                // initial values
                $scope.error = false;
                $scope.disabled = true;
+
                validation()
                    .then(function () {
                            // call login from service
                            Auth.login($scope.person.email, $scope.person.password)
                            // handle success
                                .then(function () {
-                                   $location.path('/sessionUser');
+                                   $location.path(Auth.urltemp);
                                    $scope.disabled = false;
                                    $scope.person = null;
                                })

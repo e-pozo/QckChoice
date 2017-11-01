@@ -12,7 +12,25 @@ angular.module('QckChoice')
                     }
                     else{
                         deferred.reject();
+                        Auth.urltemp = $location.url();
                         $location.path('/welcome');
+                    }
+                });
+            return deferred.promise;
+        };
+
+        var onlyLoggedInSession = function ($location, $q, Auth) {
+            var deferred = $q.defer();
+            Auth.getUserStatus()
+                .then(function () {
+                    if (Auth.isLoggedIn()){
+                        console.log("fireLogged");
+                        deferred.resolve();
+                    }
+                    else{
+                        deferred.reject();
+                        Auth.urltemp = $location.url();
+                        $location.path('/logIn');
                     }
                 });
             return deferred.promise;
@@ -54,7 +72,7 @@ angular.module('QckChoice')
             })
             .when('/session/:id', {
                 template: "<header><nav-bar></nav-bar></header> <session><h1></h1></session>",
-                resolve: {loggedIn: onlyLoggedIn}
+                resolve: {loggedIn: onlyLoggedInSession}
             })
             .otherwise({
                 template: "<h1>404 Error, Not Found</h1>",

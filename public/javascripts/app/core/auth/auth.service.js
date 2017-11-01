@@ -4,6 +4,7 @@ angular.module('auth').factory('Auth',
 
             // create user variable
             var user = null;
+            var urltemp = null;
 
             // return available functions for use in the controllers
             function isLoggedIn() {
