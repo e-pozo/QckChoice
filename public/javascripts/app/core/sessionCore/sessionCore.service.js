@@ -62,9 +62,9 @@ angular.module('sessionCore').factory('SessionCore',
                 var deferred = $q.defer();
                 $http.get('/api/thisSession/'+id)
                     .then(function (result) {
-                        console.log(result);
+                        console.log(result.data[0]);
                         if(result.status == 200){
-                            deferred.resolve(result.data);
+                            deferred.resolve(result.data[0]);
                         }
                         else{
                             deferred.reject(result);

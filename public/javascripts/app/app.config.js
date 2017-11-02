@@ -113,7 +113,7 @@ angular.module('QckChoice')
 
             })
             .when('/session/:id', {
-                template: "<header><nav-bar></nav-bar></header> <session><h1></h1></session>",
+                template: "<header><nav-bar></nav-bar></header> <session-events><h1></h1></session-events>",
                 resolve: {loggedIn: onlyLoggedInSession}
             })
 

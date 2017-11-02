@@ -11,5 +11,5 @@ angular.module('QckChoice', [
     'sessionUser',
     'navBar',
     'welcome',
-    'session'
+    'sessionEvents'
 ]);

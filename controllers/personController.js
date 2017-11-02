@@ -34,7 +34,10 @@ module.exports = {
 
     validateSession(req, res) {
         sequelize.transaction(t => {
-            return Session.findById(req.params.id, {transaction: t})
+            return Person.findById(req.user.id, {transaction: t})
+                .then(Person => {
+                    return Person.getSessions({through: {where: {SessionId: req.params.id}}, transaction: t})
+                })
         })
             .then((result) => {
                 res.status(200).json(result);

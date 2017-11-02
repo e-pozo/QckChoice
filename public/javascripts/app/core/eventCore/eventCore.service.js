@@ -2,9 +2,9 @@ angular.module('eventCore').factory('EventCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
 
-            function updateEvent(id, idEvent) {
+            function updateEvent(id, idEvent, objective) {
                 var deferred = $q.defer();
-                $http.put('/api/sessionUser/'+id+'/event/'+idEvent)
+                $http.put('/api/sessionUser/'+id+'/event/'+idEvent,{objective: objective})
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 201){
