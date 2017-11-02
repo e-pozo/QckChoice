@@ -1,48 +1,61 @@
-<div class="jumbotron">
-    <h2>This are your Sessions:</h2>
-    <ul class="list-group">
-        <li ng-repeat=" sessionData in sessions" class="list-group-item">
-            <div class="md-col-6"></div>
-            <h3><a href={{'session/'+sessionData.id}}> {{sessionData.title}} </a></h3>
-            <h5> Created on: {{sessionData.createdAt}}</h5>
-            <span ng-if="sessionData.PersonSession.isModerator">
-                <button type="button" class="btn btn-warning">Edit Session</button>
-            </span>
-        </li>
-    </ul>
-
-    <button type="button" class="btn btn-lg btn-primary col-md-2 col-offset-2" data-toggle="modal" data-target=".bd-modal-sm">Add Session</button>
-
-    <div class="modal fade bd-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Creating a empty Session:</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <form>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="title" class="form-control-label">Title:</label>
-                            <input type="text" class="form-control" name ="title" id="title" ng-model="session.title">
+<div class="container">
+    <div class="jumbotron">
+        <h2>This are your Sessions:</h2>
+        <!--<button type="button" class="btn btn-lg btn-primary col-md-2 col-offset-2" data-toggle="modal" data-target=".bd-modal-sm">Add Session</button>-->
+        <button class="btn btn-lg btn-primary" ng-click="openModalCreate()">Create Session</button>
+        <div class="container">
+            <ul class="list-group">
+                <li ng-repeat=" sessionData in sessions" class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4><a href={{'session/'+sessionData.id}}> {{sessionData.title}} </a></h4>
+                            <h6> Created on: {{sessionData.createdAt}}</h6>
                         </div>
-                        <div class="form-group">
-                            <label for="description" class="form-control-label">Description:</label>
-                            <textarea class="form-control" name= "description" id="description" ng-model="session.description"></textarea>
+                        <div class="well col-md-9">
+                            {{sessionData.description}}
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" ng-click="newSession()" data-dismiss="modal">Create</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-
-            </div>
+                    <span ng-if="sessionData.PersonSession.isModerator">
+                        <div class="row">
+                            <button type="button" class="btn btn-warning pull-right" ng-click="openModalEdit(sessionData)">Edit</button>
+                            <button type="button" class="btn btn-danger pull-right" ng-click="delete(sessionData)">Delete</button>
+                        </div>
+                    </span>
+                </li>
+            </ul>
         </div>
+
+        <!--<div class="modal fade bd-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Creating a empty Session:</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="title" class="form-control-label">Title:</label>
+                                <input type="text" class="form-control" name ="title" id="title" ng-model="session.title">
+                            </div>
+                            <div class="form-group">
+                                <label for="description" class="form-control-label">Description:</label>
+                                <textarea class="form-control" name= "description" id="description" ng-model="session.description"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-click="newSession()" data-dismiss="modal">Create</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>-->
     </div>
 </div>

@@ -1,9 +1,9 @@
 angular.module('sessionCore').factory('SessionCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
-            function updateSession() {
+            function updateSession(id, title, description) {
                 var deferred = $q.defer();
-                $http.put('/api/sessionUser/:id')
+                $http.put('/api/sessionUser/'+id, {title: title, description: description})
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 201){
@@ -15,14 +15,14 @@ angular.module('sessionCore').factory('SessionCore',
                     })
                     .catch(function (err){
                         console.log(err);
-                        deferred.reject(err)
+                        deferred.reject(err);
                     });
                 return deferred.promise;
             }
     
-            function deleteSession() {
+            function deleteSession(id) {
                 var deferred = $q.defer();
-                $http.delete('/api/sessionUser/:id')
+                $http.delete('/api/sessionUser/'+id)
                     .then(function (result) {
                         console.log(result);
                         if(result.status == 200){
