@@ -15,12 +15,18 @@
                             {{sessionData.description}}
                         </div>
                     </div>
-                    <span ng-if="sessionData.PersonSession.isModerator">
-                        <div class="row">
-                            <button type="button" class="btn btn-warning pull-right" ng-click="openModalEdit(sessionData)">Edit</button>
-                            <button type="button" class="btn btn-danger pull-right" ng-click="delete(sessionData)">Delete</button>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <button type="button" class="btn btn-info" ng-click="showShareUrl = !showShareUrl">Share</button>
+                            <input type="text" ng-if="showShareUrl" class="form-control" id="basic-url" aria-describedby="basic-addon3" value="{{'localhost:3000/session/'+sessionData.id+'/join/'+sessionData.keyPass}}" readonly>
                         </div>
-                    </span>
+                        <div class="col-md-2">
+                            <span ng-if="sessionData.PersonSession.isModerator">
+                                <button type="button" class="btn btn-warning" ng-click="openModalEdit(sessionData)">Edit</button>
+                                <button type="button" class="btn btn-danger" ng-click="delete(sessionData)">Delete</button>
+                            </span>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>

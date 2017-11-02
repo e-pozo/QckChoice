@@ -138,7 +138,7 @@ angular.module('sessionUser')
                }
 
            };
-           
+
            $scope.closeError = function () {
                console.log("close");
                $scope.error = false;
