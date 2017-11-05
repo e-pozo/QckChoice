@@ -11,5 +11,7 @@ angular.module('QckChoice', [
     'sessionUser',
     'navBar',
     'welcome',
-    'sessionEvents'
+    'sessionEvents',
+    'chat',
+    'ngEnter'
 ]);

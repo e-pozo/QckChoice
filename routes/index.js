@@ -9,6 +9,18 @@ const eventController = controllers.event;
 const voteController = controllers.vote;
 const choiceController = controllers.choice;
 
+//This is temporal, soon will be removed to sockets.
+
+router
+    .post('/api/session/:id/event/:idEvent/Msg',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        eventController.addMessageToChat)
+    .get('/api/session/:id/event/:idEvent/Msg',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        eventController.listMessages);
+
 //Return if a personCore is logged or not.
 router.get('/api/logStatus', (req, res) => {
     if(!req.isAuthenticated()) {

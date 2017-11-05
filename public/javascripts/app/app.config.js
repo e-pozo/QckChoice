@@ -112,6 +112,9 @@ angular.module('QckChoice')
                 resolve: {loggedIn: onlyLoggedIn}
 
             })
+            .when('/chatTest', {
+                template: "<chat></chat>"
+            })
             .when('/session/:id', {
                 template: "<header><nav-bar></nav-bar></header> <session-events><h1></h1></session-events>",
                 resolve: {loggedIn: onlyLoggedInSession}

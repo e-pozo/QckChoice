@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Chat.associate = (models) => {
-       Chat.Event = Chat.belongsTo(models.Event);
+       Chat.belongsTo(models.Person);
     };
 
     return Chat;

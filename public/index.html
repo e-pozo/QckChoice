@@ -12,6 +12,10 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+        <!-- socket.io -->
+
+        <script src="/socket.io/socket.io.js"></script>
+
         <!-- Angularjs -->
 
         <script src="/scripts/angular/angular.min.js"></script>
@@ -19,7 +23,9 @@
         <script src="/scripts/angular-route/angular-route.min.js"></script>
 
         <script src="/scripts/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-        <!-- Modules, Components & Services -->
+
+        <link rel="stylesheet" href="/stylesheets/style.css" ng-if="isChat">
+        <!-- Modules, Components, Directives & Services -->
 
         <script src="/javascripts/app/core/auth/auth.module.js"></script>
         <script src="/javascripts/app/core/auth/auth.service.js"></script>
@@ -53,6 +59,12 @@
 
         <script src="/javascripts/app/welcome/welcome.module.js"></script>
         <script src="/javascripts/app/welcome/welcome.component.js"></script>
+
+        <script src="/javascripts/app/chat/chat.module.js"></script>
+        <script src="/javascripts/app/chat/chat.component.js"></script>
+
+        <script src="/javascripts/app/utils/ng-enter/ng-enter.module.js"></script>
+        <script src="/javascripts/app/utils/ng-enter/ng-enter.directive.js"></script>
 
     </head>
     <body>

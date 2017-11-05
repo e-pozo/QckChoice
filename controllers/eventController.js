@@ -4,9 +4,13 @@ const sequelize = models.sequelize;
 const Event = models.Event;
 const Choice = models.Choice;
 const Vote = models.Vote;
+const Chat = models.Chat;
+const Person = models.Person;
 const controller = {
     createVote: createVote,
-    getVotes: getVotes
+    getVotes: getVotes,
+    addMessageToChat: addMessageToChat,
+    listMessages: listMessages
 };
 
 function createVote(req, res){
@@ -41,6 +45,36 @@ function getVotes(req, res) {
         .catch(err => {
             res.status(500).json(err);
         });
+}
+
+function listMessages(req, res) {
+    sequelize.transaction(t => {
+        return Event.findById(req.params.idEvent, {transaction: t})
+            .then(Event => {
+                return Event.getChats({transaction: t})
+            })
+    })
+        .then(result => {
+            res.status(200).json({"message":"Here is your messages of this event","result": result});
+        })
+        .catch(err => {
+            res.status(500).json({"message":"An internal server error happened", "error": err});
+        })
+}
+
+function addMessageToChat(req, res) {
+    sequelize.transaction(t => {
+        return Event.findById(req.params.idEvent, {transaction: t})
+            .then(Event => {
+                return Event.createChat({message: req.body.message, PersonId: req.user.id}, {transaction: t})
+            })
+    })
+        .then(result => {
+            res.status(201).json({"message":"Message stored", "result":result});
+        })
+        .catch(err => {
+            res.status(500).json({"message":"An internal server error happened","error":err});
+        })
 }
 
 module.exports = controller;

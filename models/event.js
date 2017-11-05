@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     Event.associate = (models) => {
         //Event.belongsToMany(models.Choice, {through: models.Vote});
         Event.hasMany(models.Vote);
-        Event.Chats = Event.hasMany(models.Chat);
+        Event.hasMany(models.Chat);
     };
     return Event;
 };
