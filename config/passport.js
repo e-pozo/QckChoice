@@ -41,15 +41,15 @@ module.exports = (passport) => {
                             imgURL: req.body.imgUrl || null
                         }, {transaction: t})
                         .then(Person => {
-                            return LocalCreate.create({
+                            return Person.createLocal({
                                 email: email,
                                 password: password,
-                                PersonId: Person.id
+                                isAdmin: false
                             },{transaction: t})
                         })
-                        .then(LocalCreate => done(null,LocalCreate))
+                    })
+                        .then(result => done(null,result))
                         .catch(err => done(err));
-                    });
                 }
             })
             .catch(err => done(err));

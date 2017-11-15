@@ -1,10 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class=" container">
+    <div class="jumbotron">
+        <div class="page-header">
+            <h1>Objective</h1>
+            <h4>{{thisEvent.objective}}</h4>
+        </div>
+        <div class="row">
+            <countdown></countdown>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="panel-title">Choices</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group mod" dnd-list="models.lists.A">
 
-</body>
-</html>
+                            <li class="list-group-item" ng-repeat="item in models.lists.A"
+                                dnd-draggable="item"
+                                dnd-effect-allowed="move"
+                                dnd-moved="models.lists.A.splice($index, 1)"
+                                dnd-selected="models.selected = item"
+                                ng-class="{'selected': models.selected === item}"
+                                uib-popover-template="'myPopoverTemplate.html'"
+                                popover-title="{{item.name}}"
+                                popover-trigger="'mouseenter'"
+                                popover-placement="bottom"
+                            >
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b>{{item.name}}</b>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="panel-title">To Vote</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group mod" dnd-list="models.lists.B">
+                            <li class="list-group-item" ng-repeat="item in models.lists.B"
+                                dnd-draggable="item"
+                                dnd-effect-allowed="move"
+                                dnd-moved="models.lists.B.splice($index, 1)"
+                                dnd-selected="models.selected = item"
+                                ng-class="{'selected': models.selected === item}"
+                                uib-popover-template="'myPopoverTemplate.html'"
+                                popover-title="{{item.name}}"
+                                popover-trigger="'mouseenter'"
+                                popover-placement="bottom"
+                            >
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b>{{item.name}}</b>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="sel2" class="col-md-4">Priority:</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" id="sel2" ng-model="item.priority" ng-options="category as category.label for category in categories track by category.val"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <button type="button" class="btn btn-primary btn-block" ng-click="saveVote()">Save & go back to events</button>
+        </div>
+    </div>
+    {{models}}
+</div>
+<script type="text/ng-template" id="myPopoverTemplate.html">
+    <div class="container">
+        <div class="row">
+            <b>Mechanism:</b>{{item.mechanism}}
+        </div>
+        <div class="row">
+            <b>Result:</b>{{item.result}}
+        </div>
+    </div>
+</script>

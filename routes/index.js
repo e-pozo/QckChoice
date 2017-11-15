@@ -9,8 +9,7 @@ const eventController = controllers.event;
 const voteController = controllers.vote;
 const choiceController = controllers.choice;
 
-//This is temporal, soon will be removed to sockets.
-
+// Chat interactions.
 router
     .post('/api/session/:id/event/:idEvent/Msg',
         authenticationMiddleware(),
@@ -20,6 +19,10 @@ router
         authenticationMiddleware(),
         sessionController.isInThisSession,
         eventController.listMessages);
+
+//Data of the logged user.
+
+router.get('/api/aboutMe', authenticationMiddleware(), personController.getMyData);
 
 //Return if a personCore is logged or not.
 router.get('/api/logStatus', (req, res) => {
@@ -110,19 +113,25 @@ router.get('/api/sessionParticipating',
         authenticationMiddleware(),
         personController.listSessions);
 
-//Gets a particular session with the id.
+//Get a particular session with the id.
 router.get('/api/thisSession/:id',
         authenticationMiddleware(),
         sessionController.isInThisSession,
         personController.validateSession);
 
+//Get a particular event with the idEvent.
+router.get('/api/session/:id/thisEvent/:idEvent',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        eventController.getThisEvent);
+
 //Allow to vote
-router.post('/api/session/:id/event/:idEvent/choice/:idChoice',
+router.post('/api/session/:id/event/:idEvent/vote',
         authenticationMiddleware(),
         sessionController.isInThisSession,
         voteController.addVote);
-//List all votes of an event
-router.get('/api/session/:id/event/:idEvent',
+//List all arguments & votes of an event
+router.get('/api/session/:id/event/:idEvent/vote',
         authenticationMiddleware(),
         sessionController.isInThisSession,
         eventController.getVotes);

@@ -115,6 +115,12 @@ angular.module('QckChoice')
             .when('/chatTest', {
                 template: "<chat></chat>"
             })
+            .when('/session/:id/event/:eventId/voteRoom', {
+                template: "<header><nav-bar></nav-bar></header> <vote-cards></vote-cards>"
+            })
+            .when('/countdown',{
+                template: "<countdown></countdown>"
+            })
             .when('/session/:id', {
                 template: "<header><nav-bar></nav-bar></header> <session-events><h1></h1></session-events>",
                 resolve: {loggedIn: onlyLoggedInSession}

@@ -10,7 +10,7 @@ const controller = {
 
 function getChoices(req, res) {
     sequelize.transaction(t => {
-        return Choice.findAll({transaction: t})
+        return Choice.findAll({transaction: t, attributes: {exclude: 'LocalId'}})
     })
         .then(result => {
             res.status(200).json({"message":"Here is your choices", "result": result});

@@ -5,6 +5,9 @@ angular.module('QckChoice', [
     'ngRoute',
     'ngResource',
     'ui.bootstrap',
+    'ngclipboard',
+    'dndLists',
+    'angularCSS',
     //internal
     'logIn',
     'signUp',
@@ -13,5 +16,7 @@ angular.module('QckChoice', [
     'welcome',
     'sessionEvents',
     'chat',
+    'countdown',
+    'voteCards',
     'ngEnter'
 ]);

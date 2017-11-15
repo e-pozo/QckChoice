@@ -17,8 +17,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-10">
-                            <button type="button" class="btn btn-info" ng-click="showShareUrl = !showShareUrl">Share</button>
-                            <input type="text" ng-if="showShareUrl" class="form-control" id="basic-url" aria-describedby="basic-addon3" value="{{'localhost:3000/session/'+sessionData.id+'/join/'+sessionData.keyPass}}" readonly>
+                            <button type="button" class="btn btn-success" ng-click="showGuestUrl = !showGuestUrl">Invite a Guest</button>
+                            <input type="text" ng-if="showGuestUrl" class="form-control" aria-describedby="basic-addon3" value="{{'Copy & share this link: '+'localhost:3000/session/'+sessionData.id+'/join/'+sessionData.guestPass}}" readonly>
                         </div>
                         <div class="col-md-2">
                             <span ng-if="sessionData.PersonSession.isModerator">

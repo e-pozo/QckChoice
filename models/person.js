@@ -10,9 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Person.associate = (models) => {
-        //Person.belongsTo(models.Registered, {onDelete: 'CASCADE'});
+        Person.hasOne(models.Local);
+        Person.hasOne(models.Twitter);
+        Person.hasOne(models.Facebook);
+        Person.hasOne(models.Google);
         Person.belongsToMany(models.Session, {through: models.PersonSession});
-    }
+    };
 
     return Person;
-}
+};

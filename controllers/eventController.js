@@ -6,12 +6,30 @@ const Choice = models.Choice;
 const Vote = models.Vote;
 const Chat = models.Chat;
 const Person = models.Person;
+const Local = models.Local;
+const Twitter = models.Twitter;
+const Facebook = models.Facebook;
+const Google = models.Google;
 const controller = {
+    getThisEvent: getThisEvent,
     createVote: createVote,
     getVotes: getVotes,
     addMessageToChat: addMessageToChat,
     listMessages: listMessages
 };
+
+function getThisEvent(req, res) {
+    sequelize.transaction(t => {
+        return Event.findById(req.params.idEvent, {transaction: t})
+    })
+        .then(result => {
+            res.status(200).json({"message": "Here is the Event", "result": result})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({"err": err})
+        })
+}
 
 function createVote(req, res){
     sequelize.transaction(t => {
@@ -36,14 +54,26 @@ function getVotes(req, res) {
     sequelize.transaction(t => {
         return Event.findById(req.params.idEvent, {transaction: t})
             .then(Event => {
-                return Event.getVotes({transaction: t})
+                return Event.getArguments({transaction: t,
+                    include: [
+                        {model: Choice, attributes: {exclude: ['id', 'LocalId']}},
+                        {model: Person, include: [
+                            {model: Local, attributes: ['email', 'isAdmin']},
+                            {model: Twitter, attributes: ['displayName', 'userName']},
+                            {model: Facebook, attributes: ['email', 'name']},
+                            {model: Google, attributes: ['email', 'name']}
+                        ]}
+                    ],
+                    attributes: {exclude: ["id", "eventId", "personId"]}
+                })
             })
     })
         .then((result) => {
             res.status(200).json({"message": "Here is the votes of this event", "result": result});
         })
         .catch(err => {
-            res.status(500).json(err);
+            console.log(err);
+            res.status(500).json("internal server error");
         });
 }
 

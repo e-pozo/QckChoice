@@ -16,9 +16,5 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
 
-    Google.associate = (models) => {
-        Google.belongsTo(models.Person);
-    }
-
     return Google;
 }

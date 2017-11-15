@@ -2,6 +2,10 @@
 const models = require('../models');
 const Person = models.Person;
 const Session = models.Session;
+const Local = models.Local;
+const Twitter = models.Twitter;
+const Facebook = models.Facebook;
+const Google = models.Google;
 const PersonSession = models.PersonSession;
 const sequelize = models.sequelize;
 const uuidv4 = require('uuid/v4');
@@ -32,19 +36,40 @@ module.exports = {
         })(req, res, next);
     },
 
-    validateSession(req, res) {
+    getMyData(req, res) {
         sequelize.transaction(t => {
-            return Person.findById(req.user.id, {transaction: t})
-                .then(Person => {
-                    return Person.getSessions({through: {where: {SessionId: req.params.id}}, transaction: t})
-                })
+            return Person.findById(req.user.PersonId, {
+                attributes: ['userName', 'imgUrl'],
+                include:[{model:Local, attributes: ['email']},
+                        {model: Twitter, attributes: ['userName', 'displayName']},
+                        {model:Facebook, attributes: ['email', 'name']},
+                        {model: Google, attributes: ['email', 'name']}],
+                transaction: t})
         })
-            .then((result) => {
+            .then(result => {
                 res.status(200).json(result);
             })
             .catch(err => {
                 res.status(500).json(err);
-            });
+            })
+    },
+
+    validateSession(req, res) {
+        Person.findById(req.user.PersonId)
+            .then(Person => {
+                Person.getSessions({through:{ isModerator: true}})
+                    .then(Session => {
+                        if(Session){
+                            res.status(200).json(Session)
+                        }
+                        else{
+                            Person.getSession({through:{ isModerator: false}, attributes:{exclude: 'moderatorPass'}})
+                                .then(Session => {
+                                    res.status(200).json(Session)
+                                })
+                        }
+                    })
+            })
     },
 
     createSession: function (req, res) {
@@ -52,7 +77,8 @@ module.exports = {
             return Session.create({
                 title: req.body.title,
                 description: req.body.description,
-                keyPass: uuidv4()
+                guestPass: uuidv4(),
+                moderatorPass: uuidv4()
             }, {transaction: t})
                 .then(Session => {
                     return Person.findById(req.user.id, {transaction: t})
@@ -120,6 +146,9 @@ module.exports = {
                     return Person.getSessions({
                         through: {
                             PersonSession
+                        },
+                        attributes: {
+                            exclude:['moderatorPass']
                         },
                         transaction : t
                     })

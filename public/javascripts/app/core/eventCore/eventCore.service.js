@@ -1,6 +1,8 @@
 angular.module('eventCore').factory('EventCore',
     ['$q', '$timeout', '$http',
-        function ($q, $timeout, $http, $location) {
+        function ($q, $timeout, $http, $location,) {
+
+            var Votes = [];
 
             function updateEvent(id, idEvent, objective) {
                 var deferred = $q.defer();
@@ -78,11 +80,69 @@ angular.module('eventCore').factory('EventCore',
                 return deferred.promise;
             }
 
+            function getThisEvent(id, idEvent){
+                var deferred = $q.defer();
+                $http.get('/api/session/'+id+'/thisEvent/'+idEvent)
+                    .then(function (data) {
+                        if(data.status === 200){
+                            deferred.resolve(data);
+                        }
+                        else{
+                            deferred.reject(data);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    })
+                return deferred.promise;
+            }
+
+            function listChoices(){
+                var deferred = $q.defer();
+                $http.get('/api/choices')
+                    .then(function (data) {
+                        if(data.status === 200){
+                            deferred.resolve(data);
+                        }
+                        else{
+                            deferred.reject(data);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+
+            function saveVote(idEvent, voteList){
+                for(i = 0; i < Votes.length; i++){
+                    if(Votes[i].idEvent === idEvent){
+                        Votes[i] = {idEvent: idEvent, voteList: voteList};
+                        console.log(Votes);
+                        return;
+                    }
+                }
+                Votes.push({idEvent: idEvent, voteList: voteList});
+            }
+
+            function loadVotesOfThisEvent(idEvent){
+                for(i = 0; i < Votes.length; i++){
+                    if(Votes[i].idEvent === idEvent){
+                        return Votes[i].voteList;
+                    }
+                }
+                return null;
+            }
+
             return ({
                 makeEvent: makeEvent,
                 listEvent: listEvent,
                 deleteEvent: deleteEvent,
-                updateEvent: updateEvent
+                updateEvent: updateEvent,
+                getThisEvent: getThisEvent,
+                listChoices: listChoices,
+                saveVote: saveVote,
+                loadVotesOfThisEvent: loadVotesOfThisEvent
             });
 
         }]);

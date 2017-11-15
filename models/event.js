@@ -12,8 +12,9 @@ module.exports = (sequelize, DataTypes) => {
 
     Event.associate = (models) => {
         //Event.belongsToMany(models.Choice, {through: models.Vote});
-        Event.hasMany(models.Vote);
         Event.hasMany(models.Chat);
+        //Event.hasMany(Event);
+        Event.hasMany(models.Argument, {foreignKey: "eventId"});
     };
     return Event;
 };

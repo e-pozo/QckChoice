@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('voteCards', ["auth"]);
+angular.module('voteCards', ["auth", "eventCore"]);

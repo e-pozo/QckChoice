@@ -16,9 +16,5 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
 
-    Twitter.associate = (models) => {
-        Twitter.belongsTo(models.Person);
-    }
-
     return Twitter;
 }
