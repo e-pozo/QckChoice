@@ -5,7 +5,7 @@ module.exports = io => {
         console.log('user connected');
         socket.on('chat message', msg => {
             console.log(msg);
-            io.emit('chat message', "recibido")
+            socket.broadcast.emit('chat message'+msg.event, msg);
         })
     })
 }

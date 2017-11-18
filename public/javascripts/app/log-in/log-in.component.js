@@ -3,7 +3,7 @@
 angular.module('logIn')
     .component('logIn', {
        templateUrl: 'templates/log-in.html',
-           controller: function($scope, $q, $location, Auth){
+           controller: function($scope, $q, $location, Auth, PersonCore){
            var validation = function () {
                var deferred = $q.defer();
                if($scope.person != null ){
@@ -41,6 +41,10 @@ angular.module('logIn')
                                    }
                                    $scope.disabled = false;
                                    $scope.person = null;
+                                   PersonCore.aboutMe()
+                                       .then(function (me) {
+                                           sessionStorage.setItem('me',JSON.stringify(me))
+                                       })
                                })
                                // handle error
                                .catch(function (inf) {

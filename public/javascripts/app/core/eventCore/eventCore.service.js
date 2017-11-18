@@ -4,6 +4,13 @@ angular.module('eventCore').factory('EventCore',
 
             var Votes = [];
 
+            $( window ).on('unload', function( event ) {
+                console.log("unload");
+                console.log(Votes);
+                localStorage.setItem("test","this");
+                localStorage.setItem("voteState", JSON.stringify(Votes));
+            });
+
             function updateEvent(id, idEvent, objective) {
                 var deferred = $q.defer();
                 $http.put('/api/sessionUser/'+id+'/event/'+idEvent,{objective: objective})
@@ -114,24 +121,98 @@ angular.module('eventCore').factory('EventCore',
                 return deferred.promise;
             }
 
-            function saveVote(idEvent, voteList){
+            function saveVote(idEvent, voteList, reason){
                 for(i = 0; i < Votes.length; i++){
                     if(Votes[i].idEvent === idEvent){
-                        Votes[i] = {idEvent: idEvent, voteList: voteList};
+                        Votes[i] = {idEvent: idEvent, voteList: voteList, reason: reason};
                         console.log(Votes);
                         return;
                     }
                 }
-                Votes.push({idEvent: idEvent, voteList: voteList});
+                Votes.push({idEvent: idEvent, voteList: voteList, reason: reason});
+            }
+
+            function resetVoteState(){
+                console.log("reset");
+                localStorage.removeItem("voteState");
+                Votes = [];
             }
 
             function loadVotesOfThisEvent(idEvent){
+                console.log(Votes);
+                console.log(Votes.length === 0);
+                if(Votes.length === 0){
+                    Votes = JSON.parse(localStorage.getItem("voteState"));
+                    if (Votes === null){
+                        Votes = [];
+                        return null;
+                    }
+                    console.log(Votes);
+                }
                 for(i = 0; i < Votes.length; i++){
                     if(Votes[i].idEvent === idEvent){
-                        return Votes[i].voteList;
+                        return Votes[i];
                     }
                 }
                 return null;
+            }
+
+            function loadVotes(){
+                if (Votes.length === 0){
+                    Votes = JSON.parse(localStorage.getItem("voteState"));
+                }
+                return Votes
+            }
+
+            function sendVotes(idSession, votesOfSession){
+                var HttpPromiseToSend = [];
+                for ( var votesInf of votesOfSession){
+                    var idEvent = votesInf.idEvent;
+                    var votes = [];
+                    for (var vote of votesInf.voteList.B){
+                        votes.push({priority: vote.priority.val, ChoiceId: vote.id});
+                    }
+                    var reason = votesInf.reason;
+                    HttpPromiseToSend.push($http.post('/api/session/'+idSession+'/event/'+idEvent+'/vote', {
+                        reason: reason,
+                        votes: votes
+                    }))
+                }
+                return $q.all(HttpPromiseToSend);
+            }
+
+            function addMessageToChat(idSession,idEvent, msg){
+                var deferred = $q.defer();
+                $http.post('/api/session/'+idSession+'/event/'+idEvent+'/Msg', {message: msg})
+                    .then(function (data) {
+                        if(data.status === 201){
+                            deferred.resolve("Message created successfully");
+                        }
+                        else{
+                            deferred.reject(data);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+
+            function listMessageToChat(idSession, idEvent){
+                var deferred = $q.defer();
+                $http.get('/api/session/'+idSession+'/event/'+idEvent+'/Msg')
+                    .then(function (data) {
+                        if(data.status === 200){
+                            deferred.resolve(data);
+                        }
+                        else{
+                            deferred.reject(data);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    })
+                return deferred.promise;
             }
 
             return ({
@@ -142,7 +223,12 @@ angular.module('eventCore').factory('EventCore',
                 getThisEvent: getThisEvent,
                 listChoices: listChoices,
                 saveVote: saveVote,
-                loadVotesOfThisEvent: loadVotesOfThisEvent
+                loadVotesOfThisEvent: loadVotesOfThisEvent,
+                loadVotes: loadVotes,
+                sendVotes: sendVotes,
+                resetVoteState: resetVoteState,
+                addMessageToChat: addMessageToChat,
+                listMessageToChat: listMessageToChat
             });
 
         }]);

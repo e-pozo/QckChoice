@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('chat', ["auth","sessionCore", "eventCore"]);
+angular.module('chat', ["auth","eventCore"]);

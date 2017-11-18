@@ -1,8 +1,14 @@
 angular.module('countdown')
     .component('countdown', {
-        css: 'stylesheets/countdown.css',
+        css: ['stylesheets/countdown.css', '/scripts/clockpicker/dist/bootstrap-clockpicker.min.css'],
         templateUrl: 'templates/countdown.html',
-        controller: function($scope, Auth){
+        controller: function($scope){
+            console.log($scope.$parent);
+
+            var saveRoutes = [
+                "/session/:id/event/:eventId/voteRoom",
+                "/session/:id"
+            ]
             // Create Countdown
             var Countdown = {
 
@@ -15,22 +21,33 @@ angular.module('countdown')
 
                 // Initialize the countdown
                 init: function() {
-
                     // DOM
                     this.$ = {
                         hours  : this.$el.find('.bloc-time.hours .figure'),
                         minutes: this.$el.find('.bloc-time.min .figure'),
                         seconds: this.$el.find('.bloc-time.sec .figure')
                     };
-
                     // Init countdown values
-                    this.values = {
-                        hours  : this.$.hours.parent().attr('data-init-value'),
-                        minutes: this.$.minutes.parent().attr('data-init-value'),
-                        seconds: this.$.seconds.parent().attr('data-init-value'),
-                    };
-
+                    var strState = localStorage.getItem("clockState");
+                    console.log(strState);
+                    if(strState){
+                        var state = JSON.parse(strState);
+                        //console.log(state);
+                        this.values = state.values;
+                        this.freeze = state.freeze;
+                        $scope.freeze = state.freeze;
+                    }
+                    else{
+                        this.values = {
+                            hours  : this.$.hours.parent().attr('data-init-value'),
+                            minutes: this.$.minutes.parent().attr('data-init-value'),
+                            seconds: this.$.seconds.parent().attr('data-init-value'),
+                        };
+                        this.freeze = true;
+                        $scope.freeze = true;
+                    }
                     // Initialize total seconds
+                    console.log(this.values);
                     this.total_seconds = this.values.hours * 60 * 60 + (this.values.minutes * 60) + this.values.seconds;
 
                     // Animate countdown to the end
@@ -48,39 +65,56 @@ angular.module('countdown')
                         $sec_2  = this.$.seconds.eq(1);
 
                     this.countdown_interval = setInterval(function() {
+                        if(!$scope.freeze) {
+                            if (that.total_seconds > 0) {
 
-                        if(that.total_seconds > 0) {
+                                --that.values.seconds;
 
-                            --that.values.seconds;
+                                if (that.values.minutes >= 0 && that.values.seconds < 0) {
 
-                            if(that.values.minutes >= 0 && that.values.seconds < 0) {
+                                    that.values.seconds = 59;
+                                    --that.values.minutes;
+                                }
 
-                                that.values.seconds = 59;
-                                --that.values.minutes;
+                                if (that.values.hours >= 0 && that.values.minutes < 0) {
+
+                                    that.values.minutes = 59;
+                                    --that.values.hours;
+                                }
+
+                                // Update DOM values
+                                // Hours
+                                that.checkHour(that.values.hours, $hour_1, $hour_2);
+
+                                // Minutes
+                                that.checkHour(that.values.minutes, $min_1, $min_2);
+
+                                // Seconds
+                                that.checkHour(that.values.seconds, $sec_1, $sec_2);
+
+                                --that.total_seconds;
                             }
-
-                            if(that.values.hours >= 0 && that.values.minutes < 0) {
-
-                                that.values.minutes = 59;
-                                --that.values.hours;
-                            }
-
-                            // Update DOM values
-                            // Hours
-                            that.checkHour(that.values.hours, $hour_1, $hour_2);
-
-                            // Minutes
-                            that.checkHour(that.values.minutes, $min_1, $min_2);
-
-                            // Seconds
-                            that.checkHour(that.values.seconds, $sec_1, $sec_2);
-
-                            --that.total_seconds;
-                        }
-                        else {
-                            clearInterval(that.countdown_interval);
                         }
                     }, 1000);
+                },
+
+                saveThisState: function(){
+                    localStorage.setItem("clockState", JSON.stringify(this));
+                },
+
+                changeTime: function (time) {
+                    var time = time.split(":");
+                    this.values = {
+                        hours  : parseInt(time[0]),
+                        minutes: parseInt(time[1]),
+                        seconds: 0,
+                    };
+                    this.total_seconds = this.values.hours * 60 * 60 + (this.values.minutes * 60) + this.values.seconds;
+                },
+
+                pauseNPlayTime: function () {
+                    this.freeze = !this.freeze;
+                    $scope.freeze = this.freeze;
                 },
 
                 animateFigure: function($el, value) {
@@ -142,7 +176,38 @@ angular.module('countdown')
                 }
             };
 
-// Let's go !
+            function isInArray(value, array) {
+                return array.indexOf(value) > -1;
+            }
+
+            // Let's go !
             Countdown.init();
+            $( window ).on('unload', function( event ) {
+                Countdown.saveThisState();
+            });
+
+            $scope.switchFreeze = function () {
+                Countdown.pauseNPlayTime();
+            };
+
+            $scope.$on('$routeChangeStart', function(scope, next, current){
+                console.log("changing route");
+                console.log(next.$$route.originalPath);
+                if(isInArray(next.$$route.originalPath, saveRoutes)){
+                    Countdown.saveThisState();
+                }
+                else {
+                    localStorage.removeItem("clockState");
+                }
+            });
+
+            var input = $('.clockpicker').clockpicker({
+                donetext: 'Done!',
+                align: 'right',
+                placement: 'top',
+                afterDone: function(t) {
+                    Countdown.changeTime($scope.time);
+                }
+            });
         }
     });

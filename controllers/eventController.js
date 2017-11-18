@@ -81,13 +81,19 @@ function listMessages(req, res) {
     sequelize.transaction(t => {
         return Event.findById(req.params.idEvent, {transaction: t})
             .then(Event => {
-                return Event.getChats({transaction: t})
+                return Event.getChats({
+                    transaction: t,
+                    include: Person,
+                    attributes: {exclude: "PersonId"},
+                    order: ['createdAt']
+                })
             })
     })
         .then(result => {
             res.status(200).json({"message":"Here is your messages of this event","result": result});
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({"message":"An internal server error happened", "error": err});
         })
 }
@@ -103,6 +109,7 @@ function addMessageToChat(req, res) {
             res.status(201).json({"message":"Message stored", "result":result});
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({"message":"An internal server error happened","error":err});
         })
 }

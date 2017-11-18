@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('logIn', ["auth"]);
+angular.module('logIn', ["auth","personCore"]);

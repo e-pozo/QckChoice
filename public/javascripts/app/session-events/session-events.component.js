@@ -4,11 +4,15 @@ angular.module('sessionEvents')
     .component('sessionEvents', {
         templateUrl: 'templates/events.html',
         controller: function ($scope, $q, $routeParams, $uibModal, SessionCore, EventCore) {
+            var saveRoutes = [
+                "/session/:id/event/:eventId/voteRoom",
+                "/session/:id"
+            ];
+
             $scope.inTheZone = false;
 
             var modalCreate;
             var modalEdit;
-
             SessionCore.validateSession($routeParams.id).then(function (resultado) {
                 $scope.inTheZone = true;
                 $scope.thisSession =resultado;
@@ -133,8 +137,55 @@ angular.module('sessionEvents')
                 }
             };
 
+            $scope.sendVotes = function () {
+                var votes = EventCore.loadVotes();
+                EventCore.sendVotes($routeParams.id, votes)
+                    .then(function (values) {
+                        console.log(values);
+                        $.notify({
+                            // options
+                            icon: 'glyphicon glyphicon-ok-sign',
+                            message: 'Sent votes!'
+                        },{
+                            // settings
+                            type: 'success',
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            }
+                        });
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        $.notify({
+                            // options
+                            icon: 'glyphicon glyphicon-alert',
+                            message: 'You have already voted!, if you want vote again, please talk with session creator'
+                        },{
+                            // settings
+                            type: 'danger',
+                            delay: 5000,
+                            timer: 1000,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            }
+                        });
+                    })
+            };
+
             $scope.closeError = function () {
                 $scope.error = false;
+            };
+
+            function isInArray(value, array) {
+                return array.indexOf(value) > -1;
             }
+
+            $scope.$on('$routeChangeStart', function(scope, next, current){
+                if(!isInArray(next.$$route.originalPath, saveRoutes)) {
+                    EventCore.resetVoteState()
+                }
+            });
         }
     });

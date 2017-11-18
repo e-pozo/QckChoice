@@ -68,6 +68,7 @@ angular.module('auth').factory('Auth',
                 // handle success
                     .then(function () {
                         user = false;
+                        sessionStorage.removeItem('me');
                         deferred.resolve();
                     })
                     // handle error

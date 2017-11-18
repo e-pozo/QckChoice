@@ -4,9 +4,9 @@
             <h1>Objective</h1>
             <h4>{{thisEvent.objective}}</h4>
         </div>
-        <div class="row">
-            <countdown></countdown>
-        </div>
+        <countdown></countdown>
+        <br>
+        <h1 class="time"><strong class="time">Vote Zone</strong></h1>
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-default">
@@ -83,11 +83,18 @@
         </div>
         <br>
         <div class="row">
+            <div class="form-group">
+                <label for="comment">Why you have chosen this decision?</label>
+                <textarea class="form-control" rows="5" id="comment" ng-model="models.reason"></textarea>
+            </div>
+        </div>
+        <div class="row">
             <button type="button" class="btn btn-primary btn-block" ng-click="saveVote()">Save & go back to events</button>
         </div>
     </div>
     {{models}}
 </div>
+<chat></chat>
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div class="container">
         <div class="row">

@@ -39,7 +39,6 @@ module.exports = {
     getMyData(req, res) {
         sequelize.transaction(t => {
             return Person.findById(req.user.PersonId, {
-                attributes: ['userName', 'imgUrl'],
                 include:[{model:Local, attributes: ['email']},
                         {model: Twitter, attributes: ['userName', 'displayName']},
                         {model:Facebook, attributes: ['email', 'name']},
@@ -98,7 +97,7 @@ module.exports = {
         sequelize.transaction(t => {
             return Session.findOne(
                 {
-                    where: {id: req.params.id, keyPass: req.params.keyPass}
+                    where: {id: req.params.id, guestPass: req.params.keyPass}
                 },
                 {transaction: t})
                 .then(Session => {
@@ -112,6 +111,7 @@ module.exports = {
                 res.status(201).json(result);
             })
             .catch(err => {
+                console.log(err);
                 res.status(500).json(err);
             })
     },

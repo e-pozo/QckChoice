@@ -112,7 +112,7 @@ angular.module('QckChoice')
                 resolve: {loggedIn: onlyLoggedIn}
 
             })
-            .when('/chatTest', {
+            .when('/session/:id/event/:eventId/chatTest', {
                 template: "<chat></chat>"
             })
             .when('/session/:id/event/:eventId/voteRoom', {

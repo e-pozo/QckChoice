@@ -1,4 +1,4 @@
-angular.module('sessionCore').factory('SessionCore',
+angular.module('personCore').factory('PersonCore',
     ['$q', '$timeout', '$http',
         function ($q, $timeout, $http, $location) {
             function localSignUp() {
@@ -39,12 +39,12 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
-            function getPerson() {
+            function aboutMe() {
                 var deferred = $q.defer();
-                $http.get('/api/localPerson')
+                $http.get('/api/aboutMe')
                     .then(function (result) {
                         console.log(result);
-                        if(result.status == 200){
+                        if(result.status === 200){
                             deferred.resolve(result.data);
                         }
                         else{
@@ -79,7 +79,7 @@ angular.module('sessionCore').factory('SessionCore',
 
             return ({
                 create: create,
-                getPerson: getPerson,
+                aboutMe: aboutMe,
                 localSignIn: localSignIn,
                 localSignUp: localSignUp
             });
