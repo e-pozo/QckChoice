@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('countdown', ["auth"]);
+angular.module('countdown', ["auth", "sessionCore"]);

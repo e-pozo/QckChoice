@@ -13,12 +13,13 @@ var passport = require('passport');
 var MySQLStore = require('express-mysql-session')(session);
 var options = require('./config/dbConfig.json');
 var sessionStore = new MySQLStore(options);
-
-var index = require('./routes/index');
-var users = require('./routes/users');
 var db = require('./models/index');
 require ('./config/passport')(passport);
 var app = express();
+
+app.io = require('socket.io')();
+var index = require('./routes/index')(app.io);
+//var users = require('./routes/users')(app.io);
 
 // view engine setup
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts'}));
@@ -45,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use('/', index);
-app.use('/users', users);
+//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

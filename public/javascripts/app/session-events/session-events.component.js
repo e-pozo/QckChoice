@@ -10,12 +10,20 @@ angular.module('sessionEvents')
             ];
 
             $scope.inTheZone = false;
+            var socket = io();
+            socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
 
             var modalCreate;
             var modalEdit;
-            SessionCore.validateSession($routeParams.id).then(function (resultado) {
+            SessionCore.getThisSession($routeParams.id).then(function (resultado) {
                 $scope.inTheZone = true;
                 $scope.thisSession =resultado;
+                $scope.$broadcast('isModerator', $scope.thisSession.PersonSession.isModerator);
+                if(!$scope.thisSession.PersonSession.isModerator){
+                    socket.on('finish:'+$routeParams.id, function () {
+                        console.log('Vote finished!');
+                    });
+                }
 
             }).catch(function (error) {
                 $scope.errorMessage = error;
@@ -138,8 +146,7 @@ angular.module('sessionEvents')
             };
 
             $scope.sendVotes = function () {
-                var votes = EventCore.loadVotes();
-                EventCore.sendVotes($routeParams.id, votes)
+                EventCore.sendVotes($routeParams.id, EventCore.loadVotes())
                     .then(function (values) {
                         console.log(values);
                         $.notify({
@@ -174,6 +181,28 @@ angular.module('sessionEvents')
                     })
             };
 
+
+            $scope.finishSession = function () {
+                SessionCore.finishSession($routeParams.id)
+                    .catch(function (err) {
+                        console.log(err);
+                        $.notify({
+                            // options
+                            icon: 'glyphicon glyphicon-alert',
+                            message: err.data
+                        },{
+                            // settings
+                            type: 'danger',
+                            delay: 5000,
+                            timer: 1000,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            }
+                        });
+                    });
+            };
+
             $scope.closeError = function () {
                 $scope.error = false;
             };
@@ -184,7 +213,8 @@ angular.module('sessionEvents')
 
             $scope.$on('$routeChangeStart', function(scope, next, current){
                 if(!isInArray(next.$$route.originalPath, saveRoutes)) {
-                    EventCore.resetVoteState()
+                    EventCore.resetVoteState();
+                    socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
                 }
             });
         }

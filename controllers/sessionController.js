@@ -15,7 +15,7 @@ module.exports = {
             }, {transaction: t})
                 .then( Session => {
                 return PersonSession.create({
-                    PersonId: req.user.id,
+                    PersonId: req.user.PersonId || req.user.id,
                     SessionId: Session.id,
                     isModerator: true
                 }, {transaction: t})
@@ -83,11 +83,12 @@ module.exports = {
     isModeratorOfThisSession(req, res, next) {
         PersonSession.findOne({
             where: {
-                SessionId: req.params.id
+                SessionId: req.params.id,
+                PersonId: req.user.PersonId || req.user.id
             }
         })
             .then(personSession => {
-                if (personSession.dataValues.isModerator == true) {
+                if (personSession.dataValues.isModerator === true) {
                     return next();
                 }
                 else {
@@ -99,10 +100,25 @@ module.exports = {
             })
     },
 
+    isActiveThisSession(req, res, next){
+        Session.findById(req.params.id)
+            .then(Session => {
+                if(Session.dataValues.active){
+                    return next();
+                }
+                else{
+                    res.status(403).json("This Session is finished!");
+                }
+            })
+            .catch(err => {
+                   res.status(500).json({"err": err, "message": "An error occurred on the server."})
+            })
+    },
+
     isInThisSession(req, res, next) {
         PersonSession.findOne({
             where: {
-                PersonId: req.user.id,
+                PersonId: req.user.PersonId || req.user.id,
                 SessionId: req.params.id
             }
         })

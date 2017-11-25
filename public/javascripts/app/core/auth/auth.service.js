@@ -107,10 +107,28 @@ angular.module('auth').factory('Auth',
 
             }
 
+            function loginAsAnonymous() {
+                var deferred = $q.defer();
+                $http.post('/api/createAnonymousPerson',{userName: 'Anonymous', password: ''})
+                    .then(function (data) {
+                        if(data.status === 200){
+                            deferred.resolve();
+                        }
+                        else{
+                            deferred.reject(data);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err)
+                    });
+                return deferred.promise;
+            }
+
             return ({
                 isLoggedIn: isLoggedIn,
                 getUserStatus: getUserStatus,
                 login: login,
+                loginAsAnonymous: loginAsAnonymous,
                 logout: logout,
                 register: register
             });

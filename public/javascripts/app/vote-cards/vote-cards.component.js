@@ -29,7 +29,7 @@ angular.module('voteCards')
 
             var choicesPromise = EventCore.listChoices();
             var eventPromise = EventCore.getThisEvent($routeParams.id,$routeParams.eventId);
-            var sessionPromise = SessionCore.validateSession($routeParams.id);
+            var sessionPromise = SessionCore.getThisSession($routeParams.id);
             var loadedVotes = EventCore.loadVotesOfThisEvent($routeParams.eventId);
 
             eventPromise
@@ -42,6 +42,7 @@ angular.module('voteCards')
             sessionPromise
                 .then(function (session) {
                     $scope.thisSession = session;
+                    $scope.$broadcast('isModerator', $scope.thisSession.PersonSession.isModerator);
                 })
                 .catch(function (err) {
                     console.log(err);
@@ -84,10 +85,19 @@ angular.module('voteCards')
                 return array.indexOf(value) > -1;
             }
 
+            var socket = io();
+
             $scope.$on('$routeChangeStart', function(scope, next, current){
                 if(!isInArray(next.$$route.originalPath, saveRoutes)) {
-                    EventCore.resetVoteState()
+                    EventCore.resetVoteState();
+                    socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
                 }
+            });
+
+            socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
+
+            socket.on('finish:'+$routeParams.id, function () {
+                console.log('Vote finished!');
             });
         }
     });

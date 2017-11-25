@@ -8,6 +8,7 @@ var Local = models.Local;
 var LocalCreate = models.Local;
 var sequelize = models.sequelize;
 
+var count = 0;
 module.exports = (passport) => {
 
     passport.serializeUser((user, done) => {
@@ -66,12 +67,13 @@ module.exports = (passport) => {
             sequelize.transaction(t => {
                 return Person.create(
                     {
-                        userName: userName
+                        userName: userName+count,
                     },
                     {transaction: t}
                 )
             })
                 .then(result => {
+                    count++;
                     done(null,result);
                 })
                 .catch(err => {

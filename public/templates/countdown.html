@@ -82,7 +82,7 @@
         </div>
     </div>
     <br>
-    <div class="row">
+    <div class="row" ng-show="$parent.thisSession.PersonSession.isModerator">
         <div class="col-md-6">
             <button ng-if="!freeze" class="btn btn-danger btn-block" ng-click="switchFreeze()"><span class="glyphicon glyphicon-pause"></span></button>
             <button ng-if="freeze" class="btn btn-success btn-block" ng-click="switchFreeze()"><span class="glyphicon glyphicon-play"></button>

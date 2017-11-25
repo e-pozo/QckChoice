@@ -3,7 +3,7 @@
 angular.module('signUp')
     .component('signUp', {
         templateUrl: 'templates/sign-up.html',
-        controller: function($scope, $location, Auth, $q){
+        controller: function($scope, $location, Auth, $q, PersonCore){
             var validation = function () {
                 var deferred = $q.defer();
 
@@ -38,6 +38,10 @@ angular.module('signUp')
                                 $location.path('/sessionUser');
                                 $scope.disabled = false;
                                 $scope.person = {};
+                                PersonCore.aboutMe()
+                                    .then(function (me) {
+                                        sessionStorage.setItem('me',JSON.stringify(me))
+                                    })
                             })
                             // handle error
                             .catch(function (inf) {

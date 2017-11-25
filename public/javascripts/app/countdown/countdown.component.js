@@ -2,8 +2,7 @@ angular.module('countdown')
     .component('countdown', {
         css: ['stylesheets/countdown.css', '/scripts/clockpicker/dist/bootstrap-clockpicker.min.css'],
         templateUrl: 'templates/countdown.html',
-        controller: function($scope){
-            console.log($scope.$parent);
+        controller: function($scope, $routeParams, SessionCore){
 
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
@@ -102,18 +101,28 @@ angular.module('countdown')
                     localStorage.setItem("clockState", JSON.stringify(this));
                 },
 
+                getTimerTime: function(){
+                    return this.values.hours+':'+this.values.minutes+':'+this.values.seconds;
+                },
+
+
                 changeTime: function (time) {
                     var time = time.split(":");
                     this.values = {
                         hours  : parseInt(time[0]),
                         minutes: parseInt(time[1]),
-                        seconds: 0,
+                        seconds: time[2] ? parseInt(time[2]) : 0,
                     };
                     this.total_seconds = this.values.hours * 60 * 60 + (this.values.minutes * 60) + this.values.seconds;
                 },
 
                 pauseNPlayTime: function () {
                     this.freeze = !this.freeze;
+                    $scope.freeze = this.freeze;
+                },
+
+                playTime: function(){
+                    this.freeze = false;
                     $scope.freeze = this.freeze;
                 },
 
@@ -187,8 +196,25 @@ angular.module('countdown')
             });
 
             $scope.switchFreeze = function () {
-                Countdown.pauseNPlayTime();
+                SessionCore.toggleTime($routeParams.id, Countdown.getTimerTime())
+                    .catch(function (err) {
+                        console.log(err);
+                    })
             };
+
+            $scope.$on('isModerator', function(event,isModerator){
+                $scope.isModerator = isModerator;
+                if(isModerator){
+                    socket.on('getTimer:'+$routeParams.id, function () {
+                        if(!$scope.freeze) {
+                            socket.emit('theTime', {time: Countdown.getTimerTime(), sessionId: $routeParams.id})
+                        }
+                    })
+                }
+                else{
+                    socket.emit('getTimer', $routeParams.id);
+                }
+            });
 
             $scope.$on('$routeChangeStart', function(scope, next, current){
                 console.log("changing route");
@@ -201,12 +227,26 @@ angular.module('countdown')
                 }
             });
 
+            var socket = io();
+
+            socket.on('setTimer:'+$routeParams.id, function (time) {
+                Countdown.changeTime(time);
+                Countdown.playTime();
+            });
+            socket.on('toggleTimer:'+$routeParams.id, function (time) {
+                Countdown.changeTime(time);
+                Countdown.pauseNPlayTime();
+            });
+
             var input = $('.clockpicker').clockpicker({
                 donetext: 'Done!',
                 align: 'right',
                 placement: 'top',
                 afterDone: function(t) {
-                    Countdown.changeTime($scope.time);
+                    SessionCore.changeTime($routeParams.id, $scope.time)
+                        .catch(function (err) {
+                            console.log(err);
+                        })
                 }
             });
         }

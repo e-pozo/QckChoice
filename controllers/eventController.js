@@ -102,7 +102,7 @@ function addMessageToChat(req, res) {
     sequelize.transaction(t => {
         return Event.findById(req.params.idEvent, {transaction: t})
             .then(Event => {
-                return Event.createChat({message: req.body.message, PersonId: req.user.id}, {transaction: t})
+                return Event.createChat({message: req.body.message, PersonId: req.user.personId || req.user.id}, {transaction: t})
             })
     })
         .then(result => {

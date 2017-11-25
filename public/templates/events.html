@@ -22,6 +22,7 @@
                     </span>
                     <input type="text" id="moderatorUrl" class="form-control" value="{{'localhost:3000/session/'+thisSession.id+'/join/'+thisSession.moderatorPass}}" readonly>
                 </div>
+                <button class="btn btn-block btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="finishSession()">FINISH SESSION</button>
             </div>
         </div>
         <div class="col-md-8">
@@ -43,9 +44,12 @@
                                 <div class="col-md-8">
                                     <h4><a href={{'/session/'+eventData.SessionId+'/event/'+eventData.id+'/voteRoom'}}> {{eventData.objective}} </a></h4>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <button type="button" class="btn btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalEdit(eventData)">Edit</button>
                                     <button type="button" class="btn btn-danger" ng-if="thisSession.PersonSession.isModerator" ng-click="delete(eventData)">Delete</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <span class="glyphicon glyphicon-floppy-saved" ng-show="eventData.saved"></span>
                                 </div>
                             </div>
                         </li>

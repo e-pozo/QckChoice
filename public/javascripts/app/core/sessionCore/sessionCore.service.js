@@ -58,11 +58,10 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
-            function validateSession(id) {
+            function getThisSession(id) {
                 var deferred = $q.defer();
                 $http.get('/api/thisSession/'+id)
                     .then(function (result) {
-                        console.log(result.data[0]);
                         if(result.status == 200){
                             deferred.resolve(result.data[0]);
                         }
@@ -134,14 +133,52 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
+            function finishSession(id){
+                var deferred = $q.defer();
+                $http.post('/api/session/'+id+'/finish',{})
+                    .then(function(result) {
+                        if(result.status === 201){
+                            deferred.resolve(result.result);
+                        }
+                        else{
+                            deferred.reject(result.result);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+
+            function changeTime(sessionId, time){
+                var deferred = $q.defer();
+                $http.post('/api/session/'+sessionId+'/setTime',{time: time})
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+
+            function toggleTime(sessionId, time){
+                var deferred = $q.defer();
+                $http.post('/api/session/'+sessionId+'/toggleTime',{time: time})
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+
             return ({
                 createSession: createSession,
                 getSessions: getSessions,
                 deleteSession: deleteSession,
                 updateSession: updateSession,
                 listSessions: listSessions,
-                validateSession: validateSession,
-                inviteToSession: inviteToSession
+                getThisSession: getThisSession,
+                inviteToSession: inviteToSession,
+                finishSession: finishSession,
+                changeTime: changeTime,
+                toggleTime: toggleTime
             });
 
         }]);

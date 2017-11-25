@@ -20,8 +20,8 @@ angular.module('logIn')
                }
                return deferred.promise;
            };
-           console.log(Auth.urltemp)
-           $scope.person = {'email': null, 'password':null}
+           console.log(Auth.urltemp);
+           $scope.person = {'email': null, 'password':null};
            $scope.logIn = function () {
 
                // initial values
@@ -66,6 +66,25 @@ angular.module('logIn')
 
            $scope.closeError = function () {
                $scope.error = false;
+           };
+
+           $scope.loginAsAnonymous = function () {
+               Auth.loginAsAnonymous()
+                   .then(function () {
+                       $location.path('/welcome');
+                       $scope.disabled = false;
+                       $scope.person = null;
+                       PersonCore.aboutMe()
+                           .then(function (me) {
+                               sessionStorage.setItem('me',JSON.stringify(me))
+                           })
+                   })
+                   .catch(function (inf) {
+                       $scope.error = true;
+                       $scope.errorMessage = inf.data.err.message;
+                       $scope.disabled = false;
+                       $scope.person = null;
+                   })
            }
        }
     });

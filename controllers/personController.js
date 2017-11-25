@@ -38,7 +38,8 @@ module.exports = {
 
     getMyData(req, res) {
         sequelize.transaction(t => {
-            return Person.findById(req.user.PersonId, {
+            console.log(req.user.PersonId || req.user.id);
+            return Person.findById(req.user.PersonId || req.user.id, {
                 include:[{model:Local, attributes: ['email']},
                         {model: Twitter, attributes: ['userName', 'displayName']},
                         {model:Facebook, attributes: ['email', 'name']},
@@ -52,9 +53,9 @@ module.exports = {
                 res.status(500).json(err);
             })
     },
-
+    // TODO: delete this functionality, if before last delivery you don't use it.
     validateSession(req, res) {
-        Person.findById(req.user.PersonId)
+        Person.findById(req.user.PersonId || req.user.id)
             .then(Person => {
                 Person.getSessions({through:{ isModerator: true}})
                     .then(Session => {
@@ -71,11 +72,28 @@ module.exports = {
             })
     },
 
+    getThisSession(req, res){
+        sequelize.transaction(t => {
+            return Person.findById(req.user.PersonId || req.user.id, {transaction: t})
+                .then(Person => {
+                    return Person.getSessions({where: {id: req.params.id}, transaction: t})
+                })
+        })
+            .then(result => {
+                res.status(200).json(result);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            })
+    },
+
     createSession: function (req, res) {
         sequelize.transaction(t => {
             return Session.create({
                 title: req.body.title,
                 description: req.body.description,
+                active: true,
                 guestPass: uuidv4(),
                 moderatorPass: uuidv4()
             }, {transaction: t})
@@ -135,6 +153,31 @@ module.exports = {
                 res.status(201).json(result);
             })
             .catch(err => {
+                res.status(500).json(err);
+            })
+    },
+
+    finishSession: function (req, res, next) {
+        sequelize.transaction(t => {
+            return Session.update(
+                {
+                    active: false
+                },
+                {
+                    where: {id: req.params.id}
+                },
+                {
+                    transaction: t
+                }
+            );
+        })
+            .then(result => {
+                console.log(result);
+                res.status(201).json(result);
+                next();
+            })
+            .catch(err => {
+                console.log(err);
                 res.status(500).json(err);
             })
     },

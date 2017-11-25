@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT
         },
+        active: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         guestPass:{
             type: DataTypes.TEXT,
             allowNull: false

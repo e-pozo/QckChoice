@@ -1,15 +1,23 @@
 angular.module('eventCore').factory('EventCore',
     ['$q', '$timeout', '$http',
-        function ($q, $timeout, $http, $location,) {
-
+        function ($q, $timeout, $http, $location) {
             var Votes = [];
-
             $( window ).on('unload', function( event ) {
                 console.log("unload");
                 console.log(Votes);
                 localStorage.setItem("test","this");
                 localStorage.setItem("voteState", JSON.stringify(Votes));
             });
+
+            function isStoreInVoteArray(arr, el){
+                if (arr == null){return false;}
+                for (var data of arr){
+                    if(data.idEvent == el){
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             function updateEvent(id, idEvent, objective) {
                 var deferred = $q.defer();
@@ -54,8 +62,20 @@ angular.module('eventCore').factory('EventCore',
                 $http.get('/api/session/'+id)
                     .then(function (result) {
                         console.log(result);
-                        if(result.status == 200){
-                            deferred.resolve(result.data.result);
+                        console.log(Votes);
+                        if(result.status === 200){
+                            var response = []
+                            for (var data of result.data.result){
+                                response.push({
+                                    id: data.id,
+                                    objective: data.objective,
+                                    createdAt: data.createdAt,
+                                    SessionId: data.SessionId,
+                                    saved: isStoreInVoteArray(Votes,data.id)
+                                })
+                            }
+                            console.log(response);
+                            deferred.resolve(response);
                         }
                         else{
                             deferred.reject(result);
@@ -140,8 +160,7 @@ angular.module('eventCore').factory('EventCore',
 
             function loadVotesOfThisEvent(idEvent){
                 console.log(Votes);
-                console.log(Votes.length === 0);
-                if(Votes.length === 0){
+                if(Votes===null || Votes.length === 0){
                     Votes = JSON.parse(localStorage.getItem("voteState"));
                     if (Votes === null){
                         Votes = [];
@@ -158,7 +177,7 @@ angular.module('eventCore').factory('EventCore',
             }
 
             function loadVotes(){
-                if (Votes.length === 0){
+                if (Votes === null || Votes.length === 0){
                     Votes = JSON.parse(localStorage.getItem("voteState"));
                 }
                 return Votes
@@ -228,7 +247,7 @@ angular.module('eventCore').factory('EventCore',
                 sendVotes: sendVotes,
                 resetVoteState: resetVoteState,
                 addMessageToChat: addMessageToChat,
-                listMessageToChat: listMessageToChat
+                listMessageToChat: listMessageToChat,
             });
 
         }]);

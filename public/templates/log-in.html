@@ -1,5 +1,5 @@
 <div class="well container">
-    <form class="form-horizontal" ng-submit="logIn()">
+    <form class="form-horizontal">
         <fieldset>
             <legend>Login to access:</legend>
             <div class="alert alert-dismissible alert-danger" ng-show="error">
@@ -21,8 +21,8 @@
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     <a type="reset" class="btn btn-default" href="/welcome" >Cancel</a>
-                    <button type="submit" class="btn btn-primary" ng-disabled="disabled">Submit</button>
-                    <button type="anonSesion" class="btn btn-warning">Anon Sesion</button>
+                    <button type="submit" class="btn btn-primary" ng-click="logIn()" ng-disabled="disabled">Submit</button>
+                    <button class="btn btn-warning" ng-click="loginAsAnonymous()">Login as Anonymous</button>
                 </div>
             </div>
         </fieldset>
