@@ -1,0 +1,142 @@
+
+<div class="container">
+    <div class="well">
+        <h1>{{session.title+' results:'}}<span><h6>Created At: {{session.createdAt}}</h6></span></h1>
+        <p>{{'Description: '+session.description}}</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Events</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <button type="button" ng-repeat="eventData in events" class="list-group-item " ng-class="{'active': eventData.id == selected}" ng-click="getEventResults(eventData.SessionId, eventData.id)">
+                                    {{eventData.objective}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Choices Detail</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default" ng-repeat="choice in choices">
+                                    <div class="panel-heading" role="tab" ng-attr-id="{{'heading'+$index}}">
+                                        <h4 class="panel-title">
+                                            <a href="#" data-toggle="collapse" data-parent="#accordion" data-target="{{'#collapseEvent'+$index}}" aria-expanded="true" aria-controls="{{'collapseEvent'+$index}}">
+                                                {{choice.name}}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div class="collapse" ng-attr-id="{{'collapseEvent'+$index}}">
+                                        <div class="panel-body">
+                                            <p><b>Mechanism: </b>{{choice.mechanism}}</p>
+                                            <p><b>Result: </b>{{choice.result}}</p>
+                                        </div>
+                                    </div>
+                                    <!--<div ng-attr-id="{{'collapseEvent'+$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{'heading'+$index}}">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8" ng-if="!resultsLoad">
+                <h3><-- Select an event to see results</h3>
+            </div>
+            <div class="col-md-8" ng-show="resultsLoad">
+                <div class="well">
+                    <div class="row">
+                        <h3>Charts</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="weightedChart" width="400" height="400"></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <canvas id="frequencyChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <canvas id="freqVeryLowPrior" width="400" height="400"></canvas>
+                                </div>
+                                <div class="col-md-4">
+                                    <canvas id="freqLowPrior" width="400" height="400"></canvas>
+                                </div>
+                                <div class="col-md-4">
+                                    <canvas id="freqMediumPrior" width="400" height="400"></canvas>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <canvas id="freqHighPrior" width="400" height="400"></canvas>
+                                </div>
+                                <div class="col-md-4">
+                                    <canvas id="freqUrgentPrior" width="400" height="400"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>Arguments<span class="badge">{{totalItemsArg}}</span></h3>
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="argument in args.slice(((currentPageArg-1)*itemsPerPageArg), ((currentPageArg)*itemsPerPageArg))">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <h4 class="list-group-item-heading">{{argument.userName}}</h4>
+                                        <i class="list-group-item-text">{{argument.reason}}</i>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="{{'#collapse'+$index}}" aria-expanded="false" aria-controls="collapseExample">
+                                            See details
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="collapse" ng-attr-id="{{'collapse'+$index}}">
+                                        <div class="well">
+                                            <h3>Voted for:</h3>
+                                            <ul class="list-group row">
+                                                <li class="list-group-item col-xs-6" ng-repeat="choice in argument.Choices"><span class="badge">{{choice.Vote.priorityStr}}</span><b>{{choice.name}}</b></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="text-center">
+                            <ul uib-pagination boundary-links="true"
+                                total-items="totalItemsArg"
+                                max-size="maxSizeArg"
+                                num-pages="numPagesArg"
+                                items-per-page="itemsPerPageArg"
+                                ng-model="currentPageArg"
+                                class="pagination-sm"
+                                previous-text="&lsaquo;"
+                                next-text="&rsaquo;"
+                                first-text="&laquo;"
+                                last-text="&raquo;"
+                            ></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

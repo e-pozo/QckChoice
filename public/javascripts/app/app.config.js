@@ -116,6 +116,9 @@ angular.module('QckChoice')
                 template: "<header><nav-bar></nav-bar></header> <vote-cards></vote-cards>",
                 resolve: {loggedIn: onlyLoggedIn}
             })
+            .when('/session/:id/results', {
+                template: "<header><nav-bar></nav-bar></header> <session-results></session-results>"
+            })
             .when('/session/:id', {
                 template: "<header><nav-bar></nav-bar></header> <session-events><h1></h1></session-events>",
                 resolve: {loggedIn: onlyLoggedInSession}

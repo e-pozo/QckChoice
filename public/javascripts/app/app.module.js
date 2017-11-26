@@ -12,6 +12,7 @@ angular.module('QckChoice', [
     'logIn',
     'signUp',
     'sessionUser',
+    'sessionResults',
     'navBar',
     'welcome',
     'sessionEvents',

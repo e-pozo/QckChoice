@@ -200,6 +200,24 @@ angular.module('eventCore').factory('EventCore',
                 return $q.all(HttpPromiseToSend);
             }
 
+            function getResults(idSession, idEvent){
+                var deferred = $q.defer();
+                $http.get('/api/session/'+idSession+'/event/'+idEvent+'/vote')
+                    .then(function(response){
+                        console.log(response);
+                        if(response.status === 200){
+                            deferred.resolve(response.data.result);
+                        }
+                        else{
+                            deferred.reject(response.data.message);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+
             function addMessageToChat(idSession,idEvent, msg){
                 var deferred = $q.defer();
                 $http.post('/api/session/'+idSession+'/event/'+idEvent+'/Msg', {message: msg})
@@ -245,6 +263,7 @@ angular.module('eventCore').factory('EventCore',
                 loadVotesOfThisEvent: loadVotesOfThisEvent,
                 loadVotes: loadVotes,
                 sendVotes: sendVotes,
+                getResults: getResults,
                 resetVoteState: resetVoteState,
                 addMessageToChat: addMessageToChat,
                 listMessageToChat: listMessageToChat,
