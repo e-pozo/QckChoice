@@ -4,6 +4,7 @@ const session = require('./sessionController');
 const vote = require('./voteController');
 const event = require('./eventController');
 const choice = require('./choiceController');
+const admin = require('./adminController');
 
 module.exports = {
     person,
@@ -11,5 +12,6 @@ module.exports = {
     session,
     event,
     vote,
-    choice
+    choice,
+    admin
 };

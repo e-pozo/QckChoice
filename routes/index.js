@@ -11,6 +11,7 @@ module.exports = function(io) {
     const eventController = controllers.event;
     const voteController = controllers.vote;
     const choiceController = controllers.choice;
+    const adminController = controllers.admin;
 
 // Chat interactions.
     router
@@ -205,6 +206,35 @@ module.exports = function(io) {
         sessionController.isInThisSession,
         sessionController.getParticipants);
 
+//LogIn Admin
+
+    router.post('/api/adminLogIn',
+        adminController.signIn);
+
+//Create Choice
+
+    router.post('/api/admin/:id',
+        authenticationMiddleware(),
+        adminController.addChoice);
+
+//Edit Choice
+
+    router.put('/api/admin/:id/choice/:idChoice',
+        authenticationMiddleware(),
+        adminController.editChoice);
+
+//Get Choices
+
+    router.get('/api/admin/:id',
+        authenticationMiddleware(),
+        adminController.getChoices);
+
+//Delete Choice
+
+    router.delete('/api/admin/:id/choice/:idChoice',
+        authenticationMiddleware(),
+        adminController.deleteChoice);
+
 //Pass all remains GET request to Angular router.
     router.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));
@@ -221,6 +251,6 @@ module.exports = function(io) {
     }
 
     return router;
-}
+};
 
 

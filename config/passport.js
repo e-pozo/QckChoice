@@ -5,8 +5,10 @@ var bcrypt = require('bcrypt');
 var models = require('../models');
 var Person = models.Person;
 var Local = models.Local;
+var Admin = models.Admin;
 var LocalCreate = models.Local;
 var sequelize = models.sequelize;
+
 
 var count = 0;
 module.exports = (passport) => {
@@ -116,4 +118,72 @@ module.exports = (passport) => {
             });
         })
     );
+
+    passport.use('admin-sign-in', new LocalStrategy({
+            usernameField: 'rut',
+            passwordField: 'password',
+            passReqToCallback: true
+        },
+        (req, rut, password, done) => {
+            process.nextTick(() => {
+                Admin.findOne({
+                    where: {
+                        rut: rut
+                    }
+                })
+                    .then(Admin => {
+                        if (Admin){
+                            bcrypt.compare(password, Admin.password, (err, res) => {
+                                if(err){
+                                    throw err;
+                                }
+                                if(res){
+                                    done(null, Admin);
+                                }
+                                else{
+                                    done(null, false, {message:'Wrong password'});
+                                }
+                            });
+                        }
+                        else{
+                            done(null, false, {message: 'User doesn\'t exist'});
+                        }
+                    })
+                    .catch(err => done(err));
+            });
+        })
+    );
+
+    passport.use('admin-sign-up', new LocalStrategy({
+            usernameField: 'rut',
+            passwordField: 'password',
+            passReqToCallback: true
+        },
+        (req, rut, password, done) => {
+            process.nextTick(() => {
+                return Admin.findOne({
+                    where: {
+                        rut: rut
+                    }
+                })
+                    .then(Admin => {
+                        if (Admin){
+                            done(null, false, {message: 'That rut already exist, sign up with a new rut'});
+                        }
+                        else {
+                            return sequelize.transaction(t => {
+                                return Admin.create({
+                                    email: req.body.email,
+                                    name: req.body.name,
+                                    rut: rut,
+                                    password: password
+                                }, {transaction: t})
+                            })
+                                .then(result => done(null,result))
+                                .catch(err => done(err));
+                        }
+                    })
+                    .catch(err => done(err));
+            });
+        }));
 }

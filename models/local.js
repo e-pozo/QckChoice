@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.TEXT,
             allowNull: false
-        },
-        isAdmin: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
         }
     },{
         hooks: {
@@ -23,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         timestamps: false
     });
-
-    Local.associate = (models) => {
-        Local.hasMany(models.Choice);
-    };
 
     return Local;
 };
