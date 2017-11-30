@@ -28,8 +28,8 @@
                 <button type="submit" class="btn btn-info">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
+                <li ng-if='logged' ng-click="logOut()"><a href="#">Log Out</a></li>
                 <div class="form-group">
-                    <button ng-if='logged' ng-click="logOut()" class="btn btn-warning">Log Out</button>
                     <div ng-if='!logged' class="btn-group">
                         <a href="logIn" class="btn btn-md btn-primary">Log In</a>
                         <a href="signUp" class="btn btn-md btn-warning">Sign In</a>

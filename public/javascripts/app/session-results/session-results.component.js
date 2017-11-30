@@ -8,18 +8,17 @@ angular.module('sessionResults')
             $scope.resultsLoad = false;
             var weightedCtx = document.getElementById("weightedChart");
             var frequencyCtx = document.getElementById("frequencyChart");
-            var freqVeryLowPriorCtx = document.getElementById("freqVeryLowPrior");
             var freqLowPriorCtx = document.getElementById("freqLowPrior");
             var freqMediumPriorCtx = document.getElementById("freqMediumPrior");
             var freqHighPriorCtx = document.getElementById("freqHighPrior");
-            var freqUrgentPriorCtx = document.getElementById("freqUrgentPrior");
+            var freqMediumHighPriorCtx = document.getElementById("freqMediumHighPrior");
             var weightedChart;
             var frequencyChart;
-            var freqVeryLowPriorChart;
             var freqLowPriorChart;
             var freqMediumPriorChart;
             var freqHighPriorChart;
-            var freqUrgentPriorChart;
+            var freqMediumHighPriorChart;
+
 
             var colors = [
                 [230, 25, 75],
@@ -147,17 +146,13 @@ angular.module('sessionResults')
                         var Choices = result.Choices
                             .map(function (choice) {
                                 console.log(choice);
-                                if(choice.Vote.priority === 1) choice.Vote.priorityStr = 'Very Low';
-                                if(choice.Vote.priority === 2) choice.Vote.priorityStr = 'Low';
-                                if(choice.Vote.priority === 3) choice.Vote.priorityStr = 'Medium';
-                                if(choice.Vote.priority === 4) choice.Vote.priorityStr = 'High';
-                                if(choice.Vote.priority === 5) choice.Vote.priorityStr = 'Urgent';
+                                if(choice.Vote.priority === 0) choice.Vote.priorityStr = 'Not Selected';
+                                if(choice.Vote.priority === 1) choice.Vote.priorityStr = 'Low';
+                                if(choice.Vote.priority === 2) choice.Vote.priorityStr = 'Medium';
+                                if(choice.Vote.priority === 3) choice.Vote.priorityStr = 'High';
                                 return choice;
                             });
                         return {userName: result.Person.userName, reason:result.reason, Choices: Choices}
-                    })
-                    .filter(function (arg) {
-                        return arg.reason !== null;
                     });
                 $scope.currentPageArg = 1;
 
@@ -178,14 +173,16 @@ angular.module('sessionResults')
             function getCharts(results){
                 console.log(results);
                 function unifyVotes(arr,vote, process,objToPush){
-                    for(var i = 0; i < arr.length; i++){
-                        if(arr[i].ChoiceId == vote.ChoiceId) {
-                            //arr[i].weightedTotal += vote.priority;
-                            process(arr[i],vote);
-                            return arr;
+                    if (vote.priority !== 0){
+                        for(var i = 0; i < arr.length; i++){
+                            if(arr[i].ChoiceId == vote.ChoiceId) {
+                                //arr[i].weightedTotal += vote.priority;
+                                process(arr[i],vote);
+                                return arr;
+                            }
                         }
+                        arr.push(objToPush);
                     }
-                    arr.push(objToPush);
                     return arr;
                 }
 
@@ -275,8 +272,7 @@ angular.module('sessionResults')
                     }, [])
                     .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
                 console.log(weightedResults, frequencyResults);
-
-                var freqVeryLowResults = reducedResults
+                var freqLowResults = reducedResults
                     .filter(function(vote){return (vote.priority===1);})
                     .reduce(function (freqResults, vote) {
                         return unifyVotes(freqResults, vote,
@@ -293,7 +289,7 @@ angular.module('sessionResults')
                         );
                     },[])
                     .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
-                var freqLowResults = reducedResults
+                var freqMediumResults = reducedResults
                     .filter(function(vote){return (vote.priority===2);})
                     .reduce(function (freqResults, vote) {
                         return unifyVotes(freqResults, vote,
@@ -310,7 +306,7 @@ angular.module('sessionResults')
                         );
                     },[])
                     .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
-                var freqMediumResults = reducedResults
+                var freqHighResults = reducedResults
                     .filter(function(vote){return (vote.priority===3);})
                     .reduce(function (freqResults, vote) {
                         return unifyVotes(freqResults, vote,
@@ -327,49 +323,33 @@ angular.module('sessionResults')
                         );
                     },[])
                     .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
-                var freqHighResults = reducedResults
-                    .filter(function(vote){return (vote.priority===4);})
-                    .reduce(function (freqResults, vote) {
-                        return unifyVotes(freqResults, vote,
-                            function (voteToMod, vote) {
-                                voteToMod.frequency += 1;
-                            },
-                            {
-                                ChoiceId: vote.ChoiceId,
-                                name: vote.name,
-                                mechanism: vote.mechanism,
-                                result: vote.result,
-                                frequency: 1
-                            }
-                        );
-                    },[])
-                    .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
-                var freqUrgentResults = reducedResults
-                    .filter(function(vote){return (vote.priority===5);})
-                    .reduce(function (freqResults, vote) {
-                        return unifyVotes(freqResults, vote,
-                            function (voteToMod, vote) {
-                                voteToMod.frequency += 1;
-                            },
-                            {
-                                ChoiceId: vote.ChoiceId,
-                                name: vote.name,
-                                mechanism: vote.mechanism,
-                                result: vote.result,
-                                frequency: 1
-                            }
-                        );
-                    },[])
-                    .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
-                console.log(freqVeryLowResults);
 
-                function getAlphaColors(quantity,alpha){
+                var freqMediumHighResults = reducedResults
+                    .filter(function(vote){return (vote.priority===3 || vote.priority === 2);})
+                    .reduce(function (freqResults, vote) {
+                        return unifyVotes(freqResults, vote,
+                            function (voteToMod, vote) {
+                                voteToMod.frequency += 1;
+                            },
+                            {
+                                ChoiceId: vote.ChoiceId,
+                                name: vote.name,
+                                mechanism: vote.mechanism,
+                                result: vote.result,
+                                frequency: 1
+                            }
+                        );
+                    },[])
+                    .sort(function(a,b) {return (a.ChoiceId > b.ChoiceId) ? 1 : ((b.ChoiceId > a.ChoiceId) ? -1 : 0);});
+
+                function getAlphaColors(voteIds,alpha){
                     var strColors = [];
-                    for(var i = 0; i<quantity; i++){
+                    console.log(voteIds);
+                    for(var vote of voteIds){
                         strColors.push('rgba('
-                            +colors[i%colors.length][0]
-                            +','+colors[i%colors.length][1]
-                            +','+colors[i%colors.length][2]+
+                            +colors[vote%colors.length][0]
+                            +','+colors[vote%colors.length][1]
+                            +','+colors[vote%colors.length][2]+
                             ','+alpha+')');
                     }
                     return strColors;
@@ -383,8 +363,8 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'Weighted Total of Votes',
                             data: weightedResults.map(function(vote){return vote.weightedTotal}),
-                            backgroundColor: getAlphaColors(weightedResults.length, '0.2'),
-                            borderColor: getAlphaColors(weightedResults.length, '1'),
+                            backgroundColor: getAlphaColors(weightedResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            borderColor: getAlphaColors(weightedResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
                     },
@@ -409,8 +389,8 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'Frequency of Votes',
                             data: frequencyResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(frequencyResults.length, '0.2'),
-                            borderColor: getAlphaColors(frequencyResults.length, '1'),
+                            backgroundColor: getAlphaColors(frequencyResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            borderColor: getAlphaColors(frequencyResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
                     },
@@ -427,41 +407,6 @@ angular.module('sessionResults')
                         }
                     }
                 });
-                if(freqVeryLowPriorChart) freqVeryLowPriorChart.destroy();
-                freqVeryLowPriorChart = new Chart(freqVeryLowPriorCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: freqVeryLowResults.map(function (vote) {return vote.name}),
-                        datasets: [{
-                            label: 'N° Votes',
-                            data: freqVeryLowResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqVeryLowResults.length, '0.2'),
-                            borderColor: getAlphaColors(freqVeryLowResults.length, '1'),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'N° of Votes with Very Low Priority'
-                        },
-                        legend:{
-                            display: false,
-                            position: 'bottom',
-                            onClick: function (e, legendItem) {
-                                console.log('click',e, legendItem);
-                            }
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function(value) {if (value % 1 === 0) {return value;}}
-                                }
-                            }]
-                        }
-                    }
-                });
                 if(freqLowPriorChart) freqLowPriorChart.destroy();
                 freqLowPriorChart = new Chart(freqLowPriorCtx, {
                     type: 'bar',
@@ -470,8 +415,8 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqLowResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqLowResults.length, '0.2'),
-                            borderColor: getAlphaColors(freqLowResults.length, '1'),
+                            backgroundColor: getAlphaColors(freqLowResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            borderColor: getAlphaColors(freqLowResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
                     },
@@ -505,8 +450,8 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqMediumResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqMediumResults.length, '0.2'),
-                            borderColor: getAlphaColors(freqMediumResults.length, '1'),
+                            backgroundColor: getAlphaColors(freqMediumResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            borderColor: getAlphaColors(freqMediumResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
                     },
@@ -540,8 +485,8 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqHighResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqHighResults.length, '0.2'),
-                            borderColor: getAlphaColors(freqHighResults.length, '1'),
+                            backgroundColor: getAlphaColors(freqHighResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            borderColor: getAlphaColors(freqHighResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
                     },
@@ -567,23 +512,23 @@ angular.module('sessionResults')
                         }
                     }
                 });
-                if(freqUrgentPriorChart) freqUrgentPriorChart.destroy();
-                freqUrgentPriorChart = new Chart(freqUrgentPriorCtx, {
+                if(freqMediumHighPriorChart) freqMediumHighPriorChart.destroy();
+                freqMediumHighPriorChart = new Chart(freqMediumHighPriorCtx, {
                     type: 'bar',
                     data: {
-                        labels: freqUrgentResults.map(function (vote) {return vote.name}),
+                        labels: freqMediumHighResults.map(function (vote) {return vote.name}),
                         datasets: [{
                             label: 'N° Votes:',
-                            data: freqUrgentResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqUrgentResults.length, '0.2'),
-                            borderColor: getAlphaColors(freqUrgentResults.length, '1'),
+                            data: freqMediumHighResults.map(function(vote){return vote.frequency}),
+                            backgroundColor: getAlphaColors(freqMediumHighResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            borderColor: getAlphaColors(freqMediumHighResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
                     },
                     options: {
                         title: {
                             display: true,
-                            text: 'N° of Votes with Urgent Priority'
+                            text: 'N° of Votes with Medium-High Priority'
                         },
                         legend:{
                             display: false,

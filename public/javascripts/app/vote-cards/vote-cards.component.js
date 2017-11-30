@@ -3,7 +3,7 @@
 angular.module('voteCards')
     .component('voteCards', {
         templateUrl: 'templates/vote-cards.html',
-        controller: function ($scope, $routeParams, $location, EventCore, SessionCore) {
+        controller: function ($scope, $routeParams, $location, EventCore, SessionCore, Socket) {
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
                 "/session/:id"
@@ -21,11 +21,9 @@ angular.module('voteCards')
                 reason: null
             };
 
-            $scope.categories = [{val: 1, label: "Very Low"},
-                {val: 2, label: "Low"},
-                {val: 3, label: "Medium"},
-                {val: 4, label: "High"},
-                {val: 5, label: "Urgent"}];
+            $scope.categories = [{val: 1, label: "Low"},
+                {val: 2, label: "Medium"},
+                {val: 3, label: "High"}];
 
             var choicesPromise = EventCore.listChoices();
             var eventPromise = EventCore.getThisEvent($routeParams.id,$routeParams.eventId);
@@ -62,7 +60,7 @@ angular.module('voteCards')
                                 name: choice.name,
                                 mechanism: choice.mechanism,
                                 result: choice.result,
-                                priority: {val: 1, label: "Very Low"}});
+                                priority: {val: 1, label: "Low"}});
                         }
                         // Model to JSON for demo purpose
                         $scope.$watch('models', function (model) {
@@ -85,18 +83,18 @@ angular.module('voteCards')
                 return array.indexOf(value) > -1;
             }
 
-            var socket = io();
+            //var socket = io();
 
             $scope.$on('$routeChangeStart', function(scope, next, current){
                 if(!isInArray(next.$$route.originalPath, saveRoutes)) {
                     EventCore.resetVoteState();
-                    socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
+                    Socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
                 }
             });
 
-            socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
+            Socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
 
-            socket.on('finish:'+$routeParams.id, function () {
+            Socket.on('finish:'+$routeParams.id, function () {
                 console.log('Vote finished!');
             });
         }

@@ -2,7 +2,7 @@ angular.module('countdown')
     .component('countdown', {
         css: ['stylesheets/countdown.css', '/scripts/clockpicker/dist/bootstrap-clockpicker.min.css'],
         templateUrl: 'templates/countdown.html',
-        controller: function($scope, $routeParams, SessionCore){
+        controller: function($scope, $routeParams, SessionCore, Socket){
 
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
@@ -205,14 +205,14 @@ angular.module('countdown')
             $scope.$on('isModerator', function(event,isModerator){
                 $scope.isModerator = isModerator;
                 if(isModerator){
-                    socket.on('getTimer:'+$routeParams.id, function () {
+                    Socket.on('getTimer:'+$routeParams.id, function () {
                         if(!$scope.freeze) {
-                            socket.emit('theTime', {time: Countdown.getTimerTime(), sessionId: $routeParams.id})
+                            Socket.emit('theTime', {time: Countdown.getTimerTime(), sessionId: $routeParams.id})
                         }
                     })
                 }
                 else{
-                    socket.emit('getTimer', $routeParams.id);
+                    Socket.emit('getTimer', $routeParams.id);
                 }
             });
 
@@ -227,13 +227,13 @@ angular.module('countdown')
                 }
             });
 
-            var socket = io();
+            //var socket = io();
 
-            socket.on('setTimer:'+$routeParams.id, function (time) {
+            Socket.on('setTimer:'+$routeParams.id, function (time) {
                 Countdown.changeTime(time);
                 Countdown.playTime();
             });
-            socket.on('toggleTimer:'+$routeParams.id, function (time) {
+            Socket.on('toggleTimer:'+$routeParams.id, function (time) {
                 Countdown.changeTime(time);
                 Countdown.pauseNPlayTime();
             });

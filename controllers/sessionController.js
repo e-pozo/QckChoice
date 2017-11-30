@@ -80,6 +80,26 @@ module.exports = {
             .catch(err => {res.status(500).json(err)})
     },
 
+
+    getParticipants(req, res){
+        sequelize.transaction( t => {
+            return Session.findById(req.params.id, {transaction: t})
+                .then(Session => {
+                    return Session.getPeople({
+                        through: {PersonSession},
+                        transaction: t
+                    })
+                })
+        })
+            .then(result => {
+                res.status(200).json({"message":"Here are all participants of this session", "result": result});
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send(err);
+            });
+    },
+
     isModeratorOfThisSession(req, res, next) {
         PersonSession.findOne({
             where: {

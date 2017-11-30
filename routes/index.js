@@ -156,11 +156,12 @@ module.exports = function(io) {
         authenticationMiddleware(),
         sessionController.isModeratorOfThisSession,
         sessionController.isActiveThisSession,
+        (req, res, next) => {
+            io.emit('finish:'+req.params.id, 'sessionIsFinishing');
+            next();
+        },
         voteController.everyOneVote(sockets.getSessionsConnections(), io),
-        personController.finishSession,
-        (req) => {
-        io.emit('finish:'+req.params.id, 'sessionFinished');
-    });
+        personController.finishSession);
 
 //Set Timers
     router.post('/api/session/:id/setTime',
@@ -196,6 +197,13 @@ module.exports = function(io) {
 
         res.status(200).send(sockets.getSessionsConnections());
     });
+
+//Get all participants of this session
+
+    router.get('/api/session/:id/participants',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        sessionController.getParticipants);
 
 //Pass all remains GET request to Angular router.
     router.get('*', (req, res) => {

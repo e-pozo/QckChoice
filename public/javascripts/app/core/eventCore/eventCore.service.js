@@ -191,6 +191,9 @@ angular.module('eventCore').factory('EventCore',
                     for (var vote of votesInf.voteList.B){
                         votes.push({priority: vote.priority.val, ChoiceId: vote.id});
                     }
+                    for (var vote of votesInf.voteList.A){
+                        votes.push({priority: 0, ChoiceId: vote.id});
+                    }
                     var reason = votesInf.reason;
                     HttpPromiseToSend.push($http.post('/api/session/'+idSession+'/event/'+idEvent+'/vote', {
                         reason: reason,

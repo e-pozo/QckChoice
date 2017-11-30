@@ -5306,8 +5306,8 @@ button.list-group-item {
 .list-group-item.active:hover,
 .list-group-item.active:focus {
     z-index: 2;
-    color: #f8f5f0;
-    background-color: #2e4057;
+    color: #3e3f3a;
+    background-color: #f8f5f0;
     border-color: #dfd7ca;
 }
 .list-group-item.active .list-group-item-heading,

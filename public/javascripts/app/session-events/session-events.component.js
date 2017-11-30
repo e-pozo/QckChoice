@@ -3,16 +3,16 @@
 angular.module('sessionEvents')
     .component('sessionEvents', {
         templateUrl: 'templates/events.html',
-        controller: function ($scope, $q, $routeParams, $uibModal, SessionCore, EventCore) {
+        css: ['stylesheets/scrolldown.css'],
+        controller: function ($scope, $q, $routeParams, $uibModal, SessionCore, EventCore, Socket) {
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
                 "/session/:id"
             ];
 
             $scope.inTheZone = false;
-            var socket = io();
-            socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
-
+            //var socket = io();
+            Socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
             var modalCreate;
             var modalEdit;
             SessionCore.getThisSession($routeParams.id).then(function (resultado) {
@@ -20,8 +20,10 @@ angular.module('sessionEvents')
                 $scope.thisSession =resultado;
                 $scope.$broadcast('isModerator', $scope.thisSession.PersonSession.isModerator);
                 if(!$scope.thisSession.PersonSession.isModerator){
-                    socket.on('finish:'+$routeParams.id, function () {
+                    Socket.on('finish:'+$routeParams.id, function () {
                         console.log('Vote finished!');
+                        $scope.sendVotes();
+
                     });
                 }
 
@@ -39,6 +41,26 @@ angular.module('sessionEvents')
 
             $scope.event = {'objective': null, 'timer':null};
             listEvent();
+
+            SessionCore.listParticipants($routeParams.id)
+                .then(function(participants){
+                    $scope.participants = participants.map(function(participant){
+                        participant.isOnline = false;
+                        return participant;
+                    });
+                    Socket.on('usersConnected:'+$routeParams.id, function (people) {
+                        console.log(people[0]);
+                        for(let i=0; i<$scope.participants.length; i++){
+                            if(people[0].personIds.indexOf($scope.participants[i].id > -1)){
+                                $scope.participants[i].isOnline = true;
+                            }
+                        }
+                        console.log($scope.participants);
+                    });
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
 
             var eventValidation = function () {
                 var deferred = $q.defer();
@@ -214,7 +236,7 @@ angular.module('sessionEvents')
             $scope.$on('$routeChangeStart', function(scope, next, current){
                 if(!isInArray(next.$$route.originalPath, saveRoutes)) {
                     EventCore.resetVoteState();
-                    socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
+                    Socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
                 }
             });
         }

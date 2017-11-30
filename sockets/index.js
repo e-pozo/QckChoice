@@ -59,12 +59,14 @@ module.exports = io => {
 
         socket.on('connectedToSession', data => {
            addOne(data.id, data.personId);
-           console.log(Counters);
+           io.emit('usersConnected:'+data.id, Counters.filter(obj => obj.id === data.id));
+           console.log(Counters.filter(obj => obj.id === data.id));
         });
 
         socket.on('disconnectedToSession', data => {
             lessOne(data.id, data.personId);
-            console.log(Counters);
+            io.emit('usersConnected:'+data.id, Counters.filter(obj => obj.id === data.id));
+            console.log(Counters.filter(obj => obj.id === data.id));
         })
     });
 

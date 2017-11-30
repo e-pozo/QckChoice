@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('voteCards', ["auth", "eventCore", "sessionCore"]);
+angular.module('voteCards', ["auth", "eventCore", "sessionCore", "socket"]);

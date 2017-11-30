@@ -23,6 +23,28 @@
                     <input type="text" id="moderatorUrl" class="form-control" value="{{'localhost:3000/session/'+thisSession.id+'/join/'+thisSession.moderatorPass}}" readonly>
                 </div>
                 <button class="btn btn-block btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="finishSession()">FINISH SESSION</button>
+                <div class="container">
+                    {{onlinePeople}}
+                    <div class="row">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Participants<span class="badge">{{participants.length}}</span></h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="test">
+                                        <ul class="list-group" id="list-of-people">
+                                            <li class="list-group-item" ng-model="participant" ng-repeat="participant in participants">{{participant.userName+"   "+participant.isOnline}}
+                                                <span class="label label-default" ng-show="!participant.isOnline">Offline</span>
+                                                <span class="label label-primary" ng-show="participant.isOnline">Online</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-8">

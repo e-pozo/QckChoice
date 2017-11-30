@@ -150,6 +150,23 @@ angular.module('sessionCore').factory('SessionCore',
                 return deferred.promise;
             }
 
+            function listParticipants(id){
+                var deferred = $q.defer();
+                $http.get('/api/session/'+id+'/participants')
+                    .then(function(result) {
+                        if(result.status === 200){
+                            deferred.resolve(result.data.result);
+                        }
+                        else{
+                            deferred.reject(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    })
+                return deferred.promise;
+            }
+
             function changeTime(sessionId, time){
                 var deferred = $q.defer();
                 $http.post('/api/session/'+sessionId+'/setTime',{time: time})
@@ -177,6 +194,7 @@ angular.module('sessionCore').factory('SessionCore',
                 getThisSession: getThisSession,
                 inviteToSession: inviteToSession,
                 finishSession: finishSession,
+                listParticipants: listParticipants,
                 changeTime: changeTime,
                 toggleTime: toggleTime
             });

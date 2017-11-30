@@ -3,7 +3,7 @@
 angular.module('chat')
     .component('chat', {
         templateUrl: 'templates/chat.html',
-        controller: function ($scope, $routeParams, EventCore) {
+        controller: function ($scope, $routeParams, EventCore, Socket) {
             var chatPromise = EventCore.listMessageToChat($routeParams.id, $routeParams.eventId);
             $scope.isChat = true;
             $scope.toggleMinim = function () {
@@ -40,7 +40,7 @@ angular.module('chat')
                 $("#chat_window_1").remove();
             });
 
-            var socket = io();
+            //var socket = io();
             var output = document.getElementById('output');
             var aboutMe = JSON.parse(sessionStorage.getItem('me'));
             var msgHTML = function (userName, msg, type) {
@@ -76,12 +76,12 @@ angular.module('chat')
                 EventCore.addMessageToChat($routeParams.id, $routeParams.eventId, $scope.chat.message)
                     .then(function () {
                          output.innerHTML += msgHTML(aboutMe.userName, $scope.chat.message, 'sent');
-                        socket.emit('chat message', {event: $routeParams.eventId, message: $scope.chat.message, userName: aboutMe.userName});
+                        Socket.emit('chat message', {event: $routeParams.eventId, message: $scope.chat.message, userName: aboutMe.userName});
                         $scope.chat.message = null;
                     })
             };
 
-            socket.on('chat message'+$routeParams.eventId, function (msg) {
+            Socket.on('chat message'+$routeParams.eventId, function (msg) {
                 output.innerHTML += msgHTML(msg.userName, msg.message, 'receive');
             });
 

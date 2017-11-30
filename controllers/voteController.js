@@ -80,8 +80,8 @@ module.exports = {
                 })
         })
             .then(result => {
-                res.status(201).json(result);
                 addOne(req.params.id, req.user.personId || req.user.id);
+                res.status(201).json(result);
 
             })
             .catch(err => {
@@ -92,7 +92,7 @@ module.exports = {
 
     everyOneVote(peopleWhoWantsToVote, io){
         return function (req, res, next) {
-
+            console.log(peopleWhoWantsToVote);
             function updatePeopleWhoWantsToVote(id){
                 let peopleWhoVoteInThisSession = findPeopleInSession(id);
                 for(let i = 0; i < peopleWhoWantsToVote.length; i++){
@@ -118,11 +118,8 @@ module.exports = {
                     res.status(409).json({message: "these people have not yet voted", personsIds: peopleWhoWantsToVote})
                 }
                 if(peopleWhoWantsToVote.length === 0){
-                    if(index){
-                        peopleWhoVotes.splice(index,1);
-                    }
-                    clearInterval(interval);
                     lessOne(req.params.id);
+                    clearInterval(interval);
                     next();
                 }
                 else{
