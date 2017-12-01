@@ -10,40 +10,42 @@
             <div class="jumbotron">
                 <h2>Welcome to: {{thisSession.title}}</h2>
                 {{thisSession.description}}
-                <div class="input-group">
+                <div class="row">
+                    <div class="input-group">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button" ngclipboard data-clipboard-target="#guestUrl" data-toggle="popover" data-content="Copied!">Invite a guest</button>
                     </span>
-                    <input type="text" id="guestUrl" class="form-control" value="{{'localhost:3000/session/'+thisSession.id+'/join/'+thisSession.guestPass}}" readonly>
+                        <input type="text" id="guestUrl" class="form-control" value="{{'localhost:3000/session/'+thisSession.id+'/join/'+thisSession.guestPass}}" readonly>
+                    </div>
+                    <button class="btn btn-block btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="finishSession()">FINISH SESSION</button>
                 </div>
-                <div class="input-group" ng-if="thisSession.PersonSession.isModerator">
-                    <span class="input-group-btn">
-                        <button class="btn btn-info" type="button" ngclipboard data-clipboard-target="#moderatorUrl" data-toggle="popover"  data-content="Copied!">Invite a Moderator</button>
-                    </span>
-                    <input type="text" id="moderatorUrl" class="form-control" value="{{'localhost:3000/session/'+thisSession.id+'/join/'+thisSession.moderatorPass}}" readonly>
-                </div>
-                <button class="btn btn-block btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="finishSession()">FINISH SESSION</button>
-                <div class="container">
-                    {{onlinePeople}}
-                    <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Participants<span class="badge">{{participants.length}}</span></h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="test">
-                                        <ul class="list-group" id="list-of-people">
-                                            <li class="list-group-item" ng-model="participant" ng-repeat="participant in participants">{{participant.userName+"   "+participant.isOnline}}
+                    {{peopleOnline}}
+                <div class="row">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Participants<span class="badge">{{participants.length}}</span></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="test">
+                                    <ul class="list-group" id="list-of-people">
+                                        <li class="list-group-item" ng-model="participant" ng-repeat="participant in participants">{{participant.userName}}
+                                            <div>
                                                 <span class="label label-default" ng-show="!participant.isOnline">Offline</span>
                                                 <span class="label label-primary" ng-show="participant.isOnline">Online</span>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                <span class="label label-success" ng-show="participant.alreadyVote">Ready</span>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <br>
+                <h6>how many people have voted:</h6>
+                <div class="row">
+                    <uib-progressbar max="participants.length" value="quantOfPeopleWhoVoted"><span style="color:white; white-space:nowrap;">{{quantOfPeopleWhoVoted}} / {{participants.length}}</span></uib-progressbar>
                 </div>
             </div>
         </div>

@@ -96,8 +96,10 @@ angular.module('QckChoice')
                 template: "<header><nav-bar></nav-bar></header> <welcome><h1>hola</h1></welcome>"
             })
             .when('/logIn', {
-                template: "<log-in></log-in>",
-                    resolve: {invloggedIn: inverseLoggedIn}
+                templateUrl: '/templates/log-in.html',
+                controller: 'logInController',
+                //template: "<log-in></log-in>",
+                resolve: {invloggedIn: inverseLoggedIn}
             })
             .when('/signUp', {
                 template: "<sign-up></sign-up>",

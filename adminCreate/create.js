@@ -13,7 +13,7 @@ function registro(email, name, rut, password){
 }
 
 //Para crear un admin se debe hacer por consola:
-// ADMIN=*email,*name,*rut,*password node adminCreate/create.js
+// ADMIN='*email,*name,*rut,*password' node adminCreate/create.js
 // Reemplazar variables con * por valores deseados.
 
 let inputConsole = process.env.ADMIN;

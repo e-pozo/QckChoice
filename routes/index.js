@@ -97,7 +97,10 @@ module.exports = function(io) {
             authenticationMiddleware(),
             sessionController.isModeratorOfThisSession,
             sessionController.isActiveThisSession,
-            sessionController.makeEvent)
+            sessionController.makeEvent,
+            req => {
+                io.emit('updateEvents:'+req.params.id, 'this update all event on session');
+            })
 
         //Show all events form a particular session
         .get('/api/session/:id',
@@ -110,14 +113,20 @@ module.exports = function(io) {
             authenticationMiddleware(),
             sessionController.isModeratorOfThisSession,
             sessionController.isActiveThisSession,
-            sessionController.updateEvent)
+            sessionController.updateEvent,
+            req => {
+                io.emit('updateEvents:'+req.params.id, 'this update all event on session');
+            })
 
         //Delete a particular event from a particular session
         .delete('/api/sessionUser/:id/event/:idEvent',
             authenticationMiddleware(),
             sessionController.isModeratorOfThisSession,
             sessionController.isActiveThisSession,
-            sessionController.deleteEvent);
+            sessionController.deleteEvent,
+            req => {
+                io.emit('updateEvents:'+req.params.id, 'this update all event on session');
+            });
 
 //List the participating sessions.
     router.get('/api/sessionParticipating',
@@ -141,7 +150,10 @@ module.exports = function(io) {
         authenticationMiddleware(),
         sessionController.isInThisSession,
         sessionController.isActiveThisSession,
-        voteController.addVote);
+        voteController.addVote,
+        (req,res) => {
+            io.emit('updatePeopleReady:'+req.params.id, 'a new vote has been stored');
+        });
 //List all arguments & votes of an event
     router.get('/api/session/:id/event/:idEvent/vote',
         authenticationMiddleware(),
@@ -157,12 +169,10 @@ module.exports = function(io) {
         authenticationMiddleware(),
         sessionController.isModeratorOfThisSession,
         sessionController.isActiveThisSession,
-        (req, res, next) => {
-            io.emit('finish:'+req.params.id, 'sessionIsFinishing');
-            next();
-        },
-        voteController.everyOneVote(sockets.getSessionsConnections(), io),
-        personController.finishSession);
+        personController.finishSession,
+        req => {
+            io.emit('finish:'+req.params.id, 'Session finished')
+        });
 
 //Set Timers
     router.post('/api/session/:id/setTime',
@@ -199,12 +209,19 @@ module.exports = function(io) {
         res.status(200).send(sockets.getSessionsConnections());
     });
 
-//Get all participants of this session
+//Get all participants of this session.
 
     router.get('/api/session/:id/participants',
         authenticationMiddleware(),
         sessionController.isInThisSession,
         sessionController.getParticipants);
+
+//Get all participants who already vote.
+
+    router.get('/api/session/:id/peopleWhoVote',
+        authenticationMiddleware(),
+        sessionController.isInThisSession,
+        sessionController.getPeopleWhoVote);
 
 //LogIn Admin
 

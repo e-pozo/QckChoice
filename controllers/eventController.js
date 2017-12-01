@@ -58,7 +58,7 @@ function getVotes(req, res) {
                     include: [
                         {model: Choice, attributes: {exclude: ['id', 'LocalId']}},
                         {model: Person, include: [
-                            {model: Local, attributes: ['email', 'isAdmin']},
+                            {model: Local, attributes: ['email']},
                             {model: Twitter, attributes: ['displayName', 'userName']},
                             {model: Facebook, attributes: ['email', 'name']},
                             {model: Google, attributes: ['email', 'name']}

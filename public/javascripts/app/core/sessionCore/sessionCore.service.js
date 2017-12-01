@@ -163,8 +163,25 @@ angular.module('sessionCore').factory('SessionCore',
                     })
                     .catch(function (err) {
                         deferred.reject(err);
-                    })
+                    });
                 return deferred.promise;
+            }
+
+            function getPeopleWhoVote(id){
+                var deferred = $q.defer();
+                $http.get('/api/session/'+id+'/peopleWhoVote')
+                    .then(function(result){
+                        if(result.status === 200){
+                            deferred.resolve(result.data.result)
+                        }
+                        else{
+                            deferred.reject(result);
+                        }
+                    })
+                    .catch(function(err){
+                        deferred.reject(err);
+                    });
+                return deferred.promise
             }
 
             function changeTime(sessionId, time){
@@ -195,6 +212,7 @@ angular.module('sessionCore').factory('SessionCore',
                 inviteToSession: inviteToSession,
                 finishSession: finishSession,
                 listParticipants: listParticipants,
+                getPeopleWhoVote: getPeopleWhoVote,
                 changeTime: changeTime,
                 toggleTime: toggleTime
             });

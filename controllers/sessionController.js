@@ -2,6 +2,7 @@
 const models = require('../models');
 const Session = models.Session;
 const PersonSession = models.PersonSession;
+const Argument = models.Argument;
 const sequelize = models.sequelize;
 const Event = models.Event;
 
@@ -25,14 +26,17 @@ module.exports = {
             .catch(err => {res.status(500).json(err)})
     },
 
-    makeEvent(req, res) {
+    makeEvent(req, res, next) {
         sequelize.transaction(t => {
             return Event.create({SessionId: req.params.id,
                     objective: req.body.objective},
 
                     {transaction: t})
         })
-            .then(result => {res.status(201).json({"message":"Event created successfully", "result":result})})
+            .then(result => {
+                res.status(201).json({"message":"Event created successfully", "result":result});
+                next();
+            })
             .catch(err => {res.status(500).json(err)})
     },
 
@@ -48,7 +52,7 @@ module.exports = {
             .catch(err => {res.status(500).json(err)})
     },
 
-    updateEvent(req, res) {
+    updateEvent(req, res, next) {
         sequelize.transaction( t=> {
             return Event.update(
                 {
@@ -62,11 +66,14 @@ module.exports = {
                 {transaction: t}
             )
         })
-            .then(result => {res.status(201).json({"message":"Success", "result":result})})
+            .then(result => {
+                res.status(201).json({"message":"Success", "result":result});
+                next();
+            })
             .catch(err => {res.status(500).json(err)})
     },
 
-    deleteEvent(req, res){
+    deleteEvent(req, res, next){
         sequelize.transaction( t=> {
             return Event.destroy(
                 {
@@ -76,7 +83,10 @@ module.exports = {
                 {transaction: t}
             )
         })
-            .then(result => {res.status(200).json({"message":"Deleted", "result":result})})
+            .then(result => {
+                res.status(200).json({"message":"Deleted", "result":result});
+                next();
+            })
             .catch(err => {res.status(500).json(err)})
     },
 
@@ -98,6 +108,32 @@ module.exports = {
                 console.log(err);
                 res.status(500).send(err);
             });
+    },
+
+    getPeopleWhoVote(req, res){
+        Session.findById(req.params.id)
+            .then(Session => {
+                return Session.getEvents({
+                    include: {model: Argument, attributes: ['personId']}
+                })
+            })
+            .then(result => {
+                result = result
+                    .map(event => event.Arguments)
+                    .reduce((peopleWhoVote, peopleWhoVoteInEvent) => {
+                        for (let person of peopleWhoVoteInEvent){
+                            if(peopleWhoVote.indexOf(person.personId)===-1){
+                                peopleWhoVote.push(person.personId);
+                            }
+                        }
+                        return peopleWhoVote;
+                    },[]);
+                res.status(200).json({"message": "People who vote", "result": result});
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send(err);
+            })
     },
 
     isModeratorOfThisSession(req, res, next) {

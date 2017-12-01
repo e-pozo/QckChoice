@@ -3,7 +3,7 @@ const models = require('../models');
 const sequelize = models.sequelize;
 const Vote = models.Vote;
 const Argument = models.Argument;
-const peopleWhoVotes = [];
+let peopleWhoVotes = [];
 
 function inArray(array, el) {
     for ( var i = array.length; i--; ) {
@@ -60,7 +60,7 @@ function lessOne (id){
 
 module.exports = {
 
-    addVote(req, res) {
+    addVote(req, res, next) {
         console.log(req.body.votes);
         const votes = (arg,vts) => {
             let listOfvotes = [];
@@ -82,6 +82,7 @@ module.exports = {
             .then(result => {
                 addOne(req.params.id, req.user.personId || req.user.id);
                 res.status(201).json(result);
+                next();
 
             })
             .catch(err => {

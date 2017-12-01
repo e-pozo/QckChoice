@@ -95,7 +95,7 @@ angular.module('voteCards')
             Socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
 
             Socket.on('finish:'+$routeParams.id, function () {
-                console.log('Vote finished!');
+                $location.path('/session/'+$routeParams.id+'/results');
             });
         }
     });

@@ -10,6 +10,7 @@ angular.module('QckChoice', [
     'angularCSS',
     //internal
     'logIn',
+    'logInForDelivery',
     'signUp',
     'sessionUser',
     'sessionResults',

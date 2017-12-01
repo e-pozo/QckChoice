@@ -4,28 +4,90 @@ angular.module('sessionEvents')
     .component('sessionEvents', {
         templateUrl: 'templates/events.html',
         css: ['stylesheets/scrolldown.css'],
-        controller: function ($scope, $q, $routeParams, $uibModal, SessionCore, EventCore, Socket) {
+        controller: function ($scope, $q, $routeParams, $uibModal, $location, SessionCore, EventCore, Socket) {
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
                 "/session/:id"
             ];
 
+            var peopleOnline=[];
+
+            $scope.quantOfPeopleWhoVoted = 0;
             $scope.inTheZone = false;
             //var socket = io();
             Socket.emit('connectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
+            Socket.on('usersConnected:'+$routeParams.id, function (people) {
+                console.log(people[0].personIds);
+                peopleOnline = people[0].personIds;
+                $scope.peopleOnline = people[0].personIds;
+                SessionCore.listParticipants($routeParams.id)
+                    .then(function(participants){
+                        return participants.map(function(participant){
+                            if($scope.peopleOnline.indexOf(participant.id) > -1){
+                                participant.isOnline = true;
+                            }
+                            else{
+                                participant.isOnline = false;
+                            }
+                            return participant;
+                        });
+                    })
+                    .then(function(participants){
+                        SessionCore.getPeopleWhoVote($routeParams.id)
+                            .then(function (peopleWhoVote) {
+                                $scope.quantOfPeopleWhoVoted = peopleWhoVote.length;
+                                $scope.participants = participants.map(function(participant){
+                                    if(peopleWhoVote.indexOf(participant.id) > -1){
+                                        participant.alreadyVote = true;
+                                    }
+                                    else{
+                                        participant.alreadyVote = false;
+                                    }
+                                    return participant;
+                                })
+                            })
+                            .catch(function (err){
+                                console.log(err);
+                            });
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    });
+                $scope.$apply();
+            });
+
+            Socket.on('updatePeopleReady:'+$routeParams.id, function(){
+                SessionCore.getPeopleWhoVote($routeParams.id)
+                    .then(function (peopleWhoVote) {
+                        $scope.quantOfPeopleWhoVoted = peopleWhoVote.length;
+                        $scope.participants = $scope.participants.map(function(participant){
+                            if(peopleWhoVote.indexOf(participant.id) > -1){
+                                participant.alreadyVote = true;
+                            }
+                            else{
+                                participant.alreadyVote = false;
+                            }
+                            return participant;
+                        })
+                    })
+                    .catch(function (err){
+                        console.log(err);
+                    });
+            });
+
+            Socket.on('finish:'+$routeParams.id, function () {
+                $location.path('/session/'+$routeParams.id+'/results');
+            });
+            Socket.on('updateEvents:'+$routeParams.id,function () {
+                listEvent();
+            });
+
             var modalCreate;
             var modalEdit;
             SessionCore.getThisSession($routeParams.id).then(function (resultado) {
                 $scope.inTheZone = true;
                 $scope.thisSession =resultado;
                 $scope.$broadcast('isModerator', $scope.thisSession.PersonSession.isModerator);
-                if(!$scope.thisSession.PersonSession.isModerator){
-                    Socket.on('finish:'+$routeParams.id, function () {
-                        console.log('Vote finished!');
-                        $scope.sendVotes();
-
-                    });
-                }
 
             }).catch(function (error) {
                 $scope.errorMessage = error;
@@ -41,26 +103,6 @@ angular.module('sessionEvents')
 
             $scope.event = {'objective': null, 'timer':null};
             listEvent();
-
-            SessionCore.listParticipants($routeParams.id)
-                .then(function(participants){
-                    $scope.participants = participants.map(function(participant){
-                        participant.isOnline = false;
-                        return participant;
-                    });
-                    Socket.on('usersConnected:'+$routeParams.id, function (people) {
-                        console.log(people[0]);
-                        for(let i=0; i<$scope.participants.length; i++){
-                            if(people[0].personIds.indexOf($scope.participants[i].id > -1)){
-                                $scope.participants[i].isOnline = true;
-                            }
-                        }
-                        console.log($scope.participants);
-                    });
-                })
-                .catch(function(err){
-                    console.log(err);
-                });
 
             var eventValidation = function () {
                 var deferred = $q.defer();
