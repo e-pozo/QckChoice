@@ -2,7 +2,7 @@
 
 var  logIn = angular.module('logInForDelivery', ["auth","personCore"]);
 
-logIn.controller('logInController', function ($scope, $q, $location, Auth, PersonCore) {
+logIn.controller('logInController', function ($scope, $q, $location, Auth, PersonCore, $translate) {
     var validation = function () {
         var deferred = $q.defer();
         if($scope.person != null ){

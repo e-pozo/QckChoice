@@ -1,21 +1,22 @@
 <div class="modal-demo" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">{{strAction}} a Event:</h4>
+            <h4 class="modal-title" ng-if="strAction == 'Create'" translate="SESSION_ROOM.EVENTS.MODAL.CREATE.TITLE"></h4>
+            <h4 class="modal-title" ng-if="strAction == 'Edit'" translate="SESSION_ROOM.EVENTS.MODAL.EDIT.TITLE"></h4>
             <button type="button" class="close"  aria-label="Close" ng-click="closeModal()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label for="title" class="form-control-label">Objective:</label>
+                <label for="title" class="form-control-label" translate="SESSION_ROOM.EVENTS.MODAL.OBJECTIVE"></label>
                 <input type="text" class="form-control" name ="title" id="title" ng-model="$parent.event.objective">
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success" ng-if="strAction == 'Create'" ng-click="newEvent()">{{strAction}}</button>
-            <button type="submit" class="btn btn-warning" ng-if="strAction == 'Edit'" ng-click="editEvent()">{{strAction}}</button>
-            <button type="button" class="btn btn-secondary" ng-click="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-success" ng-if="strAction == 'Create'" ng-click="newEvent()" translate="SESSION_ROOM.EVENTS.MODAL.CREATE.BTN"></button>
+            <button type="submit" class="btn btn-warning" ng-if="strAction == 'Edit'" ng-click="editEvent()" translate="SESSION_ROOM.EVENTS.MODAL.EDIT.BTN"></button>
+            <button type="button" class="btn btn-default" ng-click="closeModal()" translate="SESSION_ROOM.EVENTS.MODAL.CANCEL"></button>
         </div>
     </div>
 </div>

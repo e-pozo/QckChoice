@@ -231,25 +231,34 @@ module.exports = function(io) {
 //Create Choice
 
     router.post('/api/admin/:id',
-        authenticationMiddleware(),
+        authenticationMiddleware('admin'),
         adminController.addChoice);
+
+//Create many Choices
+    router.post('/api/admin',
+        authenticationMiddleware('admin'),
+        adminController.addChoices);
 
 //Edit Choice
 
     router.put('/api/admin/:id/choice/:idChoice',
-        authenticationMiddleware(),
+        authenticationMiddleware('admin'),
         adminController.editChoice);
 
 //Get Choices
 
     router.get('/api/admin/:id',
-        authenticationMiddleware(),
+        authenticationMiddleware('admin'),
         adminController.getChoices);
+
+    router.get('/api/admin',
+        authenticationMiddleware('admin'),
+        adminController.test);
 
 //Delete Choice
 
     router.delete('/api/admin/:id/choice/:idChoice',
-        authenticationMiddleware(),
+        authenticationMiddleware('admin'),
         adminController.deleteChoice);
 
 //Pass all remains GET request to Angular router.
@@ -257,12 +266,20 @@ module.exports = function(io) {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     });
 
-    function authenticationMiddleware() {
+    function authenticationMiddleware(admin) {
         return (req, res, next) => {
             console.log(`
             req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
-            if (req.isAuthenticated()) return next();
-
+            if (req.isAuthenticated()){
+                if(admin){
+                    if(req.user.rut){
+                        return next();
+                    }
+                }
+                else{
+                    return next();
+                }
+            }
             res.status(401).send("Unauthorized Access!.")
         }
     }

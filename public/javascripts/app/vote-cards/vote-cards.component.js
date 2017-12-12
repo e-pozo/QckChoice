@@ -3,7 +3,7 @@
 angular.module('voteCards')
     .component('voteCards', {
         templateUrl: 'templates/vote-cards.html',
-        controller: function ($scope, $routeParams, $location, EventCore, SessionCore, Socket) {
+        controller: function ($scope, $rootScope, $routeParams, $location, EventCore, SessionCore, Socket, $translate) {
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
                 "/session/:id"
@@ -20,10 +20,25 @@ angular.module('voteCards')
                 lists: {"A": [], "B": []},
                 reason: null
             };
+            $rootScope.$on('$translateChangeSuccess', function () {
+                setPrioritiesLabel()
+            });
 
-            $scope.categories = [{val: 1, label: "Low"},
-                {val: 2, label: "Medium"},
-                {val: 3, label: "High"}];
+            function setPrioritiesLabel() {
+                $translate(['VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.HIGH',
+                    'VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.MEDIUM',
+                    'VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.LOW'])
+                    .then(function (translations) {
+                        $scope.categories =
+                            [
+                                {val: 1, label: translations['VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.LOW']},
+                                {val: 2, label: translations['VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.MEDIUM']},
+                                {val: 3, label: translations['VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.HIGH']}
+                            ];
+                    });
+            }
+            setPrioritiesLabel();
+
 
             var choicesPromise = EventCore.listChoices();
             var eventPromise = EventCore.getThisEvent($routeParams.id,$routeParams.eventId);
@@ -54,18 +69,21 @@ angular.module('voteCards')
                 choicesPromise
                     .then(function (choices) {
                         // Generate initial model
-                        for (var choice of choices.data.result) {
-                            $scope.models.lists.A.push({
-                                id: choice.id,
-                                name: choice.name,
-                                mechanism: choice.mechanism,
-                                result: choice.result,
-                                priority: {val: 1, label: "Low"}});
-                        }
-                        // Model to JSON for demo purpose
-                        $scope.$watch('models', function (model) {
-                            $scope.modelAsJson = angular.toJson(model, true);
-                        }, true);
+                        $translate('VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.LOW')
+                            .then(function (priorityLabel){
+                                for (var choice of choices.data.result) {
+                                    $scope.models.lists.A.push({
+                                        id: choice.id,
+                                        name: choice.name,
+                                        mechanism: choice.mechanism,
+                                        result: choice.result,
+                                        priority: {val: 1, label: priorityLabel}});
+                                }
+                                // Model to JSON for demo purpose
+                                $scope.$watch('models', function (model) {
+                                    $scope.modelAsJson = angular.toJson(model, true);
+                                }, true);
+                            });
                     })
                     .catch(function (err) {
                         console.log(err);

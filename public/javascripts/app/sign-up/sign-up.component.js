@@ -3,7 +3,7 @@
 angular.module('signUp')
     .component('signUp', {
         templateUrl: 'templates/sign-up.html',
-        controller: function($scope, $location, Auth, $q, PersonCore){
+        controller: function($scope, $location, Auth, $q, PersonCore, $translate){
             var validation = function () {
                 var deferred = $q.defer();
 
@@ -60,7 +60,7 @@ angular.module('signUp')
             };
 
             $scope.closeError = function () {
-                console.log("close")
+                console.log("close");
                 $scope.error = false;
             }
 

@@ -1,39 +1,39 @@
 <div class="well container">
     <form class="form-horizontal" ng-submit="signUp()" >
         <fieldset>
-            <legend>Sign up User</legend>
+            <legend translate="SIGN_UP.TITLE"></legend>
             <div class="alert alert-dismissible alert-danger" ng-show="error">
                 <button type="button" class="close" ng-click="closeError()" >&times;</button>
                 <strong>{{errorMessage}}</strong>
             </div>
             <div class="form-group">
-                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                <label for="inputEmail" class="col-lg-2 control-label" translate="SIGN_UP.EMAIL"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="inputEmail" placeholder="Email" name="email" type="email" ng-model="person.email">
+                    <input class="form-control" id="inputEmail" placeholder="{{'SIGN_UP.EMAIL' | translate}}" name="email" type="email" ng-model="person.email">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputUserName" class="col-lg-2 control-label">UserName</label>
+                <label for="inputUserName" class="col-lg-2 control-label" translate="SIGN_UP.USER_NAME"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="inputUserName" placeholder="userName" name="userName" type="text" ng-model="person.userName">
+                    <input class="form-control" id="inputUserName" placeholder="{{'SIGN_UP.USER_NAME' | translate}}" name="userName" type="text" ng-model="person.userName">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                <label for="inputPassword" class="col-lg-2 control-label" translate="SIGN_UP.PASSWORD"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="inputPassword" name= "password" placeholder="Password" type="password" ng-model="person.password">
+                    <input class="form-control" id="inputPassword" name= "password" placeholder="{{'SIGN_UP.PASSWORD' | translate}}" type="password" ng-model="person.password">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputPasswordRepeat" class="col-lg-2 control-label">Password</label>
+                <label for="inputPasswordRepeat" class="col-lg-2 control-label" translate="SIGN_UP.REPEAT_PASS"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="inputPasswordRepeat" name= "passwordR" placeholder="Repeat Password" type="password" ng-model="person.passwordRepeat">
+                    <input class="form-control" id="inputPasswordRepeat" name= "passwordR" placeholder="{{'SIGN_UP.REPEAT_PASS' | translate}}" type="password" ng-model="person.passwordRepeat">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <a type="reset" class="btn btn-default" href="/welcome" >Cancel</a>
-                    <button type="submit" class="btn btn-primary" ng-disabled="disabled">Submit</button>
+                    <a type="reset" class="btn btn-default" href="/welcome" translate="SIGN_UP.BTNS.CANCEL"></a>
+                    <button type="submit" class="btn btn-primary" ng-disabled="disabled" translate="SIGN_UP.BTNS.SUBMIT"></button>
                 </div>
             </div>
         </fieldset>

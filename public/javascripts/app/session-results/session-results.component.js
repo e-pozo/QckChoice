@@ -3,9 +3,19 @@
 angular.module('sessionResults')
     .component('sessionResults', {
         templateUrl: 'templates/session-results.html',
-        controller: function ($scope, $q, $routeParams, $log, SessionCore, EventCore) {
+        controller: function ($scope, $q, $routeParams,$rootScope, $log, SessionCore, EventCore, $translate) {
+
+            $scope.lang = $translate.use();
+            $rootScope.$on('$translateChangeSuccess', function () {
+                $scope.lang = $translate.use();
+                if(currentEvent && currentSession){
+                    $scope.getEventResults(currentSession,currentEvent);
+                }
+            });
 
             $scope.resultsLoad = false;
+            var currentEvent;
+            var currentSession;
             var weightedCtx = document.getElementById("weightedChart");
             var frequencyCtx = document.getElementById("frequencyChart");
             var freqLowPriorCtx = document.getElementById("freqLowPrior");
@@ -115,10 +125,29 @@ angular.module('sessionResults')
             $scope.getEventResults = function (sessionId, eventId) {
                 EventCore.getResults(sessionId,eventId)
                     .then(function (results) {
+                        currentEvent=eventId;
+                        currentSession=sessionId;
                         $scope.resultsLoad = true;
                         $scope.selected = eventId;
-                        getArguments(results);
-                        getCharts(results);
+                        $translate(
+                            [
+                                'RESULTS.MAIN_PANEL.CHARTS.POLAR',
+                                'RESULTS.MAIN_PANEL.CHARTS.DONUGHT',
+                                'RESULTS.MAIN_PANEL.CHARTS.BAR_LOW_PRTY',
+                                'RESULTS.MAIN_PANEL.CHARTS.BAR_MEDIUM_PRTY',
+                                'RESULTS.MAIN_PANEL.CHARTS.BAR_HIGH_PRTY',
+                                'RESULTS.MAIN_PANEL.CHARTS.BAR_MED-HIGH_PRTY',
+                                'RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_HIGH',
+                                'RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_MEDIUM',
+                                'RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_LOW',
+                                'RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_NN'
+                            ]
+                        )
+                            .then(function (translations) {
+                                console.log(translations);
+                                getArguments(results, translations);
+                                getCharts(results, translations);
+                            });
                     })
                     .catch(function (err) {
                         $scope.resultsLoad = false;
@@ -139,17 +168,17 @@ angular.module('sessionResults')
                     })
             };
             
-            function getArguments(results){
+            function getArguments(results, translations){
                 var args = results
                     .map(function (result) {
                         console.log(result);
                         var Choices = result.Choices
                             .map(function (choice) {
                                 console.log(choice);
-                                if(choice.Vote.priority === 0) choice.Vote.priorityStr = 'Not Selected';
-                                if(choice.Vote.priority === 1) choice.Vote.priorityStr = 'Low';
-                                if(choice.Vote.priority === 2) choice.Vote.priorityStr = 'Medium';
-                                if(choice.Vote.priority === 3) choice.Vote.priorityStr = 'High';
+                                if(choice.Vote.priority === 0) choice.Vote.priorityStr = translations['RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_NN'];
+                                if(choice.Vote.priority === 1) choice.Vote.priorityStr = translations['RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_LOW'];
+                                if(choice.Vote.priority === 2) choice.Vote.priorityStr = translations['RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_MEDIUM'];
+                                if(choice.Vote.priority === 3) choice.Vote.priorityStr = translations['RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.PRTY_HIGH'];
                                 return choice;
                             });
                         return {userName: result.Person.userName, reason:result.reason, Choices: Choices}
@@ -170,7 +199,7 @@ angular.module('sessionResults')
                 $scope.args = args;
             }
 
-            function getCharts(results){
+            function getCharts(results, translations){
                 console.log(results);
                 function unifyVotes(arr,vote, process,objToPush){
                     if (vote.priority !== 0){
@@ -371,7 +400,7 @@ angular.module('sessionResults')
                     options: {
                         title: {
                             display: true,
-                            text: 'Weighted Results'
+                            text: translations['RESULTS.MAIN_PANEL.CHARTS.POLAR']
                         },
                         legend:{
                             position: 'bottom',
@@ -397,7 +426,7 @@ angular.module('sessionResults')
                     options: {
                         title: {
                             display: true,
-                            text: 'Votes Frequency'
+                            text: translations['RESULTS.MAIN_PANEL.CHARTS.DONUGHT']
                         },
                         legend:{
                             position: 'bottom',
@@ -423,7 +452,7 @@ angular.module('sessionResults')
                     options: {
                         title: {
                             display: true,
-                            text: 'N° of Votes with Low Priority'
+                            text: translations['RESULTS.MAIN_PANEL.CHARTS.BAR_LOW_PRTY']
                         },
                         legend:{
                             display: false,
@@ -458,7 +487,7 @@ angular.module('sessionResults')
                     options: {
                         title: {
                             display: true,
-                            text: 'N° of Votes with Medium Priority'
+                            text: translations['RESULTS.MAIN_PANEL.CHARTS.BAR_MEDIUM_PRTY']
                         },
                         legend:{
                             display: false,
@@ -493,7 +522,7 @@ angular.module('sessionResults')
                     options: {
                         title: {
                             display: true,
-                            text: 'N° of Votes with High Priority'
+                            text: translations['RESULTS.MAIN_PANEL.CHARTS.BAR_HIGH_PRTY']
                         },
                         legend:{
                             display: false,
@@ -528,7 +557,7 @@ angular.module('sessionResults')
                     options: {
                         title: {
                             display: true,
-                            text: 'N° of Votes with Medium-High Priority'
+                            text: translations['RESULTS.MAIN_PANEL.CHARTS.BAR_MED-HIGH_PRTY']
                         },
                         legend:{
                             display: false,

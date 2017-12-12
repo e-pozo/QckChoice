@@ -56,7 +56,7 @@ module.exports = {
     addChoice(req, res) {
         sequelize.transaction(t => {
             return Admin.findById(
-                req.params.id,
+                req.user.id,
                 {transaction: t})
                 .then(Admin => {
                     return Admin.createChoice({
@@ -71,6 +71,41 @@ module.exports = {
                 console.log(err);
                 res.status(500).send(err);
             })
+    },
+
+    addChoices(req, res){
+        sequelize.transaction(t => {
+            return Admin.findById(
+                req.user.id,
+                {transaction: t})
+                .then(Admin => {
+                    return Choice.bulkCreate(
+                        req.body.choices.map(
+                            choice => {
+                                return {
+                                    name: choice.name,
+                                    mechanism: choice.mechanism,
+                                    result: choice.result,
+                                    AdminId: req.user.id
+                                }
+                            }
+                        ),
+                        {transaction: t}
+                    );
+                })
+
+        })
+            .then(result => {
+                res.status(201).json(result);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send(err);
+            })
+    },
+
+    test(req,res) {
+        res.status(200).send(req.user);
     },
 
     editChoice(req, res) {

@@ -1,0 +1,162 @@
+{
+  "TEST" : "este es un texto de prueba",
+  "NAV_BAR" : {
+    "YOUR_SESSION":"Tus Sesiones",
+    "DROP_DOWN": {
+      "LANG": "Idioma",
+      "SEL" : {
+        "EN": "Inglés",
+        "ES": "Español"
+      }
+    },
+    "LOG_IN": "Acceder",
+    "SIGN_IN": "Registrarse",
+    "LOG_OUT": "Salir"
+  },
+  "LOG_IN": {
+    "TITLE": "Acceder",
+    "EMAIL": "Email",
+    "PASSWORD": "Contraseña",
+    "BTNS": {
+      "CANCEL" : "Cancelar",
+      "SUBMIT" : "Enviar",
+      "LOG_ANON": "Ingresar como Anónimo"
+    }
+  },
+  "SIGN_UP": {
+    "TITLE": "Registrar Usuario",
+    "EMAIL": "Email",
+    "USER_NAME": "Nombre de Usuario",
+    "PASSWORD": "Contraseña",
+    "REPEAT_PASS": "Repetir Contraseña",
+
+    "BTNS": {
+      "CANCEL": "Cancelar",
+      "SUBMIT": "Registrarse"
+    }
+  },
+  "SESSION_USER": {
+    "TITLE": "Estas son tus sesiones:",
+    "CREATED_ON": "Creado el:",
+    "MODAL": {
+      "TITLE": "Título:",
+      "DESCRIPTION": "Descripción",
+      "CREATE": {
+        "TITLE": "Crear Sesión:",
+        "BTN": "Crear"
+      },
+      "EDIT": {
+        "TITLE": "Editar Sesión:",
+        "BTN": "Editar"
+      },
+      "BTN_CANCEL": "Cancelar"
+    },
+    "CREATE": "Crear una Sesión",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "INVITE": "Invitar una persona"
+  },
+  "TIMER": {
+    "TITLE": "Tiempo Restante",
+    "HR": "Horas",
+    "MM": "Minutos",
+    "SS": "Segundos"
+  },
+  "SESSION_ROOM":{
+    "TITLE": "Bienvenido a:",
+    "SEND_VOTES_MSG": "¡Votos Enviados!",
+    "BTNS": {
+      "INVITE": "Invitar una persona",
+      "FINISH": "FINALIZAR SESIÓN",
+      "SEND": "¡Enviar Votos!"
+    },
+    "PARTICIPANTS": {
+      "TITLE": "Participantes",
+      "PROGRESS": "Cuanta gente ha votado:",
+      "STATE": {
+        "ONLINE": "Conectado",
+        "OFFLINE": "Desconectado",
+        "READY": "Listo"
+      }
+    },
+    "EVENTS":{
+      "TITLE": "Eventos",
+      "MODAL": {
+        "OBJECTIVE": "Objetivo:",
+        "CREATE": {
+          "TITLE": "Crear un Evento",
+          "BTN": "Crear"
+        },
+        "EDIT": {
+          "TITLE": "Editar Evento",
+          "BTN": "Editar"
+        },
+        "CANCEL": "Cancelar"
+      },
+      "BTNS": {
+        "EDIT": "Editar",
+        "DELETE": "Eliminar"
+      }
+    }
+  },
+  "VOTE_ROOM":{
+    "OBJECTIVE": "Objetivo:",
+    "VOTE_ZONE": {
+      "TITLE": "ZONA DE VOTACIÓN",
+      "PANEL_OF_CHOICES_TITLE": "Tácticas",
+      "PANEL_OF_VOTES_TITLE": "Tácticas a votar",
+      "CHOICES": {
+        "NAME": "Nombre:",
+        "MECHANISM": "Mecanismo:",
+        "RESULT": "Resultado:",
+        "PRIORITY": {
+          "TITLE": "Prioridad:",
+          "HIGH": "Alta",
+          "MEDIUM": "Media",
+          "LOW": "Baja"
+        }
+      },
+      "SAVE_BTN": "Guardar y volver a los eventos",
+      "WHY_THIS": "¿Por qué elegiste estas tácticas?"
+    }
+  },
+  "CHAT": {
+    "PLACEHOLDER": "Escribe tu mensaje aquí...",
+    "SEND_BTN": "Enviar"
+  },
+  "RESULTS": {
+    "TITLE": " Resultados de ",
+    "CREATED_AT": "Creado el: ",
+    "DESCRIPTION": "Descripción:",
+    "EVENT_PANEL_TITLE": "Eventos",
+    "CHOICES": {
+      "PANEL_TITLE": "Detalle de las Tácticas",
+      "MECHANISM": "Mecanismo:",
+      "RESULT": "Resultado:"
+    },
+    "MAIN_PANEL": {
+      "SELECT": "Selecciona un Evento para ver los resultados",
+      "CHARTS": {
+        "TITLE": "Gráficos",
+        "POLAR": "Resultados Ponderados",
+        "DONUGHT": "Frecuancia de los Votos",
+        "BAR_LOW_PRTY": "Nº de votos con prioridad Baja",
+        "BAR_MEDIUM_PRTY": "Nº de votos con prioridad Media",
+        "BAR_HIGH_PRTY": "Nº de votos con prioridad Alta",
+        "BAR_MED-HIGH_PRTY": "Nº de votos con prioridad Media-Alta"
+      },
+      "ARGUMENTS": {
+        "TITLE": "Argumentos",
+        "BTN": "Ver Detalles",
+        "DETAILS": {
+          "TITLE": "Votó por:",
+          "PRTY_HIGH": "Alta",
+          "PRTY_MEDIUM": "Media",
+          "PRTY_LOW": "Baja",
+          "PRTY_NN": "No Seleccionada"
+        }
+      }
+
+    }
+  }
+}

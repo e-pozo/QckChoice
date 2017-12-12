@@ -1,25 +1,26 @@
 <div class="modal-demo" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">{{strAction}} a Session:</h4>
+            <h4 class="modal-title" ng-if="strAction == 'Create'" translate="SESSION_USER.MODAL.CREATE.TITLE"></h4>
+            <h4 class="modal-title" ng-if="strAction == 'Edit'" translate="SESSION_USER.MODAL.EDIT.TITLE"></h4>
             <button type="button" class="close"  aria-label="Close" ng-click="closeModal()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label for="title" class="form-control-label">Title:</label>
+                <label for="title" class="form-control-label" translate="SESSION_USER.MODAL.TITLE"></label>
                 <input type="text" class="form-control" name ="title" id="title" ng-model="$parent.session.title">
             </div>
             <div class="form-group">
-                <label for="description" class="form-control-label">Description:</label>
+                <label for="description" class="form-control-label" translate="SESSION_USER.MODAL.DESCRIPTION"></label>
                 <textarea class="form-control" name= "description" id="description" ng-model="$parent.session.description"></textarea>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success" ng-if="strAction == 'Create'" ng-click="newSession()">{{strAction}}</button>
-            <button type="submit" class="btn btn-warning" ng-if="strAction == 'Edit'" ng-click="editSession()">{{strAction}}</button>
-            <button type="button" class="btn btn-secondary" ng-click="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-success" ng-if="strAction == 'Create'" ng-click="newSession()" translate="SESSION_USER.MODAL.CREATE.BTN"></button>
+            <button type="submit" class="btn btn-warning" ng-if="strAction == 'Edit'" ng-click="editSession()" translate="SESSION_USER.MODAL.EDIT.BTN"></button>
+            <button type="button" class="btn btn-secondary" ng-click="closeModal()" translate="SESSION_USER.MODAL.BTN_CANCEL"></button>
         </div>
     </div>
 </div>

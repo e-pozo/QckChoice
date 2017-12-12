@@ -2,7 +2,7 @@ angular.module('countdown')
     .component('countdown', {
         css: ['stylesheets/countdown.css', '/scripts/clockpicker/dist/bootstrap-clockpicker.min.css'],
         templateUrl: 'templates/countdown.html',
-        controller: function($scope, $routeParams, SessionCore, Socket){
+        controller: function($scope, $routeParams, SessionCore, Socket, $translate){
 
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",

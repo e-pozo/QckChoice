@@ -4,7 +4,7 @@ angular.module('sessionEvents')
     .component('sessionEvents', {
         templateUrl: 'templates/events.html',
         css: ['stylesheets/scrolldown.css'],
-        controller: function ($scope, $q, $routeParams, $uibModal, $location, SessionCore, EventCore, Socket) {
+        controller: function ($scope, $q, $routeParams, $uibModal, $location, SessionCore, EventCore, Socket, $translate) {
             var saveRoutes = [
                 "/session/:id/event/:eventId/voteRoom",
                 "/session/:id"
@@ -213,18 +213,21 @@ angular.module('sessionEvents')
                 EventCore.sendVotes($routeParams.id, EventCore.loadVotes())
                     .then(function (values) {
                         console.log(values);
-                        $.notify({
-                            // options
-                            icon: 'glyphicon glyphicon-ok-sign',
-                            message: 'Sent votes!'
-                        },{
-                            // settings
-                            type: 'success',
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            }
-                        });
+                        $translate('SESSION_ROOM.SEND_VOTES_MSG')
+                            .then(function (msg) {
+                                $.notify({
+                                    // options
+                                    icon: 'glyphicon glyphicon-ok-sign',
+                                    message: msg
+                                },{
+                                    // settings
+                                    type: 'success',
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    }
+                                });
+                            });
                     })
                     .catch(function (err) {
                         console.log(err);

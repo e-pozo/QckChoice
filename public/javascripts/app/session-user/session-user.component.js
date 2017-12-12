@@ -3,7 +3,7 @@
 angular.module('sessionUser')
     .component('sessionUser', {
        templateUrl: 'templates/session-user.html',
-       controller: function ($scope, $q ,$http, Auth, SessionCore, $uibModal) {
+       controller: function ($scope, $q ,$http, Auth, SessionCore, $uibModal, $translate) {
            ///jsonexample/package.json
            /*var getSessions = function () {
                console.log("esto")

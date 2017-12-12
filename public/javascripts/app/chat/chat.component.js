@@ -3,7 +3,7 @@
 angular.module('chat')
     .component('chat', {
         templateUrl: 'templates/chat.html',
-        controller: function ($scope, $routeParams, EventCore, Socket) {
+        controller: function ($scope, $routeParams, EventCore, Socket, $translate) {
             var chatPromise = EventCore.listMessageToChat($routeParams.id, $routeParams.eventId);
             $scope.isChat = true;
             $scope.toggleMinim = function () {

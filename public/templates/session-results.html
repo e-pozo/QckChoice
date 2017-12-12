@@ -1,14 +1,15 @@
 
 <div class="container">
     <div class="well">
-        <h1>{{session.title+' results:'}}<span><h6>Created At: {{session.createdAt}}</h6></span></h1>
-        <p>{{'Description: '+session.description}}</p>
+        <h1 ng-show="lang == 'en'">{{session.title+ ('RESULTS.TITLE' | translate)}}<span><h6>{{('RESULTS.CREATED_AT' | translate) + session.createdAt}}</h6></span></h1>
+        <h1 ng-show="lang == 'es'">{{('RESULTS.TITLE' | translate) + session.title}}<span><h6>{{('RESULTS.CREATED_AT' | translate) + session.createdAt}}</h6></span></h1>
+        <p>{{('RESULTS.DESCRIPTION' | translate) + session.description}}</p>
         <div class="row">
             <div class="col-md-4">
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Events</h3>
+                            <h3 class="panel-title" translate="RESULTS.EVENT_PANEL_TITLE"></h3>
                         </div>
                         <div class="panel-body">
                             <div class="list-group">
@@ -22,7 +23,7 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Choices Detail</h3>
+                            <h3 class="panel-title" translate="RESULTS.CHOICES.PANEL_TITLE"></h3>
                         </div>
                         <div class="panel-body">
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -36,8 +37,8 @@
                                     </div>
                                     <div class="collapse" ng-attr-id="{{'collapseEvent'+$index}}">
                                         <div class="panel-body">
-                                            <p><b>Mechanism: </b>{{choice.mechanism}}</p>
-                                            <p><b>Result: </b>{{choice.result}}</p>
+                                            <p><b translate="RESULTS.CHOICES.MECHANISM"></b>{{choice.mechanism}}</p>
+                                            <p><b translate="RESULTS.CHOICES.RESULT"></b>{{choice.result}}</p>
                                         </div>
                                     </div>
                                     <!--<div ng-attr-id="{{'collapseEvent'+$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{'heading'+$index}}">
@@ -53,12 +54,12 @@
 
             </div>
             <div class="col-md-8" ng-if="!resultsLoad">
-                <h3><-- Select an event to see results</h3>
+                <h3><span class="glyphicon glyphicon-circle-arrow-left"></span> {{'RESULTS.MAIN_PANEL.SELECT' | translate}} </h3>
             </div>
             <div class="col-md-8" ng-show="resultsLoad">
                 <div class="well">
                     <div class="row">
-                        <h3>Charts</h3>
+                        <h3 translate="RESULTS.MAIN_PANEL.CHARTS.TITLE"></h3>
                         <div class="row">
                             <div class="col-md-6">
                                 <canvas id="weightedChart" width="400" height="400"></canvas>
@@ -87,7 +88,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h3>Arguments<span class="badge">{{totalItemsArg}}</span></h3>
+                        <h3>{{'RESULTS.MAIN_PANEL.ARGUMENTS.TITLE' | translate}}<span class="badge">{{totalItemsArg}}</span></h3>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="argument in args.slice(((currentPageArg-1)*itemsPerPageArg), ((currentPageArg)*itemsPerPageArg))">
                                 <div class="row">
@@ -96,15 +97,19 @@
                                         <i class="list-group-item-text">{{argument.reason}}</i>
                                     </div>
                                     <div class="col-md-2">
-                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="{{'#collapse'+$index}}" aria-expanded="false" aria-controls="collapseExample">
-                                            See details
+                                        <button class="btn btn-primary" type="button"
+                                                data-toggle="collapse"
+                                                data-target="{{'#collapse'+$index}}"
+                                                aria-expanded="false"
+                                                aria-controls="collapseExample"
+                                                translate="RESULTS.MAIN_PANEL.ARGUMENTS.BTN">
                                         </button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="collapse" ng-attr-id="{{'collapse'+$index}}">
                                         <div class="well">
-                                            <h3>Voted for:</h3>
+                                            <h3 translate="RESULTS.MAIN_PANEL.ARGUMENTS.DETAILS.TITLE"></h3>
                                             <ul class="list-group row">
                                                 <li class="list-group-item col-xs-6" ng-repeat="choice in argument.Choices"><span class="badge">{{choice.Vote.priorityStr}}</span><b>{{choice.name}}</b></li>
                                             </ul>

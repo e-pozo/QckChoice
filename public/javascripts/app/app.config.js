@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('QckChoice')
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider', '$locationProvider', '$translateProvider', function ($routeProvider, $locationProvider, $translateProvider) {
 
         var onlyLoggedIn = function ($location, $q, Auth) {
             console.log("onlyLoggedIn");
@@ -128,6 +128,16 @@ angular.module('QckChoice')
 
             .otherwise({
                 template: "<h1>404 Error, Not Found</h1>",
-            })
+            });
 
+        $translateProvider.preferredLanguage(navigator.language);
+        $translateProvider.registerAvailableLanguageKeys(['en','es'], {
+            'en-*': 'en',
+            'es-*': 'es'
+        });
+        $translateProvider.useStaticFilesLoader({
+            prefix: 'translations/',
+            suffix: '.json'
+        });
+        $translateProvider.useSanitizeValueStrategy(null);
     }]);

@@ -8,22 +8,25 @@
         <br>
         <div class="col-md-4">
             <div class="jumbotron">
-                <h2>Welcome to: {{thisSession.title}}</h2>
+                <h3 translate="SESSION_ROOM.TITLE"></h3>
+                <p>{{thisSession.title}}</p>
                 {{thisSession.description}}
                 <div class="row">
                     <div class="input-group">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ngclipboard data-clipboard-target="#guestUrl" data-toggle="popover" data-content="Copied!">Invite a guest</button>
+                        <button class="btn btn-info" type="button" ngclipboard data-clipboard-target="#guestUrl" data-toggle="popover" data-content="Copied!">
+                            {{'SESSION_ROOM.BTNS.INVITE' | translate}}
+                        </button>
                     </span>
                         <input type="text" id="guestUrl" class="form-control" value="{{'localhost:3000/session/'+thisSession.id+'/join/'+thisSession.guestPass}}" readonly>
                     </div>
-                    <button class="btn btn-block btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="finishSession()">FINISH SESSION</button>
+                    <button class="btn btn-block btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="finishSession()" translate="SESSION_ROOM.BTNS.FINISH"></button>
                 </div>
                     {{peopleOnline}}
                 <div class="row">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Participants<span class="badge">{{participants.length}}</span></h3>
+                            <h3 class="panel-title">{{'SESSION_ROOM.PARTICIPANTS.TITLE' | translate}}<span class="badge">{{participants.length}}</span></h3>
                         </div>
                         <div class="panel-body">
                             <div class="tab-content">
@@ -31,9 +34,9 @@
                                     <ul class="list-group" id="list-of-people">
                                         <li class="list-group-item" ng-model="participant" ng-repeat="participant in participants">{{participant.userName}}
                                             <div>
-                                                <span class="label label-default" ng-show="!participant.isOnline">Offline</span>
-                                                <span class="label label-primary" ng-show="participant.isOnline">Online</span>
-                                                <span class="label label-success" ng-show="participant.alreadyVote">Ready</span>
+                                                <span class="label label-default" ng-show="!participant.isOnline" translate="SESSION_ROOM.PARTICIPANTS.STATE.OFFLINE"></span>
+                                                <span class="label label-primary" ng-show="participant.isOnline" translate="SESSION_ROOM.PARTICIPANTS.STATE.ONLINE"></span>
+                                                <span class="label label-success" ng-show="participant.alreadyVote" translate="SESSION_ROOM.PARTICIPANTS.STATE.READY"></span>
                                             </div>
                                         </li>
                                     </ul>
@@ -43,7 +46,7 @@
                     </div>
                 </div>
                 <br>
-                <h6>how many people have voted:</h6>
+                <h6 translate="SESSION_ROOM.PARTICIPANTS.PROGRESS"></h6>
                 <div class="row">
                     <uib-progressbar max="participants.length" value="quantOfPeopleWhoVoted"><span style="color:white; white-space:nowrap;">{{quantOfPeopleWhoVoted}} / {{participants.length}}</span></uib-progressbar>
                 </div>
@@ -54,7 +57,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h3 class="panel-title">Events</h3>
+                            <h3 class="panel-title" translate="SESSION_ROOM.EVENTS.TITLE"></h3>
                         </div>
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-plus icon_minim" data-toggle="popover" data-trigger="hover" title="Create a new event!" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalCreate()"></span>
@@ -65,12 +68,12 @@
                     <ul class="list-group">
                         <li ng-repeat=" eventData in events" class="list-group-item">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <h4><a href={{'/session/'+eventData.SessionId+'/event/'+eventData.id+'/voteRoom'}}> {{eventData.objective}} </a></h4>
                                 </div>
-                                <div class="col-md-3">
-                                    <button type="button" class="btn btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalEdit(eventData)">Edit</button>
-                                    <button type="button" class="btn btn-danger" ng-if="thisSession.PersonSession.isModerator" ng-click="delete(eventData)">Delete</button>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalEdit(eventData)" translate="SESSION_ROOM.EVENTS.BTNS.EDIT"></button>
+                                    <button type="button" class="btn btn-danger" ng-if="thisSession.PersonSession.isModerator" ng-click="delete(eventData)" translate="SESSION_ROOM.EVENTS.BTNS.DELETE"></button>
                                 </div>
                                 <div class="col-md-1">
                                     <span class="glyphicon glyphicon-floppy-saved" ng-show="eventData.saved"></span>
@@ -83,7 +86,7 @@
         </div>
     </div>
     <div class="row">
-        <button class="btn btn-success btn-block" ng-click="sendVotes()"> Send Votes!</button>
+        <button class="btn btn-success btn-block" ng-click="sendVotes()" translate="SESSION_ROOM.BTNS.SEND"></button>
     </div>
 </div>
             <!--<button ng-if="inTheZone" type="button" class="btn btn-lg btn-info col-md-2 col-offset-2" data-toggle="modal" data-target=".bd-modal-sm">Add an Event</button>

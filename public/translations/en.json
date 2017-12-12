@@ -1,0 +1,163 @@
+{
+  "TEST" : "this is a test text.",
+  "NAV_BAR" : {
+      "YOUR_SESSION": "Your Sessions",
+      "DROP_DOWN": {
+          "LANG": "Language",
+          "SEL" : {
+              "EN": "English",
+              "ES": "Spanish"
+          }
+      },
+      "LOG_IN": "Log In",
+      "SIGN_IN": "Sign In",
+      "LOG_OUT": "Log Out"
+  },
+  "LOG_IN": {
+      "TITLE": "Log In",
+      "EMAIL": "Email",
+      "PASSWORD": "Password",
+      "BTNS": {
+          "CANCEL" : "Cancel",
+          "SUBMIT" : "Submit",
+          "LOG_ANON": "Login as Anonymous"
+      }
+  },
+  "SIGN_UP": {
+      "TITLE": "User sign up",
+      "EMAIL": "Email",
+      "USER_NAME": "User Name",
+      "PASSWORD": "Password",
+      "REPEAT_PASS": "Repeat Password",
+
+      "BTNS": {
+          "CANCEL": "Cancel",
+           "SUBMIT": "Sign Up"
+      }
+  },
+  "SESSION_USER": {
+      "TITLE": "Here are your sessions:",
+      "CREATED_ON": "Created on:",
+      "MODAL": {
+          "TITLE": "Title:",
+          "DESCRIPTION": "Description",
+          "CREATE": {
+            "TITLE": "Create a Session:",
+            "BTN": "Create"
+          },
+          "EDIT": {
+            "TITLE": "Edit Session:",
+            "BTN": "Edit"
+          },
+          "BTN_CANCEL": "Cancel"
+      },
+      "CREATE": "Create Session",
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "INVITE": "Invite a Guest"
+
+  },
+  "TIMER": {
+      "TITLE": "Time Left",
+      "HR": "Hours",
+      "MM": "Minutes",
+      "SS": "Seconds"
+  },
+  "SESSION_ROOM":{
+      "TITLE": "Welcome to:",
+      "SEND_VOTES_MSG": "Sent Votes!",
+      "BTNS": {
+          "INVITE": "Invite a guest",
+          "FINISH": "FINISH SESSION",
+          "SEND": "Send Votes!"
+      },
+      "PARTICIPANTS": {
+          "TITLE": "Participants",
+          "PROGRESS": "How many people have voted:",
+          "STATE": {
+              "ONLINE": "Online",
+              "OFFLINE": "Offline",
+              "READY": "Ready"
+          }
+      },
+      "EVENTS":{
+          "TITLE": "Events",
+          "MODAL": {
+              "OBJECTIVE": "Objective:",
+              "CREATE": {
+                  "TITLE": "Create a Event",
+                  "BTN": "Create"
+              },
+              "EDIT": {
+                "TITLE": "Edit Event",
+                "BTN": "Edit"
+              },
+              "CANCEL": "Cancel"
+          },
+          "BTNS": {
+              "EDIT": "Edit",
+              "DELETE": "Delete"
+          }
+      }
+  },
+  "VOTE_ROOM":{
+      "OBJECTIVE": "Objective:",
+      "VOTE_ZONE": {
+          "TITLE": "VOTE ZONE",
+          "PANEL_OF_CHOICES_TITLE": "Choices",
+          "PANEL_OF_VOTES_TITLE": "Choices To Vote",
+          "CHOICES": {
+              "NAME": "Name:",
+              "MECHANISM": "Mechanism:",
+              "RESULT": "Result:",
+              "PRIORITY": {
+                    "TITLE": "Priority:",
+                    "HIGH": "High",
+                    "MEDIUM": "Medium",
+                    "LOW": "Low"
+              }
+          },
+          "SAVE_BTN": "Save & go back to events",
+          "WHY_THIS": "Why you have chosen this decision?"
+      }
+  },
+  "CHAT": {
+      "PLACEHOLDER": "Write your message here...",
+      "SEND_BTN": "Send"
+  },
+  "RESULTS": {
+      "TITLE": " results:",
+      "CREATED_AT": "Created At:",
+      "DESCRIPTION": "Description:",
+      "EVENT_PANEL_TITLE": "Events",
+      "CHOICES": {
+          "PANEL_TITLE": "Choices Detail",
+          "MECHANISM": "Mechanism:",
+          "RESULT": "Result:"
+      },
+      "MAIN_PANEL": {
+          "SELECT": "Select an event to see results",
+          "CHARTS": {
+              "TITLE": "Charts",
+              "POLAR": "Weighted Results",
+              "DONUGHT": "Votes Frequency",
+              "BAR_LOW_PRTY": "Nº of Votes with Low Priority",
+              "BAR_MEDIUM_PRTY": "Nº of Votes with Medium Priority",
+              "BAR_HIGH_PRTY": "Nº of Votes with High Priority",
+              "BAR_MED-HIGH_PRTY": "Nº of Votes with Medium-High Priority"
+          },
+          "ARGUMENTS": {
+              "TITLE": "Arguments",
+              "BTN": "See details",
+              "DETAILS": {
+                  "TITLE": "Voted for:",
+                  "PRTY_HIGH": "High",
+                  "PRTY_MEDIUM": "Medium",
+                  "PRTY_LOW": "Low",
+                  "PRTY_NN": "Not Selected"
+              }
+          }
+
+      }
+  }
+}

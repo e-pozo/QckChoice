@@ -1,19 +1,19 @@
 <div class=" container">
     <div class="jumbotron">
         <div class="page-header">
-            <h1>Objective</h1>
+            <h1 translate="VOTE_ROOM.OBJECTIVE"></h1>
             <h4>{{thisEvent.objective}}</h4>
         </div>
         <countdown></countdown>
         <br>
-        <h1 class="time"><strong class="time">Vote Zone</strong></h1>
+        <h1 class="time"><strong class="time" translate="VOTE_ROOM.VOTE_ZONE.TITLE"></strong></h1>
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="panel-title">Choices</h3>
+                                <h3 class="panel-title" translate="VOTE_ROOM.VOTE_ZONE.PANEL_OF_CHOICES_TITLE"></h3>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="panel-title">To Vote</h3>
+                                <h3 class="panel-title" translate="VOTE_ROOM.VOTE_ZONE.PANEL_OF_VOTES_TITLE"></h3>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                         <b>{{item.name}}</b>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="sel2" class="col-md-4">Priority:</label>
+                                        <label for="sel2" class="col-md-4" translate="VOTE_ROOM.VOTE_ZONE.CHOICES.PRIORITY.TITLE"></label>
                                         <div class="col-md-8">
                                             <select class="form-control" id="sel2" ng-model="item.priority" ng-options="category as category.label for category in categories track by category.val"></select>
                                         </div>
@@ -84,12 +84,12 @@
         <br>
         <div class="row">
             <div class="form-group">
-                <label for="comment">Why you have chosen this decision?</label>
+                <label for="comment" translate="VOTE_ROOM.VOTE_ZONE.WHY_THIS"></label>
                 <textarea class="form-control" rows="5" id="comment" ng-model="models.reason"></textarea>
             </div>
         </div>
         <div class="row">
-            <button type="button" class="btn btn-primary btn-block" ng-click="saveVote()">Save & go back to events</button>
+            <button type="button" class="btn btn-primary btn-block" ng-click="saveVote()" translate="VOTE_ROOM.VOTE_ZONE.SAVE_BTN"></button>
         </div>
     </div>
     {{models}}
@@ -98,10 +98,10 @@
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div class="container">
         <div class="row">
-            <b>Mechanism:</b>{{item.mechanism}}
+            <b translate="VOTE_ROOM.VOTE_ZONE.CHOICES.MECHANISM"></b>{{item.mechanism}}
         </div>
         <div class="row">
-            <b>Result:</b>{{item.result}}
+            <b translate="VOTE_ROOM.VOTE_ZONE.CHOICES.RESULT"></b>{{item.result}}
         </div>
     </div>
 </script>

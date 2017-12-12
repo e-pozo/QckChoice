@@ -8,6 +8,7 @@ angular.module('QckChoice', [
     'ngclipboard',
     'dndLists',
     'angularCSS',
+    'pascalprecht.translate',
     //internal
     'logIn',
     'logInForDelivery',

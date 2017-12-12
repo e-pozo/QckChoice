@@ -1,28 +1,28 @@
 <div class="well container">
     <form class="form-horizontal">
         <fieldset>
-            <legend>Login to access:</legend>
+            <legend translate="LOG_IN.TITLE"></legend>
             <div class="alert alert-dismissible alert-danger" ng-show="error">
                 <button type="button" class="close" ng-click="closeError()" >&times;</button>
                 <strong>{{errorMessage}}</strong>
             </div>
             <div class="form-group">
-                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                <label for="inputEmail" class="col-lg-2 control-label" translate="LOG_IN.EMAIL"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="inputEmail" placeholder="Email" name="email" type="email" ng-model="person.email">
+                    <input class="form-control" id="inputEmail" placeholder="{{'LOG_IN.EMAIL'| translate}}" name="email" type="email" ng-model="person.email">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                <label for="inputPassword" class="col-lg-2 control-label" translate="LOG_IN.PASSWORD"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="inputPassword" name= "password" placeholder="Password" type="password" ng-model="person.password">
+                    <input class="form-control" id="inputPassword" name= "password" placeholder="{{'LOG_IN.PASSWORD'| translate}}" type="password" ng-model="person.password">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <a type="reset" class="btn btn-default" href="/welcome" >Cancel</a>
-                    <button type="submit" class="btn btn-primary" ng-click="logIn()" ng-disabled="disabled">Submit</button>
-                    <button class="btn btn-warning" ng-click="loginAsAnonymous()">Login as Anonymous</button>
+                    <a type="reset" class="btn btn-default" href="/welcome" translate="LOG_IN.BTNS.CANCEL"></a>
+                    <button type="submit" class="btn btn-primary" ng-click="logIn()" ng-disabled="disabled" translate="LOG_IN.BTNS.SUBMIT"></button>
+                    <button class="btn btn-warning" ng-click="loginAsAnonymous()" translate="LOG_IN.BTNS.LOG_ANON"></button>
                 </div>
             </div>
         </fieldset>

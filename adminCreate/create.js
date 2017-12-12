@@ -10,6 +10,9 @@ function registro(email, name, rut, password){
         rut: rut,
         password: password
     })
+        .then(data => {
+            console.log("Admin created", data.dataValues);
+        })
 }
 
 //Para crear un admin se debe hacer por consola:
