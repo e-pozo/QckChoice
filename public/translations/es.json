@@ -35,6 +35,25 @@
       "SUBMIT": "Registrarse"
     }
   },
+  "WELCOME": {
+    "SLOGAN": "Una experiencia rápida y divertida",
+    "MAIN_FEATURES": "CARACTERÍSTICAS PRINCIPALES:",
+    "FEATURE_1":{
+      "H2": "Zona de votación diseñada para",
+      "H2_STRNG": "una experiencia colaborativa y agradable.",
+      "DESCRIP": "La zona de votación tiene un chat y un sistema de arraste y suelte incorporado en cada evento. Por lo que por cualquier malentendido o duda, simplemente chatee con sus socios para elegir la táctica correcta."
+    },
+    "FEATURE_2":{
+      "H2": "Buenos gráficos llenos de informacion para",
+      "H2_STRNG": "una rápida visualización de los resultados.",
+      "DESCRIP": "Puedes ver: qué tácticas son las más populares, cuál es la más preferida, y qué tácticas ha votado una persona y por qué, También puedes ver cuántos votos hay por prioridad."
+    },
+    "FEATURE_3":{
+      "H2": "Una lista de los participantes con su estado actual para",
+      "H2_STRNG": "saber quiénes estan en linea o listos.",
+      "DESCRIP": "QckChoice te listará todos los participantes en tu sesión, informandote quién esta en linea como también cuánta gente ha votado mostrandolo a traves de una barra de progreso."
+    }
+  },
   "SESSION_USER": {
     "TITLE": "Estas son tus sesiones:",
     "CREATED_ON": "Creado el:",

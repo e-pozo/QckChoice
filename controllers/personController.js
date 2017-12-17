@@ -98,7 +98,7 @@ module.exports = {
                 moderatorPass: uuidv4()
             }, {transaction: t})
                 .then(Session => {
-                    return Person.findById(req.user.id, {transaction: t})
+                    return Person.findById(req.user.PersonId || req.user.id, {transaction: t})
                         .then(Person => {
                             return Person.addSession(Session, {through: {isModerator: true}, transaction: t});
                         })
@@ -119,7 +119,7 @@ module.exports = {
                 },
                 {transaction: t})
                 .then(Session => {
-                    return Person.findById(req.user.id, {transaction: t})
+                    return Person.findById(req.user.PersonId || req.user.id, {transaction: t})
                         .then(Person => {
                             return Person.addSession(Session, {through: {isModerator: false}, transaction: t});
                         })
@@ -184,7 +184,7 @@ module.exports = {
 
     getSessions: function (req, res) {
         sequelize.transaction(t => {
-            return Person.findById(req.user.id, {transaction: t})
+            return Person.findById(req.user.PersonId || req.user.id, {transaction: t})
                 .then(Person => {
                     return Person.getSessions({
                         through: {
@@ -201,13 +201,14 @@ module.exports = {
                 res.status(200).json(result);
             })
             .catch(err => {
-                res.status(500).json(err);
+                console.log(err);
+                res.status(500).json({});
             });
     },
 
     deleteSession: function (req, res) {
         sequelize.transaction(t => {
-            return Person.findById(req.user.id, {transaction: t})
+            return Person.findById(req.user.PersonId || req.user.id, {transaction: t})
                 .then(Person => {
                     return Person.removeSession(req.params.id, {transaction: t})
                         .then(Session.destroy({
@@ -228,7 +229,7 @@ module.exports = {
 
     listSessions(req,res){
         sequelize.transaction( t => {
-            return Person.findById(req.user.id, {transaction: t})
+            return Person.findById(req.user.PersonId || req.person.id, {transaction: t})
                 .then( Person => {
                     return Person.getSessions({transaction: t})
                 })

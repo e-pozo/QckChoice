@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse">
+<nav ng-class="getClass()">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/welcome">QckChoice</a>
@@ -6,8 +6,7 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li><a href=" sessionUser" translate="NAV_BAR.YOUR_SESSION"><span class="sr-only">(current)</span></a></li>
-                <li><a href="#"></a></li>
+                <li><a href=" sessionUser" ng-if="logged" translate="NAV_BAR.YOUR_SESSION"><span class="sr-only">(current)</span></a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" translate="NAV_BAR.DROP_DOWN.LANG"><span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -16,7 +15,7 @@
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" role="search">
+            <form class="navbar-form navbar-left" role="search" ng-if="logged">
                 <div class="form-group">
                     <input class="form-control" placeholder="Search" type="text">
                 </div>

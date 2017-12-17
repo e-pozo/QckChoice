@@ -36,7 +36,7 @@ logIn.controller('logInController', function ($scope, $q, $location, Auth, Perso
                         if(Auth.urltemp){
                             $location.path(Auth.urltemp);
                         }else{
-                            $location.path('/welcome');
+                            $location.path('/sessionUser');
                         }
                         $scope.disabled = false;
                         $scope.person = null;
@@ -70,7 +70,7 @@ logIn.controller('logInController', function ($scope, $q, $location, Auth, Perso
     $scope.loginAsAnonymous = function () {
         Auth.loginAsAnonymous()
             .then(function () {
-                $location.path('/welcome');
+                $location.path('/sessionUser');
                 $scope.disabled = false;
                 $scope.person = null;
                 PersonCore.aboutMe()
@@ -84,5 +84,9 @@ logIn.controller('logInController', function ($scope, $q, $location, Auth, Perso
                 $scope.disabled = false;
                 $scope.person = null;
             })
+    };
+
+    $scope.facebookLogIn = function() {
+        Auth.facebookLogIn()
     }
 });

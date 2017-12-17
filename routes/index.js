@@ -5,6 +5,7 @@ module.exports = function(io) {
     var path = require('path');
     var sockets = require('../sockets/index.js')(io);
     var controllers = require('../controllers');
+    var passport = require('passport');
     const personController = controllers.person;
     const localPersonController = controllers.local;
     const sessionController = controllers.session;
@@ -64,6 +65,24 @@ module.exports = function(io) {
     router.post('/api/signUp', localPersonController.localSignUp);
 //Log in a local person trough Local Strategy
     router.post('/api/logIn', localPersonController.localSignIn);
+//Log in with Facebook
+    router.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}));
+//redirect to session user after authentication with Facebook
+    router.get('/auth/facebook/callback', passport.authenticate('facebook',
+            {
+                successRedirect: '/sessionUser',
+                failureRedirect: '/login'
+            }
+        ));
+//Log in with Google
+    router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+//redirect to session user after authentication with Google
+    router.get('/auth/google/callback', passport.authenticate('google',
+        {
+            successRedirect: '/sessionUser',
+            failureRedirect: '/login'
+        }
+    ));
 
 
     router

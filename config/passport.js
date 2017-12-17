@@ -1,11 +1,16 @@
 'use strict';
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcryptjs');
+var configAuth = require('./auth');
 
 var models = require('../models');
 var Person = models.Person;
 var Local = models.Local;
 var Admin = models.Admin;
+var Facebook = models.Facebook;
+var Google = models.Google;
 var LocalCreate = models.Local;
 var sequelize = models.sequelize;
 
@@ -186,4 +191,77 @@ module.exports = (passport) => {
                     .catch(err => done(err));
             });
         }));
-}
+
+    passport.use(new FacebookStrategy({
+            clientID: configAuth.facebookAuth.clientID,
+            clientSecret: configAuth.facebookAuth.clientSecret,
+            callbackURL: configAuth.facebookAuth.callbackURL,
+            profileFields: ['email', 'first_name', 'last_name', 'picture']
+        },
+        function(accessToken, refreshToken, profile, done) {
+            process.nextTick(() => {
+                console.log(profile);
+                Facebook.findOne({idAcc: profile.id})
+                    .then(Facebook => {
+                        if (Facebook){
+                            done(null, Facebook);
+                        }
+                        else{
+                            sequelize.transaction(t => {
+                                return Person.create({
+                                    userName: profile.username || 'Facebook user ' + count,
+                                    imgURL: profile.photos[0].value
+                                }, {transaction: t})
+                                    .then(Person => {
+                                        return Person.createFacebook({
+                                            idAcc: profile.id,
+                                            token: accessToken,
+                                            name: profile.name.givenName + ' ' + profile.name.familyName,
+                                            email: profile.emails[0].value
+                                        }, {transaction: t})
+                                    })
+                            })
+                                .then( result => done(null,result))
+                                .catch(err => done(err));
+                        }
+                    }).catch(err => done(err));
+            })
+        }
+    ));
+
+    passport.use(new GoogleStrategy({
+            clientID: configAuth.googleAuth.clientID,
+            clientSecret: configAuth.googleAuth.clientSecret,
+            callbackURL: configAuth.googleAuth.callbackURL
+        },
+        function(token, tokenSecret, profile, done) {
+            process.nextTick(() => {
+                console.log(profile);
+                Google.findOne({idAcc: profile.id})
+                    .then(Google => {
+                        if (Google){
+                            done(null, Google);
+                        }
+                        else{
+                            sequelize.transaction(t => {
+                                return Person.create({
+                                    userName: profile.username || 'Google user ' + count,
+                                    imgURL: profile.photos[0].value
+                                }, {transaction: t})
+                                    .then(Person => {
+                                        return Person.createGoogle({
+                                            idAcc: profile.id,
+                                            token: token,
+                                            name: profile.displayName,
+                                            email: profile.emails[0].value
+                                        }, {transaction: t})
+                                    })
+                            })
+                                .then( result => done(null,result))
+                                .catch(err => done(err));
+                        }
+                    }).catch(err => done(err));
+            })
+        }
+    ));
+};

@@ -4,8 +4,8 @@
             <button type="button" class="close" ng-click="closeError()" >&times;</button>
             <strong>{{errorMessage}}</strong>
         </div>
-        <countdown></countdown>
-        <br>
+            <countdown></countdown>
+        <hr class="featurette-divider">
         <div class="col-md-4">
             <div class="jumbotron">
                 <h3 translate="SESSION_ROOM.TITLE"></h3>
@@ -53,40 +53,43 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-11">
-                            <h3 class="panel-title" translate="SESSION_ROOM.EVENTS.TITLE"></h3>
-                        </div>
-                        <div class="col-md-1">
-                            <span class="glyphicon glyphicon-plus icon_minim" data-toggle="popover" data-trigger="hover" title="Create a new event!" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalCreate()"></span>
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-11">
+                                <h3 class="panel-title" translate="SESSION_ROOM.EVENTS.TITLE"></h3>
+                            </div>
+                            <div class="col-md-1">
+                                <span class="glyphicon glyphicon-plus icon_minim" data-toggle="popover" data-trigger="hover" title="Create a new event!" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalCreate()"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        <li ng-repeat=" eventData in events" class="list-group-item">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <h4><a href={{'/session/'+eventData.SessionId+'/event/'+eventData.id+'/voteRoom'}}> {{eventData.objective}} </a></h4>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li ng-repeat=" eventData in events" class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <h4><a href={{'/session/'+eventData.SessionId+'/event/'+eventData.id+'/voteRoom'}}> {{eventData.objective}} </a></h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalEdit(eventData)" translate="SESSION_ROOM.EVENTS.BTNS.EDIT"></button>
+                                        <button type="button" class="btn btn-danger" ng-if="thisSession.PersonSession.isModerator" ng-click="delete(eventData)" translate="SESSION_ROOM.EVENTS.BTNS.DELETE"></button>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <span class="glyphicon glyphicon-floppy-saved" ng-show="eventData.saved"></span>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-warning" ng-if="thisSession.PersonSession.isModerator" ng-click="openModalEdit(eventData)" translate="SESSION_ROOM.EVENTS.BTNS.EDIT"></button>
-                                    <button type="button" class="btn btn-danger" ng-if="thisSession.PersonSession.isModerator" ng-click="delete(eventData)" translate="SESSION_ROOM.EVENTS.BTNS.DELETE"></button>
-                                </div>
-                                <div class="col-md-1">
-                                    <span class="glyphicon glyphicon-floppy-saved" ng-show="eventData.saved"></span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <hr class="featurette-divider">
+            <div class="row">
+                <button class="btn btn-success btn-block" ng-click="sendVotes()" translate="SESSION_ROOM.BTNS.SEND"></button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <button class="btn btn-success btn-block" ng-click="sendVotes()" translate="SESSION_ROOM.BTNS.SEND"></button>
     </div>
 </div>
             <!--<button ng-if="inTheZone" type="button" class="btn btn-lg btn-info col-md-2 col-offset-2" data-toggle="modal" data-target=".bd-modal-sm">Add an Event</button>

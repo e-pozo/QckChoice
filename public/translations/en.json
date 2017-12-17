@@ -35,6 +35,25 @@
            "SUBMIT": "Sign Up"
       }
   },
+  "WELCOME": {
+      "SLOGAN": "A Quick & Playful experience",
+      "MAIN_FEATURES": "MAIN FEATURES:",
+      "FEATURE_1":{
+          "H2": "Vote Zone designed to",
+          "H2_STRNG": "Collaborative & Enjoyable experience.",
+          "DESCRIP": "Vote Zone have a chat and drag n' drop technologies built-in for every Event, So for any misunderstanding or doubt just chat with your partners to pick the right Choice!"
+      },
+      "FEATURE_2":{
+          "H2": "Good Charts full of information to",
+          "H2_STRNG": "a quick results visualization.",
+          "DESCRIP": "You can see: which choices are the most popular, which is the most preferred, & what choices has a person voted for and why. Also you can see votes frequency for every priority."
+      },
+      "FEATURE_3":{
+          "H2": "A list of participants with his current status to",
+          "H2_STRNG": "know who and how many are ready or online.",
+          "DESCRIP": "QckChoice will list all participants in your session, telling you who is online as well as who and how many people have already voted displaying this data through a progress bar."
+      }
+  },
   "SESSION_USER": {
       "TITLE": "Here are your sessions:",
       "CREATED_ON": "Created on:",

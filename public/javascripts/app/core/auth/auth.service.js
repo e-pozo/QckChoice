@@ -21,6 +21,7 @@ angular.module('auth').factory('Auth',
                 return $http.get('/api/logStatus')
                 // handle success
                     .then(function (obj) {
+                        console.log(obj);
                         if(obj.data.status){
                             user = true;
                         } else {
@@ -124,13 +125,30 @@ angular.module('auth').factory('Auth',
                 return deferred.promise;
             }
 
+            function facebookLogIn() {
+                var deferred = $q.defer();
+                $http.get('/auth/facebook')
+                    .then(function (data) {
+                        if(data.status === 200){
+                            deferred.resolve();
+                        }
+                        else {
+                            deferred.reject(data);
+                        }
+                    })
+                    .catch(function (err) {
+                        deferred.reject(err);
+                    })
+            }
+
             return ({
                 isLoggedIn: isLoggedIn,
                 getUserStatus: getUserStatus,
                 login: login,
-                loginAsAnonymous: loginAsAnonymous,
                 logout: logout,
-                register: register
+                register: register,
+                loginAsAnonymous: loginAsAnonymous,
+                facebookLogIn: facebookLogIn
             });
 
         }]);
