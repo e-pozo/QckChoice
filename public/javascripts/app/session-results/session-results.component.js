@@ -392,7 +392,7 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'Weighted Total of Votes',
                             data: weightedResults.map(function(vote){return vote.weightedTotal}),
-                            backgroundColor: getAlphaColors(weightedResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            backgroundColor: getAlphaColors(weightedResults.map(function(vote){return vote.ChoiceId}), '0.7'),
                             borderColor: getAlphaColors(weightedResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
@@ -418,7 +418,7 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'Frequency of Votes',
                             data: frequencyResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(frequencyResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            backgroundColor: getAlphaColors(frequencyResults.map(function(vote){return vote.ChoiceId}), '0.7'),
                             borderColor: getAlphaColors(frequencyResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
@@ -444,7 +444,7 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqLowResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqLowResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            backgroundColor: getAlphaColors(freqLowResults.map(function(vote){return vote.ChoiceId}), '0.7'),
                             borderColor: getAlphaColors(freqLowResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
@@ -479,7 +479,7 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqMediumResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqMediumResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            backgroundColor: getAlphaColors(freqMediumResults.map(function(vote){return vote.ChoiceId}), '0.7'),
                             borderColor: getAlphaColors(freqMediumResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
@@ -514,7 +514,7 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqHighResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqHighResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            backgroundColor: getAlphaColors(freqHighResults.map(function(vote){return vote.ChoiceId}), '0.7'),
                             borderColor: getAlphaColors(freqHighResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]
@@ -549,7 +549,7 @@ angular.module('sessionResults')
                         datasets: [{
                             label: 'N° Votes:',
                             data: freqMediumHighResults.map(function(vote){return vote.frequency}),
-                            backgroundColor: getAlphaColors(freqMediumHighResults.map(function(vote){return vote.ChoiceId}), '0.2'),
+                            backgroundColor: getAlphaColors(freqMediumHighResults.map(function(vote){return vote.ChoiceId}), '0.7'),
                             borderColor: getAlphaColors(freqMediumHighResults.map(function(vote){return vote.ChoiceId}), '1'),
                             borderWidth: 1
                         }]

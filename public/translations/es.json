@@ -52,6 +52,10 @@
       "H2": "Una lista de los participantes con su estado actual para",
       "H2_STRNG": "saber quiénes estan en linea o listos.",
       "DESCRIP": "QckChoice te listará todos los participantes en tu sesión, informandote quién esta en linea como también cuánta gente ha votado mostrandolo a traves de una barra de progreso."
+    },
+    "DOWNLOAD":{
+      "TITLE": "Descargar Cartas",
+      "BTN": "Descargar"
     }
   },
   "SESSION_USER": {

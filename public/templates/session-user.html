@@ -20,10 +20,10 @@
                         </div>
                     </div>
                     <div class="row" ng-if="sessionData.active">
-                        <div class="col-md-10">
+                        <!--<div class="col-md-10">
                             <button type="button" class="btn btn-success" ng-click="showGuestUrl = !showGuestUrl" translate="SESSION_USER.INVITE"></button>
                             <input type="text" ng-show="showGuestUrl" class="form-control" aria-describedby="basic-addon3" value="{{'Copy & share this link: '+'localhost:3000/session/'+sessionData.id+'/join/'+sessionData.guestPass}}" readonly>
-                        </div>
+                        </div> -->
                         <div class="col-md-2">
                             <span ng-if="sessionData.PersonSession.isModerator">
                                 <button type="button" class="btn btn-warning" ng-click="openModalEdit(sessionData)" translate="SESSION_USER.EDIT"></button>

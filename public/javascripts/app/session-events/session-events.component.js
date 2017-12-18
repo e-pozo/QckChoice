@@ -76,6 +76,7 @@ angular.module('sessionEvents')
             });
 
             Socket.on('finish:'+$routeParams.id, function () {
+                console.log('isFinished');
                 $location.path('/session/'+$routeParams.id+'/results');
             });
             Socket.on('updateEvents:'+$routeParams.id,function () {
@@ -281,6 +282,7 @@ angular.module('sessionEvents')
             $scope.$on('$routeChangeStart', function(scope, next, current){
                 if(!isInArray(next.$$route.originalPath, saveRoutes)) {
                     EventCore.resetVoteState();
+                    sessionStorage.removeItem('clockState');
                     Socket.emit('disconnectedToSession', {id: $routeParams.id, personId: JSON.parse(sessionStorage.getItem("me")).id});
                 }
             });

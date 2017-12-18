@@ -52,6 +52,10 @@
           "H2": "A list of participants with his current status to",
           "H2_STRNG": "know who and how many are ready or online.",
           "DESCRIP": "QckChoice will list all participants in your session, telling you who is online as well as who and how many people have already voted displaying this data through a progress bar."
+      },
+      "DOWNLOAD":{
+          "TITLE": "Download Cards",
+          "BTN": "Download"
       }
   },
   "SESSION_USER": {

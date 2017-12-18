@@ -43,7 +43,7 @@ angular.module('chat')
             //var socket = io();
             var output = document.getElementById('output');
             var aboutMe = JSON.parse(sessionStorage.getItem('me'));
-            var msgHTML = function (userName, msg, type) {
+            var msgHTML = function (userName, imgUrl, msg, type) {
                 if (type === 'sent'){
                     return `<div class="row msg_container base_sent">
                                             <div class="col-md-10 col-xs-10">
@@ -53,14 +53,14 @@ angular.module('chat')
                                                 </div>
                                             </div>
                                             <div class="col-md-2 col-xs-2 avatar">
-                                                <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                                                <img src="${imgUrl || 'http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg'}" class=" img-responsive ">
                                             </div>
                                         </div>`;
                 }
                 else{
                     return `<div class="row msg_container base_receive">
                                     <div class="col-md-2 col-xs-2 avatar">
-                                        <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                                        <img src="${imgUrl || 'http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg'}" class=" img-responsive ">
                                     </div>
                                     <div class="col-md-10 col-xs-10">
                                         <div class="messages msg_receive">
@@ -75,14 +75,14 @@ angular.module('chat')
             $scope.sendMsg = function () {
                 EventCore.addMessageToChat($routeParams.id, $routeParams.eventId, $scope.chat.message)
                     .then(function () {
-                         output.innerHTML += msgHTML(aboutMe.userName, $scope.chat.message, 'sent');
-                        Socket.emit('chat message', {event: $routeParams.eventId, message: $scope.chat.message, userName: aboutMe.userName});
+                         output.innerHTML += msgHTML(aboutMe.userName, aboutMe.imgURL,$scope.chat.message, 'sent');
+                        Socket.emit('chat message', {event: $routeParams.eventId, message: $scope.chat.message, userName: aboutMe.userName, imgURL: aboutMe.imgURL});
                         $scope.chat.message = null;
                     })
             };
 
             Socket.on('chat message'+$routeParams.eventId, function (msg) {
-                output.innerHTML += msgHTML(msg.userName, msg.message, 'receive');
+                output.innerHTML += msgHTML(msg.userName, msg.imgURL,msg.message, 'receive');
             });
 
             chatPromise
@@ -90,10 +90,10 @@ angular.module('chat')
                     console.log(messages.data.result);
                     for(var msg of messages.data.result){
                         if(msg.Person.id === aboutMe.id){
-                            output.innerHTML += msgHTML(msg.Person.userName, msg.message, 'sent');
+                            output.innerHTML += msgHTML(msg.Person.userName, msg.Person.imgURL,msg.message, 'sent');
                         }
                         else{
-                            output.innerHTML += msgHTML(msg.Person.userName, msg.message, 'receive');
+                            output.innerHTML += msgHTML(msg.Person.userName, msg.Person.imgURL, msg.message, 'receive');
                         }
                     }
                 });

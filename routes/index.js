@@ -14,6 +14,17 @@ module.exports = function(io) {
     const choiceController = controllers.choice;
     const adminController = controllers.admin;
 
+// Download Game
+
+    router.get('/api/downloadGame',
+            function (req, res) {
+                let file = __dirname + '/../resources/Tarjetas.pdf';
+                res.download(file, function (err) {
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            });
 // Chat interactions.
     router
         .post('/api/session/:id/event/:idEvent/Msg',
