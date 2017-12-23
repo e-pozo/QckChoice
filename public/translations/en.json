@@ -61,6 +61,11 @@
   "SESSION_USER": {
       "TITLE": "Here are your sessions:",
       "CREATED_ON": "Created on:",
+      "STATUS": {
+          "TITLE": "Status: ",
+          "ACTIVE": "Active",
+          "CLOSED": "Closed"
+      },
       "MODAL": {
           "TITLE": "Title:",
           "DESCRIPTION": "Description",

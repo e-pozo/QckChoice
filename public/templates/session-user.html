@@ -14,6 +14,8 @@
                             <h4><a href={{'session/'+sessionData.id}} ng-if="sessionData.active"> {{sessionData.title}} </a></h4>
                             <h4><a href={{'session/'+sessionData.id+'/results'}} ng-if="!sessionData.active"> {{sessionData.title}} </a></h4>
                             <h6>{{('SESSION_USER.CREATED_ON'| translate) + sessionData.createdAt}}</h6>
+                            <h6 ng-if="sessionData.active">{{'SESSION_USER.STATUS.TITLE' | translate}} <strong class="highlight-blue">{{'SESSION_USER.STATUS.ACTIVE' | translate}}</strong></h6>
+                            <h6 ng-if="!sessionData.active">{{'SESSION_USER.STATUS.TITLE' | translate}} <strong class="highlight-red">{{'SESSION_USER.STATUS.CLOSED' | translate}}</strong></h6>
                         </div>
                         <div class="well col-md-9">
                             {{sessionData.description}}

@@ -57,7 +57,8 @@
 
     <hr class="featurette-divider">
         <h1><strong class="highlight" translate="WELCOME.DOWNLOAD.TITLE"></strong></h1>
-        <a class="btn btn-success btn-block" href="/api/downloadGame" target="_self" translate="WELCOME.DOWNLOAD.BTN" download></a>
+        <a class="btn btn-success btn-block" ng-show="lang == 'es'" href="/api/downloadGame/es" target="_self" translate="WELCOME.DOWNLOAD.BTN" download></a>
+        <a class="btn btn-success btn-block" ng-show="lang == 'en'" href="/api/downloadGame/en" target="_self" translate="WELCOME.DOWNLOAD.BTN" download></a>
     <hr class="featurette-divider">
 
     <!-- Footer -->

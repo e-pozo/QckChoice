@@ -61,6 +61,11 @@
   "SESSION_USER": {
     "TITLE": "Estas son tus sesiones:",
     "CREATED_ON": "Creado el:",
+    "STATUS": {
+      "TITLE": "Estado: ",
+      "ACTIVE": "Activa",
+      "CLOSED": "Cerrada"
+    },
     "MODAL": {
       "TITLE": "Título:",
       "DESCRIPTION": "Descripción",

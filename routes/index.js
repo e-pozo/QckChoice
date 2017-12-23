@@ -16,15 +16,23 @@ module.exports = function(io) {
 
 // Download Game
 
-    router.get('/api/downloadGame',
+    router.get('/api/downloadGame/es',
             function (req, res) {
-                let file = __dirname + '/../resources/Tarjetas.pdf';
-                res.download(file, function (err) {
+                res.download(__dirname + '/../resources/Tarjetas.pdf', function (err) {
                     if(err){
                         console.log(err);
                     }
                 });
             });
+    router.get('/api/downloadGame/en',
+            function (req, res) {
+                res.download(__dirname + '/../resources/Tacticas_ingles.pdf', function (err) {
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            }
+        );
 // Chat interactions.
     router
         .post('/api/session/:id/event/:idEvent/Msg',
